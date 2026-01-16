@@ -1527,16 +1527,21 @@
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.75rem !important;
             padding: 0.4rem 0.8rem;
-            border: 1px solid var(--text-muted);
+            border: 1px solid var(--accent);
             border-radius: 50px;
             display: flex;
             align-items: center;
             gap: 0.4rem;
+            color: var(--accent);
+            background: var(--accent-dim);
+            transition: all 0.3s ease;
         }
 
         .demo-link:hover {
-            border-color: var(--accent-secondary) !important;
-            color: var(--accent-secondary) !important;
+            border-color: var(--accent) !important;
+            color: var(--bg-primary) !important;
+            background: var(--accent) !important;
+            box-shadow: 0 0 15px var(--accent-glow);
         }
 
         .project-title {
