@@ -60,59 +60,6 @@
             border-radius: 4px;
         }
 
-        /* Custom Cursor - Desktop Only */
-        .cursor,
-        .cursor-follower {
-            display: none;
-        }
-
-        @media (min-width: 1024px) and (pointer: fine) {
-            body.custom-cursor {
-                cursor: none;
-            }
-
-            body.custom-cursor a,
-            body.custom-cursor button {
-                cursor: none;
-            }
-
-            .cursor {
-                display: block;
-                width: 20px;
-                height: 20px;
-                border: 2px solid var(--accent);
-                border-radius: 50%;
-                position: fixed;
-                pointer-events: none;
-                z-index: 10001;
-                transform: translate(-50%, -50%);
-                transition: width 0.2s ease, height 0.2s ease;
-                box-shadow: 0 0 15px var(--accent), 0 0 30px var(--accent);
-            }
-
-            .cursor-follower {
-                display: block;
-                width: 40px;
-                height: 40px;
-                background: radial-gradient(circle, rgba(245, 158, 11, 0.3), transparent);
-                border: 1px solid rgba(245, 158, 11, 0.2);
-                border-radius: 50%;
-                position: fixed;
-                pointer-events: none;
-                z-index: 10000;
-                transform: translate(-50%, -50%);
-                transition: left 0.3s ease, top 0.3s ease;
-            }
-
-            .cursor.hover {
-                width: 50px;
-                height: 50px;
-                transform: translate(-50%, -50%);
-                background: radial-gradient(circle, rgba(245, 158, 11, 0.3), transparent);
-                border-color: var(--accent-secondary);
-                box-shadow: 0 0 20px var(--accent-secondary), 0 0 40px var(--accent-secondary);
-}
-        }
 
         /* Background */
         .background-container {
@@ -2181,9 +2128,6 @@
 </head>
 
 <body>
-    <!-- Custom Cursor -->
-    <div class="cursor" id="cursor"></div>
-    <div class="cursor-follower" id="cursorFollower"></div>
 
     <!-- Background -->
     <div class="background-container">
@@ -3201,29 +3145,6 @@
                         btn.innerHTML = '<i class="fas fa-copy"></i>';
                     }, 2000);
                 });
-            });
-        }
-
-        // Custom Cursor
-        const cursor = document.getElementById('cursor');
-        const cursorFollower = document.getElementById('cursorFollower');
-
-        if (window.matchMedia('(min-width: 1024px) and (pointer: fine)').matches) {
-            document.body.classList.add('custom-cursor');
-
-            document.addEventListener('mousemove', (e) => {
-                cursor.style.left = e.clientX + 'px';
-                cursor.style.top = e.clientY + 'px';
-
-                setTimeout(() => {
-                    cursorFollower.style.left = e.clientX + 'px';
-                    cursorFollower.style.top = e.clientY + 'px';
-                }, 100);
-            });
-
-            document.querySelectorAll('a, button').forEach(el => {
-                el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-                el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
             });
         }
 
