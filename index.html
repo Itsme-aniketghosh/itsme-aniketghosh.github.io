@@ -15,6 +15,7 @@
         href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Crimson+Pro:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
     <style>
         :root {
             --bg-primary: #0a0a0b;
@@ -1082,28 +1083,39 @@
         }
 
         /* ═══════════════════════════════════════════════════════════════
-           SKILLS SECTION - Standalone with Visual Grid
+           SKILLS SECTION — Icon Chip Grid
         ═══════════════════════════════════════════════════════════════ */
         .skills-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 1.5rem;
         }
-
         .skill-card {
             background: var(--bg-card);
             backdrop-filter: blur(10px);
             border: 1px solid var(--border);
-            border-radius: 16px;
+            border-radius: 20px;
             padding: 1.75rem;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
-
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: var(--gradient-1);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+        .skill-card:hover::before { transform: scaleX(1); }
         .skill-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-4px);
+            border-color: rgba(245,158,11,0.4);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
-
         .skill-card-header {
             display: flex;
             align-items: center;
@@ -1112,68 +1124,52 @@
             padding-bottom: 1rem;
             border-bottom: 1px solid var(--border);
         }
-
-        .skill-card-header i {
-            font-size: 1.25rem;
-            color: var(--accent);
-        }
-
-        .skill-card-header h4 {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .skill-items {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-
-        .skill-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .skill-name {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-        }
-
-        .skill-level {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
-            color: var(--accent);
-            background: var(--accent-dim);
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-        }
-
-        .tech-grid {
+        .skill-card-header i { font-size: 1.25rem; color: var(--accent); }
+        .skill-card-header h4 { font-size: 0.9rem; font-weight: 600; color: var(--text-primary); }
+        .chip-grid {
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
-            margin-top: 1rem;
-            padding-top: 1rem;
-            border-top: 1px solid var(--border);
         }
-
-        .tech-tag {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
-            color: var(--text-muted);
+        .skill-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.4rem 0.75rem;
             background: var(--bg-tertiary);
-            padding: 0.3rem 0.6rem;
             border: 1px solid var(--border);
-            border-radius: 4px;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--text-secondary);
             transition: all 0.2s ease;
+            white-space: nowrap;
         }
-
-        .tech-tag:hover {
-            color: var(--accent);
+        .skill-chip i, .skill-chip .devicon { font-size: 1rem; line-height: 1; }
+        .skill-chip:hover {
             border-color: var(--accent);
+            color: var(--text-primary);
+            background: rgba(245,158,11,0.08);
+            transform: translateY(-1px);
         }
+        .skill-chip .devicon-python-plain { color: #3572A5; }
+        .skill-chip .devicon-cplusplus-plain { color: #f34b7d; }
+        .skill-chip .devicon-java-plain { color: #b07219; }
+        .skill-chip .devicon-javascript-plain { color: #f1e05a; }
+        .skill-chip .devicon-mysql-plain { color: #4479a1; }
+        .skill-chip .devicon-bash-plain { color: #89e051; }
+        .skill-chip .devicon-html5-plain { color: #e34c26; }
+        .skill-chip .devicon-css3-plain { color: #563d7c; }
+        .skill-chip .devicon-pytorch-plain { color: #ee4c2c; }
+        .skill-chip .devicon-tensorflow-plain { color: #ff8f00; }
+        .skill-chip .devicon-docker-plain { color: #2496ed; }
+        .skill-chip .devicon-kubernetes-plain { color: #326ce5; }
+        .skill-chip .devicon-amazonwebservices-plain-wordmark { color: #ff9900; }
+        .skill-chip .devicon-azure-plain { color: #0089d6; }
+        .skill-chip .devicon-googlecloud-plain { color: #4285f4; }
+        .skill-chip .devicon-github-original { color: #e1e4e8; }
+        .skill-chip .devicon-fastapi-plain { color: #009688; }
+        .skill-chip .devicon-opencv-plain { color: #5c3ee8; }
 
         /* ═══════════════════════════════════════════════════════════════
            EXPERIENCE SECTION
@@ -2383,159 +2379,99 @@
                 <h2 class="section-title">Skills & Technologies</h2>
             </div>
             <div class="skills-grid">
-                <!-- Programming Languages -->
+
                 <div class="skill-card">
-                    <div class="skill-card-header">
-                        <i class="fas fa-code"></i>
-                        <h4>Programming Languages</h4>
-                    </div>
-                    <div class="skill-items">
-                        <div class="skill-row"><span class="skill-name">Python</span><span
-                                class="skill-level">95%</span></div>
-                        <div class="skill-row"><span class="skill-name">C / C++</span><span
-                                class="skill-level">85%</span></div>
-                        <div class="skill-row"><span class="skill-name">Java</span><span class="skill-level">80%</span>
-                        </div>
-                        <div class="skill-row"><span class="skill-name">SQL</span><span class="skill-level">85%</span>
-                        </div>
-                        <div class="skill-row"><span class="skill-name">JavaScript</span><span
-                                class="skill-level">75%</span></div>
-                    </div>
-                    <div class="tech-grid">
-                        <span class="tech-tag">HTML/CSS</span>
-                        <span class="tech-tag">Bash</span>
+                    <div class="skill-card-header"><i class="fas fa-code"></i><h4>Programming Languages</h4></div>
+                    <div class="chip-grid">
+                        <span class="skill-chip"><i class="devicon-python-plain colored"></i> Python</span>
+                        <span class="skill-chip"><i class="devicon-cplusplus-plain colored"></i> C / C++</span>
+                        <span class="skill-chip"><i class="devicon-java-plain colored"></i> Java</span>
+                        <span class="skill-chip"><i class="devicon-mysql-plain colored"></i> SQL</span>
+                        <span class="skill-chip"><i class="devicon-javascript-plain colored"></i> JavaScript</span>
+                        <span class="skill-chip"><i class="devicon-html5-plain colored"></i> HTML</span>
+                        <span class="skill-chip"><i class="devicon-css3-plain colored"></i> CSS</span>
+                        <span class="skill-chip"><i class="devicon-bash-plain colored"></i> Bash</span>
                     </div>
                 </div>
 
-                <!-- LLM & GenAI -->
                 <div class="skill-card">
-                    <div class="skill-card-header">
-                        <i class="fas fa-brain"></i>
-                        <h4>LLM & Generative AI</h4>
-                    </div>
-                    <div class="skill-items">
-                        <div class="skill-row"><span class="skill-name">RAG & Vector DBs</span><span
-                                class="skill-level">90%</span></div>
-                        <div class="skill-row"><span class="skill-name">OpenAI / Anthropic APIs</span><span
-                                class="skill-level">90%</span></div>
-                        <div class="skill-row"><span class="skill-name">Hugging Face</span><span
-                                class="skill-level">85%</span></div>
-                        <div class="skill-row"><span class="skill-name">LoRA/QLoRA Fine-tuning</span><span
-                                class="skill-level">75%</span></div>
-                    </div>
-                    <div class="tech-grid">
-                        <span class="tech-tag">Prompt Engineering</span>
-                        <span class="tech-tag">Function Calling</span>
-                        <span class="tech-tag">Multi-modal AI</span>
-                        <span class="tech-tag">Embeddings</span>
-                        <span class="tech-tag">OpenRouter</span>
+                    <div class="skill-card-header"><i class="fas fa-brain"></i><h4>LLM & Generative AI</h4></div>
+                    <div class="chip-grid">
+                        <span class="skill-chip"><i class="fas fa-database" style="color:#00aaff"></i> RAG & Vector DBs</span>
+                        <span class="skill-chip"><i class="fas fa-robot" style="color:#00ff88"></i> OpenAI API</span>
+                        <span class="skill-chip"><i class="fas fa-robot" style="color:#c084fc"></i> Anthropic API</span>
+                        <span class="skill-chip">🤗 Hugging Face</span>
+                        <span class="skill-chip"><i class="fas fa-sliders-h" style="color:#f59e0b"></i> LoRA / QLoRA</span>
+                        <span class="skill-chip"><i class="fas fa-terminal" style="color:#a1a1aa"></i> Prompt Engineering</span>
+                        <span class="skill-chip"><i class="fas fa-layer-group" style="color:#00aaff"></i> Embeddings</span>
+                        <span class="skill-chip"><i class="fas fa-images" style="color:#f59e0b"></i> Multi-modal AI</span>
+                        <span class="skill-chip"><i class="fas fa-route" style="color:#00ff88"></i> OpenRouter</span>
+                        <span class="skill-chip"><i class="fas fa-plug" style="color:#a1a1aa"></i> Function Calling</span>
                     </div>
                 </div>
 
-                <!-- AI Agents -->
                 <div class="skill-card">
-                    <div class="skill-card-header">
-                        <i class="fas fa-robot"></i>
-                        <h4>AI Agents & Orchestration</h4>
-                    </div>
-                    <div class="skill-items">
-                        <div class="skill-row"><span class="skill-name">OpenAI Agents SDK</span><span
-                                class="skill-level">90%</span></div>
-                        <div class="skill-row"><span class="skill-name">CrewAI</span><span
-                                class="skill-level">90%</span></div>
-                        <div class="skill-row"><span class="skill-name">Model Context Protocol</span><span
-                                class="skill-level">85%</span></div>
-                        <div class="skill-row"><span class="skill-name">LangChain / LangGraph</span><span
-                                class="skill-level">85%</span></div>
-                    </div>
-                    <div class="tech-grid">
-                        <span class="tech-tag">AutoGen</span>
-                        <span class="tech-tag">Agentic Workflows</span>
-                        <span class="tech-tag">Multi-Agent Systems</span>
+                    <div class="skill-card-header"><i class="fas fa-robot"></i><h4>AI Agents & Orchestration</h4></div>
+                    <div class="chip-grid">
+                        <span class="skill-chip"><i class="fas fa-robot" style="color:#00ff88"></i> OpenAI Agents SDK</span>
+                        <span class="skill-chip"><i class="fas fa-users-cog" style="color:#f59e0b"></i> CrewAI</span>
+                        <span class="skill-chip"><i class="fas fa-network-wired" style="color:#00aaff"></i> MCP</span>
+                        <span class="skill-chip"><i class="fas fa-link" style="color:#22c55e"></i> LangChain</span>
+                        <span class="skill-chip"><i class="fas fa-project-diagram" style="color:#6366f1"></i> LangGraph</span>
+                        <span class="skill-chip"><i class="fas fa-cogs" style="color:#a1a1aa"></i> AutoGen</span>
+                        <span class="skill-chip"><i class="fas fa-sitemap" style="color:#f59e0b"></i> Agentic Workflows</span>
+                        <span class="skill-chip"><i class="fas fa-cubes" style="color:#00ff88"></i> Multi-Agent Systems</span>
                     </div>
                 </div>
 
-                <!-- ML Frameworks -->
                 <div class="skill-card">
-                    <div class="skill-card-header">
-                        <i class="fas fa-project-diagram"></i>
-                        <h4>ML Frameworks</h4>
-                    </div>
-                    <div class="skill-items">
-                        <div class="skill-row"><span class="skill-name">PyTorch</span><span
-                                class="skill-level">95%</span></div>
-                        <div class="skill-row"><span class="skill-name">TensorFlow / Keras</span><span
-                                class="skill-level">90%</span></div>
-                        <div class="skill-row"><span class="skill-name">scikit-learn</span><span
-                                class="skill-level">90%</span></div>
-                        <div class="skill-row"><span class="skill-name">YOLOv8 & CNNs</span><span
-                                class="skill-level">90%</span></div>
-                    </div>
-                    <div class="tech-grid">
-                        <span class="tech-tag">Transformers</span>
-                        <span class="tech-tag">U-Net</span>
-                        <span class="tech-tag">Mask R-CNN</span>
-                        <span class="tech-tag">BERT</span>
+                    <div class="skill-card-header"><i class="fas fa-project-diagram"></i><h4>ML Frameworks</h4></div>
+                    <div class="chip-grid">
+                        <span class="skill-chip"><i class="devicon-pytorch-plain colored"></i> PyTorch</span>
+                        <span class="skill-chip"><i class="devicon-tensorflow-plain colored"></i> TensorFlow</span>
+                        <span class="skill-chip"><i class="devicon-keras-plain colored"></i> Keras</span>
+                        <span class="skill-chip"><i class="devicon-scikitlearn-plain colored"></i> scikit-learn</span>
+                        <span class="skill-chip"><i class="fas fa-eye" style="color:#f59e0b"></i> YOLOv8</span>
+                        <span class="skill-chip"><i class="devicon-opencv-plain colored"></i> OpenCV</span>
+                        <span class="skill-chip"><i class="fas fa-vector-square" style="color:#00aaff"></i> Transformers</span>
+                        <span class="skill-chip"><i class="fas fa-draw-polygon" style="color:#a1a1aa"></i> U-Net</span>
+                        <span class="skill-chip"><i class="fas fa-mask" style="color:#00ff88"></i> Mask R-CNN</span>
+                        <span class="skill-chip"><i class="fas fa-book-open" style="color:#c084fc"></i> BERT</span>
                     </div>
                 </div>
 
-                <!-- MLOps & Cloud -->
                 <div class="skill-card">
-                    <div class="skill-card-header">
-                        <i class="fas fa-cloud"></i>
-                        <h4>MLOps & Cloud</h4>
-                    </div>
-                    <div class="skill-items">
-                        <div class="skill-row"><span class="skill-name">Docker</span><span
-                                class="skill-level">85%</span></div>
-                        <div class="skill-row"><span class="skill-name">AWS (Bedrock, SageMaker)</span><span
-                                class="skill-level">80%</span></div>
-                        <div class="skill-row"><span class="skill-name">GitHub Actions</span><span
-                                class="skill-level">80%</span></div>
-                        <div class="skill-row"><span class="skill-name">Terraform</span><span
-                                class="skill-level">75%</span></div>
-                    </div>
-                    <div class="tech-grid">
-                        <span class="tech-tag">Azure</span>
-                        <span class="tech-tag">GCP</span>
-                        <span class="tech-tag">Kubernetes</span>
-                        <span class="tech-tag">Vercel</span>
-                        <span class="tech-tag">Lambda</span>
-                        <span class="tech-tag">S3</span>
-                        <span class="tech-tag">CloudFront</span>
-                        <span class="tech-tag">API Gateway</span>
-                        <span class="tech-tag">MLflow</span>
-                        <span class="tech-tag">CI/CD</span>
+                    <div class="skill-card-header"><i class="fas fa-cloud"></i><h4>MLOps & Cloud</h4></div>
+                    <div class="chip-grid">
+                        <span class="skill-chip"><i class="devicon-docker-plain colored"></i> Docker</span>
+                        <span class="skill-chip"><i class="devicon-kubernetes-plain colored"></i> Kubernetes</span>
+                        <span class="skill-chip"><i class="devicon-amazonwebservices-plain-wordmark colored"></i> AWS</span>
+                        <span class="skill-chip"><i class="devicon-azure-plain colored"></i> Azure</span>
+                        <span class="skill-chip"><i class="devicon-googlecloud-plain colored"></i> GCP</span>
+                        <span class="skill-chip"><i class="devicon-github-original colored"></i> GitHub Actions</span>
+                        <span class="skill-chip"><i class="devicon-terraform-plain colored"></i> Terraform</span>
+                        <span class="skill-chip"><i class="fas fa-chart-line" style="color:#00ff88"></i> MLflow</span>
+                        <span class="skill-chip"><i class="fas fa-infinity" style="color:#f59e0b"></i> CI/CD</span>
+                        <span class="skill-chip"><i class="fas fa-server" style="color:#a1a1aa"></i> Vercel</span>
                     </div>
                 </div>
 
-                <!-- Specializations -->
                 <div class="skill-card">
-                    <div class="skill-card-header">
-                        <i class="fas fa-microscope"></i>
-                        <h4>Specializations</h4>
-                    </div>
-                    <div class="skill-items">
-                        <div class="skill-row"><span class="skill-name">Computer Vision</span><span
-                                class="skill-level">90%</span></div>
-                        <div class="skill-row"><span class="skill-name">Deep Learning</span><span
-                                class="skill-level">90%</span></div>
-                        <div class="skill-row"><span class="skill-name">NLP</span><span class="skill-level">85%</span>
-                        </div>
-                        <div class="skill-row"><span class="skill-name">Medical Image Analysis</span><span
-                                class="skill-level">85%</span></div>
-                    </div>
-                    <div class="tech-grid">
-                        <span class="tech-tag">Explainable AI</span>
-                        <span class="tech-tag">Model Monitoring</span>
-                        <span class="tech-tag">Guardrails</span>
-                        <span class="tech-tag">FAISS</span>
-                        <span class="tech-tag">ChromaDB</span>
-                        <span class="tech-tag">NetworkX</span>
-                        <span class="tech-tag">Knowledge Graphs</span>
-                        <span class="tech-tag">FastAPI</span>
+                    <div class="skill-card-header"><i class="fas fa-microscope"></i><h4>Specializations</h4></div>
+                    <div class="chip-grid">
+                        <span class="skill-chip"><i class="fas fa-camera" style="color:#00aaff"></i> Computer Vision</span>
+                        <span class="skill-chip"><i class="fas fa-brain" style="color:#c084fc"></i> Deep Learning</span>
+                        <span class="skill-chip"><i class="fas fa-comment-dots" style="color:#00ff88"></i> NLP</span>
+                        <span class="skill-chip"><i class="fas fa-x-ray" style="color:#f59e0b"></i> Medical Imaging</span>
+                        <span class="skill-chip"><i class="fas fa-lightbulb" style="color:#f59e0b"></i> Explainable AI</span>
+                        <span class="skill-chip"><i class="fas fa-search" style="color:#00aaff"></i> FAISS</span>
+                        <span class="skill-chip"><i class="fas fa-circle-nodes" style="color:#00ff88"></i> ChromaDB</span>
+                        <span class="skill-chip"><i class="fas fa-share-nodes" style="color:#6366f1"></i> Knowledge Graphs</span>
+                        <span class="skill-chip"><i class="devicon-fastapi-plain colored"></i> FastAPI</span>
+                        <span class="skill-chip"><i class="fas fa-shield-halved" style="color:#a1a1aa"></i> Guardrails</span>
                     </div>
                 </div>
+
             </div>
         </section>
 
