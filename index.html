@@ -355,14 +355,14 @@
         .nav-resume-btn {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            padding: 0.6rem 1.25rem;
+            gap: 0.4rem;
+            padding: 0.45rem 1rem;
             background: transparent;
             border: 1px solid var(--accent);
-            border-radius: 50px;
+            border-radius: 8px;
             color: var(--accent);
             text-decoration: none;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 600;
             transition: all 0.3s ease;
         }
@@ -375,14 +375,14 @@
         .nav-ai-btn {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            padding: 0.6rem 1.25rem;
-            background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 170, 255, 0.2));
+            gap: 0.4rem;
+            padding: 0.45rem 1rem;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.15), rgba(0, 170, 255, 0.15));
             border: 1px solid var(--accent-secondary);
-            border-radius: 50px;
+            border-radius: 8px;
             color: var(--accent-secondary);
             text-decoration: none;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 600;
             transition: all 0.3s ease;
             position: relative;
@@ -2191,6 +2191,33 @@
             .recruiter-banner .banner-label { display: none; }
             body.banner-visible nav { top: 50px; }
         }
+
+
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 46px;
+            height: 46px;
+            background: var(--accent);
+            color: var(--bg-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            text-decoration: none;
+            z-index: 999;
+            opacity: 0;
+            transform: translateY(16px);
+            transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 20px rgba(245,158,11,0.4);
+        }
+        .back-to-top.visible { opacity: 1; transform: translateY(0); }
+        .back-to-top:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 28px rgba(245,158,11,0.65);
+        }
     </style>
 </head>
 
@@ -3139,6 +3166,9 @@
                 </div>
             </div>
         </section>
+        <a href="#" class="back-to-top" id="backToTop" title="Back to top">
+        <i class="fas fa-arrow-up"></i>
+        </a>
     </main>
 
     <!-- Footer -->
@@ -3443,19 +3473,27 @@
                 }
             });
         });
-// Recruiter banner
-const banner = document.getElementById('recruiterBanner');
-const bannerClose = document.getElementById('bannerClose');
-if (sessionStorage.getItem('bannerDismissed')) {
-    banner.classList.add('hidden');
-} else {
-    document.body.classList.add('banner-visible');
-}
-bannerClose.addEventListener('click', () => {
-    banner.classList.add('hidden');
-    document.body.classList.remove('banner-visible');
-    sessionStorage.setItem('bannerDismissed', '1');
-});
+        // Recruiter banner
+        const banner = document.getElementById('recruiterBanner');
+        const bannerClose = document.getElementById('bannerClose');
+        if (sessionStorage.getItem('bannerDismissed')) {
+            banner.classList.add('hidden');
+        } else {
+            document.body.classList.add('banner-visible');
+        }
+        bannerClose.addEventListener('click', () => {
+            banner.classList.add('hidden');
+            document.body.classList.remove('banner-visible');
+            sessionStorage.setItem('bannerDismissed', '1');
+        });
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            backToTop.classList.toggle('visible', window.scrollY > 400);
+        });
+        backToTop.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
         //
     </script>
 </body>
