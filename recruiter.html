@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Aniket Ghosh — MS AI at Northeastern University. AI/ML Engineer seeking Summer 2026 roles. Resume, projects, and contact." />
+    <meta name="robots" content="noindex">
+    <title>Aniket Ghosh — Recruiter View</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Crimson+Pro:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #0a0a0b;
+            --bg-secondary: #111113;
+            --bg-tertiary: #1a1a1d;
+            --bg-card: rgba(20, 20, 22, 0.95);
+            --text-primary: #fafafa;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --accent: #f59e0b;
+            --accent-secondary: #00ff88;
+            --accent-tertiary: #00aaff;
+            --accent-dim: rgba(245, 158, 11, 0.12);
+            --accent-glow: rgba(245, 158, 11, 0.4);
+            --border: rgba(39, 39, 42, 0.8);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-secondary); }
+        ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+        /* ── Background ── */
+        .bg-orb {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            filter: blur(70px);
+        }
+        .orb1 {
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(245,158,11,0.15), transparent);
+            top: -200px; left: -200px;
+            animation: drift 20s ease-in-out infinite;
+        }
+        .orb2 {
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(0,255,136,0.12), transparent);
+            bottom: -150px; right: -150px;
+            animation: drift 25s ease-in-out infinite reverse;
+        }
+        @keyframes drift {
+            0%,100% { transform: translate(0,0); }
+            50% { transform: translate(60px,-60px); }
+        }
+
+        /* ── Nav ── */
+        nav {
+            position: fixed;
+            top: 0; width: 100%;
+            padding: 1rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(10,10,11,0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid transparent;
+            transition: all 0.3s ease;
+        }
+        nav.scrolled {
+            border-bottom-color: var(--border);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            padding: 0.75rem 3rem;
+        }
+        .nav-logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .nav-logo-dot {
+            width: 8px; height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: pulse-dot 2s infinite;
+        }
+        @keyframes pulse-dot {
+            0%,100% { box-shadow: 0 0 0 0 rgba(245,158,11,0.7); }
+            50% { box-shadow: 0 0 0 6px rgba(245,158,11,0); }
+        }
+        .nav-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.62rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent);
+            background: var(--accent-dim);
+            border: 1px solid rgba(245,158,11,0.3);
+            padding: 0.25rem 0.6rem;
+            border-radius: 999px;
+        }
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        /* ── Buttons ── */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 0.88rem;
+            padding: 0.7rem 1.4rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            border: none;
+            white-space: nowrap;
+        }
+        .btn-gold {
+            background: var(--accent);
+            color: var(--bg-primary);
+        }
+        .btn-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(245,158,11,0.45);
+        }
+        .btn-outline {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+        .btn-outline:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        .btn-green {
+            background: linear-gradient(135deg, var(--accent-secondary), var(--accent-tertiary));
+            color: var(--bg-primary);
+        }
+        .btn-green:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(0,255,136,0.35);
+        }
+        .btn-ghost {
+            background: rgba(255,255,255,0.04);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+        .btn-ghost:hover {
+            background: rgba(255,255,255,0.08);
+            color: var(--text-primary);
+        }
+        .btn i { font-size: 0.85rem; }
+
+        /* ── Layout ── */
+        main {
+            position: relative;
+            z-index: 1;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2.5rem;
+        }
+
+        section {
+            padding: 5rem 0;
+        }
+
+        /* ── Hero ── */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-top: 5rem;
+        }
+        .hero-kicker {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .hero-kicker::before {
+            content: '';
+            width: 32px; height: 1px;
+            background: var(--accent);
+        }
+        .hero-name {
+            font-family: 'Crimson Pro', serif;
+            font-size: clamp(3.5rem, 8vw, 6rem);
+            line-height: 0.95;
+            margin-bottom: 1.25rem;
+            letter-spacing: -1px;
+        }
+        .hero-name span {
+            background: linear-gradient(135deg, var(--accent), #ffd27a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-sub {
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+            color: var(--text-secondary);
+            max-width: 680px;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+        .status-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-bottom: 2.5rem;
+        }
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.5rem 1rem;
+            border-radius: 999px;
+            background: rgba(20,20,22,0.8);
+            border: 1px solid var(--border);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            backdrop-filter: blur(12px);
+        }
+        .chip i { color: var(--accent); font-size: 0.7rem; }
+        .chip.hot { border-color: rgba(245,158,11,0.4); color: var(--accent); }
+        .chip.hot i { color: var(--accent); }
+        .hero-cta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            align-items: center;
+        }
+        .hero-scroll-hint {
+            margin-top: 3.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+        .hero-scroll-hint i { animation: bounce 2s infinite; color: var(--accent); }
+        @keyframes bounce {
+            0%,100% { transform: translateY(0); }
+            50% { transform: translateY(6px); }
+        }
+
+        /* ── Divider ── */
+        .section-divider {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
+            margin: 0;
+        }
+
+        /* ── Section header ── */
+        .sec-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 0.6rem;
+        }
+        .sec-title {
+            font-family: 'Crimson Pro', serif;
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            font-weight: 600;
+            margin-bottom: 2rem;
+            line-height: 1.15;
+        }
+
+        /* ── Cards ── */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(12px);
+        }
+        .card h3 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1.25rem;
+            color: var(--text-primary);
+        }
+
+        /* ── Snapshot grid ── */
+        .snapshot-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .snap-card {
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.25rem;
+            background: rgba(255,255,255,0.02);
+            transition: border-color 0.2s ease, transform 0.2s ease;
+        }
+        .snap-card:hover {
+            border-color: rgba(245,158,11,0.35);
+            transform: translateY(-2px);
+        }
+        .snap-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 0.4rem;
+        }
+        .snap-value {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            line-height: 1.4;
+            margin-bottom: 0.3rem;
+        }
+        .snap-sub {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* ── Letter ── */
+        .letter-body p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.9;
+            margin-bottom: 1.1rem;
+        }
+        .letter-body p:last-child { margin-bottom: 0; }
+        .hl { color: var(--text-primary); font-weight: 600; }
+
+        /* ── Two-col layout ── */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1.3fr 0.7fr;
+            gap: 1.5rem;
+            align-items: start;
+        }
+
+        /* ── Why list ── */
+        .why-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+        }
+        .why-list li {
+            display: flex;
+            gap: 0.75rem;
+            align-items: flex-start;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.65;
+        }
+        .why-list li::before {
+            content: '▹';
+            color: var(--accent);
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+        }
+
+        /* ── Projects preview ── */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+        .proj-card {
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.25rem;
+            background: rgba(255,255,255,0.02);
+            transition: all 0.25s ease;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .proj-card:hover {
+            border-color: rgba(245,158,11,0.4);
+            transform: translateY(-3px);
+        }
+        .proj-icon {
+            font-size: 1.5rem;
+            color: var(--accent);
+            opacity: 0.8;
+            margin-bottom: 0.25rem;
+        }
+        .proj-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .proj-desc {
+            font-size: 0.83rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            flex: 1;
+        }
+        .proj-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--accent);
+            background: var(--accent-dim);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            align-self: flex-start;
+        }
+        .proj-card.featured {
+            border-color: rgba(0,255,136,0.3);
+            background: rgba(0,255,136,0.04);
+        }
+        .proj-card.featured .proj-icon { color: var(--accent-secondary); }
+        .proj-card.featured .proj-tag {
+            color: var(--accent-secondary);
+            background: rgba(0,255,136,0.1);
+        }
+
+        /* ── Skills strip ── */
+        .skills-strip {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .skill-pill {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            padding: 0.35rem 0.7rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+        .skill-pill:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        /* ── CTA block ── */
+        .cta-block {
+            background: linear-gradient(135deg, rgba(245,158,11,0.06), rgba(0,255,136,0.04));
+            border: 1px solid rgba(245,158,11,0.25);
+            border-radius: 20px;
+            padding: 2.5rem;
+            text-align: center;
+        }
+        .cta-block h2 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 2.2rem;
+            margin-bottom: 0.75rem;
+        }
+        .cta-block p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            max-width: 520px;
+            margin: 0 auto 2rem;
+            line-height: 1.75;
+        }
+        .cta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: center;
+        }
+
+        /* ── Inline CTA strip ── */
+        .inline-cta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            align-items: center;
+            padding: 1.25rem 1.5rem;
+            background: rgba(245,158,11,0.05);
+            border: 1px solid rgba(245,158,11,0.2);
+            border-radius: 14px;
+            margin-top: 1.75rem;
+        }
+        .inline-cta span {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            flex: 1;
+            min-width: 180px;
+        }
+        .inline-cta span strong { color: var(--text-primary); }
+
+        /* ── Contact row ── */
+        .contact-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.82rem;
+            color: var(--accent);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        .contact-item:hover { color: var(--accent-secondary); }
+        .contact-item i { font-size: 0.9rem; }
+
+        /* ── Back to top ── */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 46px; height: 46px;
+            background: var(--accent);
+            color: var(--bg-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            text-decoration: none;
+            z-index: 999;
+            opacity: 0;
+            transform: translateY(16px);
+            transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 20px rgba(245,158,11,0.4);
+        }
+        .back-to-top.visible { opacity: 1; transform: translateY(0); }
+        .back-to-top:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 28px rgba(245,158,11,0.65);
+        }
+
+        /* ── Mobile sticky bar ── */
+        .mobile-bar {
+            display: none;
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            z-index: 200;
+            padding: 0.75rem 1rem;
+            background: rgba(10,10,11,0.97);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border);
+            gap: 0.6rem;
+        }
+        .mobile-bar .btn { flex: 1; justify-content: center; font-size: 0.82rem; padding: 0.7rem 0.5rem; }
+
+        /* ── Footer ── */
+        footer {
+            padding: 2rem 0 6rem;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            position: relative;
+            z-index: 1;
+        }
+        footer p {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        footer a { color: var(--accent); text-decoration: none; }
+
+        /* ── Reveal ── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: all 0.55s ease;
+        }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* ════════════════════════════════
+           RESPONSIVE
+        ════════════════════════════════ */
+        @media (max-width: 900px) {
+            nav { padding: 1rem 1.5rem; }
+            nav.scrolled { padding: 0.75rem 1.5rem; }
+            main { padding: 0 1.25rem; }
+            .nav-actions .btn-outline { display: none; }
+            .two-col { grid-template-columns: 1fr; }
+            .snapshot-grid { grid-template-columns: repeat(2, 1fr); }
+            .projects-grid { grid-template-columns: repeat(2, 1fr); }
+            .mobile-bar { display: flex; }
+            /* give room for mobile bar */
+            footer { padding-bottom: 6rem; }
+            .back-to-top { bottom: 5.5rem; }
+        }
+
+        @media (max-width: 600px) {
+            .hero-name { font-size: 3rem; }
+            .snapshot-grid { grid-template-columns: 1fr; }
+            .projects-grid { grid-template-columns: 1fr; }
+            .hero-cta { flex-direction: column; }
+            .hero-cta .btn { width: 100%; justify-content: center; }
+            .cta-row { flex-direction: column; }
+            .cta-row .btn { width: 100%; justify-content: center; }
+            .inline-cta { flex-direction: column; }
+            .inline-cta .btn { width: 100%; justify-content: center; }
+            .nav-badge { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Background orbs -->
+<div class="bg-orb orb1"></div>
+<div class="bg-orb orb2"></div>
+
+<nav id="navbar">
+    <a href="#top" class="nav-logo">
+        <div class="nav-logo-dot"></div>
+        Aniket Ghosh
+    </a>
+    <div style="display:flex;align-items:center;gap:0.75rem;">
+        <span class="nav-badge"><i class="fas fa-briefcase"></i> Recruiter View</span>
+        <div class="nav-actions">
+            <a href="index.html" class="btn btn-outline btn-ghost" style="font-size:0.8rem;padding:0.55rem 1rem;">
+                <i class="fas fa-layer-group"></i> Full Portfolio
+            </a>
+            <a href="resume.pdf" target="_blank" class="btn btn-gold" style="font-size:0.8rem;padding:0.55rem 1.1rem;">
+                <i class="fas fa-file-alt"></i> Resume
+            </a>
+        </div>
+    </div>
+</nav>
+
+<main id="top">
+
+    <!-- ═══════════════════════════════════
+         HERO
+    ═══════════════════════════════════ -->
+    <section class="hero">
+        <p class="hero-kicker">Before you open the resume</p>
+        <h1 class="hero-name">Here's my<br><span>two cents.</span></h1>
+        <p class="hero-sub">
+            I'm Aniket — an MS AI student at Northeastern, Graduate NLP TA,
+            and someone who builds things that actually ship.
+            Here's what I'd want you to know before you read the resume.
+        </p>
+
+        <div class="status-chips">
+            <span class="chip hot"><i class="fas fa-circle"></i> Open to Opportunities</span>
+            <span class="chip"><i class="fas fa-briefcase"></i> Summer 2026 Internships</span>
+            <span class="chip"><i class="fas fa-location-dot"></i> Boston / Remote  (open to relocate)</span>
+            <span class="chip"><i class="fas fa-user-graduate"></i> MS AI @ Northeastern</span>
+            <span class="chip"><i class="fas fa-chalkboard-user"></i> Graduate NLP TA</span>
+            <span class="chip"><i class="fas fa-people-group"></i> GSG Senator</span>
+        </div>
+
+        <!-- CTA #1 — Hero -->
+        <div class="hero-cta">
+            <a href="resume.pdf" target="_blank" class="btn btn-gold">
+                <i class="fas fa-file-alt"></i> Open Resume
+            </a>
+            <a href="https://ag-hosh-my-digital-twin.hf.space/" target="_blank" class="btn btn-green">
+                <i class="fas fa-robot"></i> Talk to My AI Twin
+            </a>
+            <a href="https://linkedin.com/in/aniketghosh-" target="_blank" class="btn btn-outline">
+                <i class="fab fa-linkedin"></i> LinkedIn
+            </a>
+            <a href="index.html" class="btn btn-ghost">
+                <i class="fas fa-layer-group"></i> Full Portfolio
+            </a>
+        </div>
+
+        <div class="hero-scroll-hint">
+            <span>Keep reading</span>
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- ═══════════════════════════════════
+         SNAPSHOT
+    ═══════════════════════════════════ -->
+    <section class="reveal">
+        <p class="sec-label">At a glance</p>
+        <h2 class="sec-title">What I'd want you to notice</h2>
+
+        <div class="snapshot-grid">
+            <div class="snap-card">
+                <div class="snap-label">Current</div>
+                <div class="snap-value">MS AI @ Northeastern</div>
+                <div class="snap-sub">Khoury College · Boston · 15% merit scholarship</div>
+            </div>
+            <div class="snap-card">
+                <div class="snap-label">Teaching</div>
+                <div class="snap-value">Graduate NLP TA</div>
+                <div class="snap-sub">Earned the role without taking the course here first — on pure skill</div>
+            </div>
+            <div class="snap-card">
+                <div class="snap-label">Leadership</div>
+                <div class="snap-value">GSG Senator</div>
+                <div class="snap-sub">Student government leadership, advocacy, responsibility beyond coursework</div>
+            </div>
+            <div class="snap-card">
+                <div class="snap-label">Built & Shipped</div>
+                <div class="snap-value">Deployed AI Projects</div>
+                <div class="snap-sub">Not just notebooks — live systems people can actually interact with</div>
+            </div>
+            <div class="snap-card">
+                <div class="snap-label">Experience</div>
+                <div class="snap-value">4 Internships + 3 Research Roles</div>
+                <div class="snap-sub">Multiple environments, multiple problems, high learning velocity</div>
+            </div>
+            <div class="snap-card">
+                <div class="snap-label">Seeking</div>
+                <div class="snap-value">Summer 2026 Roles</div>
+                <div class="snap-sub">ML Engineering · Applied AI · AI Research · Boston / Remote  (open to relocate)</div>
+            </div>
+        </div>
+
+        <!-- CTA #2 — after snapshot -->
+        <div class="inline-cta">
+            <span><strong>Resume has the full picture.</strong> Projects, research, internships — all in one place.</span>
+            <a href="resume.pdf" target="_blank" class="btn btn-gold">
+                <i class="fas fa-file-alt"></i> Open Resume
+            </a>
+            <a href="mailto:ghosh.ani@northeastern.edu" class="btn btn-outline">
+                <i class="fas fa-envelope"></i> Email Me
+            </a>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- ═══════════════════════════════════
+         LETTER
+    ═══════════════════════════════════ -->
+    <section class="reveal">
+        <p class="sec-label">A direct note</p>
+        <h2 class="sec-title">Before you open the resume</h2>
+
+        <div class="card">
+            <div class="letter-body">
+                <p>Here's my two cents: <span class="hl">I care a lot about impact.</span> I'm not chasing work just because it sounds impressive on paper. I'm looking for the kind of work where the stakes are real, the learning curve is steep, and the output actually matters.</p>
+                <p>I've always been pulled toward technology not just because it is intellectually exciting, but because I believe it can change who gets access, who gets heard, and who gets lifted. That belief is still underneath everything I build.</p>
+                <p>Right now I'm in the <span class="hl">MS in Artificial Intelligence program at Northeastern</span>, and I also serve as a <span class="hl">Teaching Assistant for the graduate NLP course</span>. One thing I'm genuinely proud of is that <span class="hl">I did not take NLP here first and still earned that role on pure skill</span>. To me, that says something important about how I prepare, how I learn, and how I show up when trust has to be earned.</p>
+                <p>I've also done <span class="hl">multiple internships, multiple research projects, leadership work as a GSG Senator, and I've shipped deployed projects people can actually use.</span> So when you look at me, I don't want you to see someone who only fits one category. I want you to see someone who can build, research, teach, communicate, and take ownership.</p>
+                <p>The simplest way I can put it: <span class="hl">throw me into the ocean and I'll figure out how to swim, read the current, and still bring something back to shore.</span> I like being challenged. I like steep ramps. I like environments that expect a lot — because I expect a lot from myself too.</p>
+                <p>If that sounds like the kind of person your team values, start with the resume. The full portfolio has the longer version — projects, research, deployed work, and the details behind how I think.</p>
+            </div>
+
+            <!-- CTA #3 — inside letter card -->
+            <div class="inline-cta" style="margin-top:1.75rem;">
+                <span><strong>Convinced?</strong> Reach out directly or open the resume.</span>
+                <a href="resume.pdf" target="_blank" class="btn btn-gold">
+                    <i class="fas fa-file-alt"></i> Resume
+                </a>
+                <a href="https://ag-hosh-my-digital-twin.hf.space/" target="_blank" class="btn btn-green">
+                    <i class="fas fa-robot"></i> Ask My AI Twin
+                </a>
+                <a href="mailto:ghosh.ani@northeastern.edu" class="btn btn-outline">
+                    <i class="fas fa-envelope"></i> Email
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- ═══════════════════════════════════
+         SKILLS
+    ═══════════════════════════════════ -->
+    <section class="reveal">
+        <p class="sec-label">Technical</p>
+        <h2 class="sec-title">Skills at a glance</h2>
+
+        <div class="two-col">
+            <div style="display:flex;flex-direction:column;gap:1.25rem;">
+                <div class="card" style="padding:1.5rem;">
+                    <h3 style="font-size:1.1rem;margin-bottom:1rem;">Core Stack</h3>
+                    <div class="skills-strip">
+                        <span class="skill-pill">Python</span>
+                        <span class="skill-pill">PyTorch</span>
+                        <span class="skill-pill">TensorFlow</span>
+                        <span class="skill-pill">scikit-learn</span>
+                        <span class="skill-pill">SQL</span>
+                        <span class="skill-pill">C / C++</span>
+                        <span class="skill-pill">Java</span>
+                        <span class="skill-pill">JavaScript</span>
+                    </div>
+                </div>
+                <div class="card" style="padding:1.5rem;">
+                    <h3 style="font-size:1.1rem;margin-bottom:1rem;">LLM & Agents</h3>
+                    <div class="skills-strip">
+                        <span class="skill-pill">RAG</span>
+                        <span class="skill-pill">OpenAI API</span>
+                        <span class="skill-pill">Anthropic API</span>
+                        <span class="skill-pill">Hugging Face</span>
+                        <span class="skill-pill">LangChain</span>
+                        <span class="skill-pill">LangGraph</span>
+                        <span class="skill-pill">CrewAI</span>
+                        <span class="skill-pill">MCP</span>
+                        <span class="skill-pill">LoRA / QLoRA</span>
+                    </div>
+                </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:1.25rem;">
+                <div class="card" style="padding:1.5rem;">
+                    <h3 style="font-size:1.1rem;margin-bottom:1rem;">MLOps & Cloud</h3>
+                    <div class="skills-strip">
+                        <span class="skill-pill">Docker</span>
+                        <span class="skill-pill">AWS</span>
+                        <span class="skill-pill">Azure</span>
+                        <span class="skill-pill">GCP</span>
+                        <span class="skill-pill">GitHub Actions</span>
+                        <span class="skill-pill">MLflow</span>
+                        <span class="skill-pill">Kubernetes</span>
+                    </div>
+                </div>
+                <div class="card" style="padding:1.5rem;">
+                    <h3 style="font-size:1.1rem;margin-bottom:1rem;">Specializations</h3>
+                    <div class="skills-strip">
+                        <span class="skill-pill">Computer Vision</span>
+                        <span class="skill-pill">NLP</span>
+                        <span class="skill-pill">Medical Imaging</span>
+                        <span class="skill-pill">Knowledge Graphs</span>
+                        <span class="skill-pill">Explainable AI</span>
+                        <span class="skill-pill">FastAPI</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- ═══════════════════════════════════
+         PROJECTS
+    ═══════════════════════════════════ -->
+    <section class="reveal">
+        <p class="sec-label">Built & Shipped</p>
+        <h2 class="sec-title">Selected projects</h2>
+
+        <div class="projects-grid">
+            <a href="https://ag-hosh-my-digital-twin.hf.space/" target="_blank" class="proj-card featured">
+                <i class="fas fa-robot proj-icon"></i>
+                <span class="proj-tag">Live · RAG · Deployed</span>
+                <div class="proj-title">RAG-based Digital Twin</div>
+                <div class="proj-desc">A deployed AI that can answer recruiter questions about my experience, projects, and skills in real time. Built with RAG, vector search, and a custom knowledge base.</div>
+            </a>
+            <div class="proj-card">
+                <i class="fas fa-chart-line proj-icon"></i>
+                <span class="proj-tag">Multi-Agent · Finance</span>
+                <div class="proj-title">Autonomous Trading Simulation</div>
+                <div class="proj-desc">Multi-agent system simulating trading strategies using OpenAI Agents SDK and CrewAI. Benchmarked across market regimes.</div>
+            </div>
+            <div class="proj-card">
+                <i class="fas fa-microscope proj-icon"></i>
+                <span class="proj-tag">Computer Vision · Healthcare</span>
+                <div class="proj-title">Histopathological Cell Segmentation</div>
+                <div class="proj-desc">ML pipeline for densely packed cell detection using color quantization, DBSCAN clustering, and deep segmentation models.</div>
+            </div>
+            <div class="proj-card">
+                <i class="fas fa-share-nodes proj-icon"></i>
+                <span class="proj-tag">Knowledge Graphs · Biomedical</span>
+                <div class="proj-title">Biomedical Link Prediction</div>
+                <div class="proj-desc">Benchmarking link prediction methods on biomedical knowledge graphs. Evaluating GNN-based and embedding approaches.</div>
+            </div>
+            <div class="proj-card">
+                <i class="fas fa-sign-language proj-icon"></i>
+                <span class="proj-tag">CV · Dataset Research</span>
+                <div class="proj-title">Indian Sign Language Dataset</div>
+                <div class="proj-desc">Contributed to developing an ISL dataset under Dr. Arnab Kumar Maji. Defined quality criteria and annotation standards.</div>
+            </div>
+            <div class="proj-card" style="display:flex;align-items:center;justify-content:center;border-style:dashed;cursor:default;">
+                <div style="text-align:center;">
+                    <i class="fas fa-arrow-right" style="font-size:1.5rem;color:var(--text-muted);margin-bottom:0.5rem;display:block;"></i>
+                    <div style="font-size:0.85rem;color:var(--text-muted);">More on the full portfolio</div>
+                    <a href="index.html#projects" style="font-size:0.8rem;color:var(--accent);text-decoration:none;margin-top:0.25rem;display:block;">View all →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA #4 — after projects -->
+        <div class="inline-cta">
+            <span><strong>Want the technical details?</strong> The full portfolio has architecture decisions, metrics, and code.</span>
+            <a href="index.html#projects" class="btn btn-outline">
+                <i class="fas fa-layer-group"></i> See Full Projects
+            </a>
+            <a href="https://ag-hosh-my-digital-twin.hf.space/" target="_blank" class="btn btn-green">
+                <i class="fas fa-robot"></i> Ask My AI Twin
+            </a>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- ═══════════════════════════════════
+         WHY ME
+    ═══════════════════════════════════ -->
+    <section class="reveal">
+        <div class="two-col">
+            <div>
+                <p class="sec-label">Fit</p>
+                <h2 class="sec-title">Why I may fit your team</h2>
+                <ul class="why-list">
+                    <li>I'm motivated by meaningful work, not just collecting brand names.</li>
+                    <li>I've moved across internships, research, teaching, leadership, and shipped products — comfortable wearing more than one hat.</li>
+                    <li>I like ambiguity, ownership, and problems that ask for both technical depth and initiative.</li>
+                    <li>I can build the thing, explain the thing, and keep improving it after it leaves the notebook.</li>
+                    <li>I'm especially excited by teams working on AI systems that are technically serious and useful in the real world.</li>
+                    <li>I ranked 2nd out of 180+ students in my B.Tech with a 4/4 GPA and received the Director's Award.</li>
+                </ul>
+
+                <!-- CTA #5 — after why me -->
+                <div style="display:flex;flex-wrap:wrap;gap:0.75rem;margin-top:1.75rem;">
+                    <a href="resume.pdf" target="_blank" class="btn btn-gold">
+                        <i class="fas fa-file-alt"></i> Open Resume
+                    </a>
+                    <a href="mailto:ghosh.ani@northeastern.edu" class="btn btn-outline">
+                        <i class="fas fa-envelope"></i> Email Me
+                    </a>
+                    <a href="https://linkedin.com/in/aniketghosh-" target="_blank" class="btn btn-outline">
+                        <i class="fab fa-linkedin"></i> LinkedIn
+                    </a>
+                </div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:1rem;">
+                <div class="card" style="padding:1.5rem;">
+                    <h3 style="font-size:1.1rem;margin-bottom:1rem;">Quick facts</h3>
+                    <div style="display:flex;flex-direction:column;gap:0.75rem;">
+                        <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);padding-bottom:0.6rem;">
+                            <span style="font-size:0.85rem;color:var(--text-muted);">Availability</span>
+                            <span style="font-size:0.85rem;font-weight:600;color:var(--accent);">Summer 2026</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);padding-bottom:0.6rem;">
+                            <span style="font-size:0.85rem;color:var(--text-muted);">Location</span>
+                            <span style="font-size:0.85rem;font-weight:600;">Boston / Remote  (open to relocate)</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);padding-bottom:0.6rem;">
+                            <span style="font-size:0.85rem;color:var(--text-muted);">Degree</span>
+                            <span style="font-size:0.85rem;font-weight:600;">MS AI — Northeastern</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);padding-bottom:0.6rem;">
+                            <span style="font-size:0.85rem;color:var(--text-muted);">Focus</span>
+                            <span style="font-size:0.85rem;font-weight:600;">ML Engineering</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;">
+                            <span style="font-size:0.85rem;color:var(--text-muted);">Roles</span>
+                            <span style="font-size:0.85rem;font-weight:600;">ML Eng · Applied AI · Research</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="padding:1.5rem;">
+                    <h3 style="font-size:1.1rem;margin-bottom:1rem;">Contact</h3>
+                    <div style="display:flex;flex-direction:column;gap:0.75rem;">
+                        <a href="mailto:ghosh.ani@northeastern.edu" class="contact-item">
+                            <i class="fas fa-envelope"></i> ghosh.ani@northeastern.edu
+                        </a>
+                        <a href="https://linkedin.com/in/aniketghosh-" target="_blank" class="contact-item">
+                            <i class="fab fa-linkedin"></i> linkedin.com/in/aniketghosh-
+                        </a>
+                        <a href="https://github.com/Itsme-aniketghosh" target="_blank" class="contact-item">
+                            <i class="fab fa-github"></i> github.com/Itsme-aniketghosh
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- ═══════════════════════════════════
+         FINAL CTA
+    ═══════════════════════════════════ -->
+    <section class="reveal">
+        <div class="cta-block">
+            <h2>Ready to connect?</h2>
+            <p>Open the resume, reach out directly, or ask my AI twin anything — about my internships, research, deployed projects, or what kind of team I'm looking for.</p>
+            <div class="cta-row">
+                <a href="resume.pdf" target="_blank" class="btn btn-gold" style="font-size:0.95rem;padding:0.85rem 1.75rem;">
+                    <i class="fas fa-file-alt"></i> Open Resume
+                </a>
+                <a href="https://ag-hosh-my-digital-twin.hf.space/" target="_blank" class="btn btn-green" style="font-size:0.95rem;padding:0.85rem 1.75rem;">
+                    <i class="fas fa-robot"></i> Talk to My AI Twin
+                </a>
+                <a href="mailto:ghosh.ani@northeastern.edu" class="btn btn-outline" style="font-size:0.95rem;padding:0.85rem 1.75rem;">
+                    <i class="fas fa-envelope"></i> Email Me
+                </a>
+                <a href="index.html" class="btn btn-ghost" style="font-size:0.95rem;padding:0.85rem 1.75rem;">
+                    <i class="fas fa-layer-group"></i> Full Portfolio
+                </a>
+            </div>
+            <p style="margin-top:1.5rem;margin-bottom:0;font-size:0.85rem;color:var(--text-muted);">Thanks for taking a look — Aniket</p>
+        </div>
+    </section>
+
+</main>
+
+<!-- Footer -->
+<footer>
+    <p>Aniket Ghosh · <a href="index.html">Full Portfolio</a> · 2026</p>
+</footer>
+
+<!-- Back to top -->
+<a href="#top" class="back-to-top" id="backToTop" title="Back to top">
+    <i class="fas fa-arrow-up"></i>
+</a>
+
+<!-- Mobile sticky bar -->
+<div class="mobile-bar">
+    <a href="resume.pdf" target="_blank" class="btn btn-gold">
+        <i class="fas fa-file-alt"></i> Resume
+    </a>
+    <a href="https://ag-hosh-my-digital-twin.hf.space/" target="_blank" class="btn btn-green">
+        <i class="fas fa-robot"></i> AI Twin
+    </a>
+    <a href="mailto:ghosh.ani@northeastern.edu" class="btn btn-ghost">
+        <i class="fas fa-envelope"></i> Email
+    </a>
+</div>
+
+<script>
+    // Nav scroll
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+        navbar.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // Back to top
+    const backToTop = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+        backToTop.classList.toggle('visible', window.scrollY > 400);
+    });
+
+    // Reveal on scroll
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                e.target.classList.add('active');
+                observer.unobserve(e.target);
+            }
+        });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
