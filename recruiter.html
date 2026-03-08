@@ -40,7 +40,6 @@
         ::-webkit-scrollbar-track { background: var(--bg-secondary); }
         ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
 
-        /* ── Background ── */
         .bg-orb {
             position: fixed;
             border-radius: 50%;
@@ -65,7 +64,6 @@
             50% { transform: translate(60px,-60px); }
         }
 
-        /* ── Nav ── */
         nav {
             position: fixed;
             top: 0; width: 100%;
@@ -121,7 +119,6 @@
             gap: 0.75rem;
         }
 
-        /* ── Buttons ── */
         .btn {
             display: inline-flex;
             align-items: center;
@@ -137,43 +134,16 @@
             border: none;
             white-space: nowrap;
         }
-        .btn-gold {
-            background: var(--accent);
-            color: var(--bg-primary);
-        }
-        .btn-gold:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 30px rgba(245,158,11,0.45);
-        }
-        .btn-outline {
-            background: transparent;
-            color: var(--text-secondary);
-            border: 1px solid var(--border);
-        }
-        .btn-outline:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-        }
-        .btn-green {
-            background: linear-gradient(135deg, var(--accent-secondary), var(--accent-tertiary));
-            color: var(--bg-primary);
-        }
-        .btn-green:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 30px rgba(0,255,136,0.35);
-        }
-        .btn-ghost {
-            background: rgba(255,255,255,0.04);
-            color: var(--text-secondary);
-            border: 1px solid var(--border);
-        }
-        .btn-ghost:hover {
-            background: rgba(255,255,255,0.08);
-            color: var(--text-primary);
-        }
+        .btn-gold { background: var(--accent); color: var(--bg-primary); }
+        .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(245,158,11,0.45); }
+        .btn-outline { background: transparent; color: var(--text-secondary); border: 1px solid var(--border); }
+        .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+        .btn-green { background: linear-gradient(135deg, var(--accent-secondary), var(--accent-tertiary)); color: var(--bg-primary); }
+        .btn-green:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(0,255,136,0.35); }
+        .btn-ghost { background: rgba(255,255,255,0.04); color: var(--text-secondary); border: 1px solid var(--border); }
+        .btn-ghost:hover { background: rgba(255,255,255,0.08); color: var(--text-primary); }
         .btn i { font-size: 0.85rem; }
 
-        /* ── Layout ── */
         main {
             position: relative;
             z-index: 1;
@@ -182,11 +152,8 @@
             padding: 0 2.5rem;
         }
 
-        section {
-            padding: 5rem 0;
-        }
+        section { padding: 5rem 0; }
 
-        /* ── Hero ── */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -205,11 +172,7 @@
             align-items: center;
             gap: 0.75rem;
         }
-        .hero-kicker::before {
-            content: '';
-            width: 32px; height: 1px;
-            background: var(--accent);
-        }
+        .hero-kicker::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
         .hero-name {
             font-family: 'Crimson Pro', serif;
             font-size: clamp(3.5rem, 8vw, 6rem);
@@ -230,12 +193,7 @@
             line-height: 1.7;
             margin-bottom: 2rem;
         }
-        .status-chips {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.6rem;
-            margin-bottom: 2.5rem;
-        }
+        .status-chips { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 2.5rem; }
         .chip {
             display: inline-flex;
             align-items: center;
@@ -250,13 +208,7 @@
         }
         .chip i { color: var(--accent); font-size: 0.7rem; }
         .chip.hot { border-color: rgba(245,158,11,0.4); color: var(--accent); }
-        .chip.hot i { color: var(--accent); }
-        .hero-cta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-            align-items: center;
-        }
+        .hero-cta { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
         .hero-scroll-hint {
             margin-top: 3.5rem;
             display: flex;
@@ -274,15 +226,12 @@
             50% { transform: translateY(6px); }
         }
 
-        /* ── Divider ── */
         .section-divider {
             width: 100%;
             height: 1px;
             background: linear-gradient(90deg, transparent, var(--border), transparent);
-            margin: 0;
         }
 
-        /* ── Section header ── */
         .sec-label {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.7rem;
@@ -299,7 +248,6 @@
             line-height: 1.15;
         }
 
-        /* ── Cards ── */
         .card {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -314,7 +262,6 @@
             color: var(--text-primary);
         }
 
-        /* ── Snapshot grid ── */
         .snapshot-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -328,10 +275,7 @@
             background: rgba(255,255,255,0.02);
             transition: border-color 0.2s ease, transform 0.2s ease;
         }
-        .snap-card:hover {
-            border-color: rgba(245,158,11,0.35);
-            transform: translateY(-2px);
-        }
+        .snap-card:hover { border-color: rgba(245,158,11,0.35); transform: translateY(-2px); }
         .snap-label {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.65rem;
@@ -340,45 +284,16 @@
             color: var(--text-muted);
             margin-bottom: 0.4rem;
         }
-        .snap-value {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            line-height: 1.4;
-            margin-bottom: 0.3rem;
-        }
-        .snap-sub {
-            font-size: 0.82rem;
-            color: var(--text-secondary);
-            line-height: 1.5;
-        }
+        .snap-value { font-size: 1rem; font-weight: 600; color: var(--text-primary); line-height: 1.4; margin-bottom: 0.3rem; }
+        .snap-sub { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; }
 
-        /* ── Letter ── */
-        .letter-body p {
-            color: var(--text-secondary);
-            font-size: 1rem;
-            line-height: 1.9;
-            margin-bottom: 1.1rem;
-        }
+        .letter-body p { color: var(--text-secondary); font-size: 1rem; line-height: 1.9; margin-bottom: 1.1rem; }
         .letter-body p:last-child { margin-bottom: 0; }
         .hl { color: var(--text-primary); font-weight: 600; }
 
-        /* ── Two-col layout ── */
-        .two-col {
-            display: grid;
-            grid-template-columns: 1.3fr 0.7fr;
-            gap: 1.5rem;
-            align-items: start;
-        }
+        .two-col { display: grid; grid-template-columns: 1.3fr 0.7fr; gap: 1.5rem; align-items: start; }
 
-        /* ── Why list ── */
-        .why-list {
-            list-style: none;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 0.9rem;
-        }
+        .why-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.9rem; }
         .why-list li {
             display: flex;
             gap: 0.75rem;
@@ -387,19 +302,9 @@
             font-size: 0.95rem;
             line-height: 1.65;
         }
-        .why-list li::before {
-            content: '▹';
-            color: var(--accent);
-            flex-shrink: 0;
-            margin-top: 0.1rem;
-        }
+        .why-list li::before { content: '▹'; color: var(--accent); flex-shrink: 0; margin-top: 0.1rem; }
 
-        /* ── Projects preview ── */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-        }
+        .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
         .proj-card {
             border: 1px solid var(--border);
             border-radius: 16px;
@@ -411,27 +316,10 @@
             flex-direction: column;
             gap: 0.5rem;
         }
-        .proj-card:hover {
-            border-color: rgba(245,158,11,0.4);
-            transform: translateY(-3px);
-        }
-        .proj-icon {
-            font-size: 1.5rem;
-            color: var(--accent);
-            opacity: 0.8;
-            margin-bottom: 0.25rem;
-        }
-        .proj-title {
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-        .proj-desc {
-            font-size: 0.83rem;
-            color: var(--text-secondary);
-            line-height: 1.6;
-            flex: 1;
-        }
+        .proj-card:hover { border-color: rgba(245,158,11,0.4); transform: translateY(-3px); }
+        .proj-icon { font-size: 1.5rem; color: var(--accent); opacity: 0.8; margin-bottom: 0.25rem; }
+        .proj-title { font-size: 0.95rem; font-weight: 600; color: var(--text-primary); }
+        .proj-desc { font-size: 0.83rem; color: var(--text-secondary); line-height: 1.6; flex: 1; }
         .proj-tag {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.65rem;
@@ -441,22 +329,11 @@
             border-radius: 4px;
             align-self: flex-start;
         }
-        .proj-card.featured {
-            border-color: rgba(0,255,136,0.3);
-            background: rgba(0,255,136,0.04);
-        }
+        .proj-card.featured { border-color: rgba(0,255,136,0.3); background: rgba(0,255,136,0.04); }
         .proj-card.featured .proj-icon { color: var(--accent-secondary); }
-        .proj-card.featured .proj-tag {
-            color: var(--accent-secondary);
-            background: rgba(0,255,136,0.1);
-        }
+        .proj-card.featured .proj-tag { color: var(--accent-secondary); background: rgba(0,255,136,0.1); }
 
-        /* ── Skills strip ── */
-        .skills-strip {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
+        .skills-strip { display: flex; flex-wrap: wrap; gap: 0.5rem; }
         .skill-pill {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.72rem;
@@ -467,12 +344,8 @@
             border-radius: 6px;
             transition: all 0.2s ease;
         }
-        .skill-pill:hover {
-            color: var(--accent);
-            border-color: var(--accent);
-        }
+        .skill-pill:hover { color: var(--accent); border-color: var(--accent); }
 
-        /* ── CTA block ── */
         .cta-block {
             background: linear-gradient(135deg, rgba(245,158,11,0.06), rgba(0,255,136,0.04));
             border: 1px solid rgba(245,158,11,0.25);
@@ -480,26 +353,10 @@
             padding: 2.5rem;
             text-align: center;
         }
-        .cta-block h2 {
-            font-family: 'Crimson Pro', serif;
-            font-size: 2.2rem;
-            margin-bottom: 0.75rem;
-        }
-        .cta-block p {
-            color: var(--text-secondary);
-            font-size: 1rem;
-            max-width: 520px;
-            margin: 0 auto 2rem;
-            line-height: 1.75;
-        }
-        .cta-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-            justify-content: center;
-        }
+        .cta-block h2 { font-family: 'Crimson Pro', serif; font-size: 2.2rem; margin-bottom: 0.75rem; }
+        .cta-block p { color: var(--text-secondary); font-size: 1rem; max-width: 520px; margin: 0 auto 2rem; line-height: 1.75; }
+        .cta-row { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; }
 
-        /* ── Inline CTA strip ── */
         .inline-cta {
             display: flex;
             flex-wrap: wrap;
@@ -511,21 +368,9 @@
             border-radius: 14px;
             margin-top: 1.75rem;
         }
-        .inline-cta span {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            flex: 1;
-            min-width: 180px;
-        }
+        .inline-cta span { font-size: 0.85rem; color: var(--text-secondary); flex: 1; min-width: 180px; }
         .inline-cta span strong { color: var(--text-primary); }
 
-        /* ── Contact row ── */
-        .contact-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            align-items: center;
-        }
         .contact-item {
             display: flex;
             align-items: center;
@@ -537,13 +382,34 @@
             transition: all 0.2s ease;
         }
         .contact-item:hover { color: var(--accent-secondary); }
-        .contact-item i { font-size: 0.9rem; }
 
-        /* ── Back to top ── */
+        /* ── Copy button ── */
+        .copy-btn {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 0.4rem 0.6rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .copy-btn.copied { border-color: var(--accent-secondary); color: var(--accent-secondary); }
+
+        /* Wrap email btn + copy btn together */
+        .email-with-copy {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .email-with-copy .copy-btn {
+            padding: 0.4rem 0.55rem;
+            font-size: 0.78rem;
+        }
+
         .back-to-top {
             position: fixed;
-            bottom: 2rem;
-            right: 2rem;
+            bottom: 2rem; right: 2rem;
             width: 46px; height: 46px;
             background: var(--accent);
             color: var(--bg-primary);
@@ -560,12 +426,8 @@
             box-shadow: 0 4px 20px rgba(245,158,11,0.4);
         }
         .back-to-top.visible { opacity: 1; transform: translateY(0); }
-        .back-to-top:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 28px rgba(245,158,11,0.65);
-        }
+        .back-to-top:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(245,158,11,0.65); }
 
-        /* ── Mobile sticky bar ── */
         .mobile-bar {
             display: none;
             position: fixed;
@@ -579,7 +441,6 @@
         }
         .mobile-bar .btn { flex: 1; justify-content: center; font-size: 0.82rem; padding: 0.7rem 0.5rem; }
 
-        /* ── Footer ── */
         footer {
             padding: 2rem 0 6rem;
             text-align: center;
@@ -587,24 +448,12 @@
             position: relative;
             z-index: 1;
         }
-        footer p {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
+        footer p { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--text-muted); }
         footer a { color: var(--accent); text-decoration: none; }
 
-        /* ── Reveal ── */
-        .reveal {
-            opacity: 0;
-            transform: translateY(24px);
-            transition: all 0.55s ease;
-        }
+        .reveal { opacity: 0; transform: translateY(24px); transition: all 0.55s ease; }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
-        /* ════════════════════════════════
-           RESPONSIVE
-        ════════════════════════════════ */
         @media (max-width: 900px) {
             nav { padding: 1rem 1.5rem; }
             nav.scrolled { padding: 0.75rem 1.5rem; }
@@ -614,7 +463,6 @@
             .snapshot-grid { grid-template-columns: repeat(2, 1fr); }
             .projects-grid { grid-template-columns: repeat(2, 1fr); }
             .mobile-bar { display: flex; }
-            /* give room for mobile bar */
             footer { padding-bottom: 6rem; }
             .back-to-top { bottom: 5.5rem; }
         }
@@ -635,7 +483,6 @@
 </head>
 <body>
 
-<!-- Background orbs -->
 <div class="bg-orb orb1"></div>
 <div class="bg-orb orb2"></div>
 
@@ -659,9 +506,6 @@
 
 <main id="top">
 
-    <!-- ═══════════════════════════════════
-         HERO
-    ═══════════════════════════════════ -->
     <section class="hero">
         <p class="hero-kicker">Before you open the resume</p>
         <h1 class="hero-name">Here's my<br><span>two cents.</span></h1>
@@ -674,13 +518,12 @@
         <div class="status-chips">
             <span class="chip hot"><i class="fas fa-circle"></i> Open to Opportunities</span>
             <span class="chip"><i class="fas fa-briefcase"></i> Summer 2026 Internships</span>
-            <span class="chip"><i class="fas fa-location-dot"></i> Boston / Remote  (open to relocate)</span>
+            <span class="chip"><i class="fas fa-location-dot"></i> Boston / Remote (open to relocate)</span>
             <span class="chip"><i class="fas fa-user-graduate"></i> MS AI @ Northeastern</span>
             <span class="chip"><i class="fas fa-chalkboard-user"></i> Graduate NLP TA</span>
             <span class="chip"><i class="fas fa-people-group"></i> GSG Senator</span>
         </div>
 
-        <!-- CTA #1 — Hero -->
         <div class="hero-cta">
             <a href="resume.pdf" target="_blank" class="btn btn-gold">
                 <i class="fas fa-file-alt"></i> Open Resume
@@ -704,9 +547,6 @@
 
     <div class="section-divider"></div>
 
-    <!-- ═══════════════════════════════════
-         SNAPSHOT
-    ═══════════════════════════════════ -->
     <section class="reveal">
         <p class="sec-label">At a glance</p>
         <h2 class="sec-title">What I'd want you to notice</h2>
@@ -740,27 +580,28 @@
             <div class="snap-card">
                 <div class="snap-label">Seeking</div>
                 <div class="snap-value">Summer 2026 Roles</div>
-                <div class="snap-sub">ML Engineering · Applied AI · AI Research · Boston / Remote  (open to relocate)</div>
+                <div class="snap-sub">ML Engineering · Applied AI · AI Research · Boston / Remote (open to relocate)</div>
             </div>
         </div>
 
-        <!-- CTA #2 — after snapshot -->
         <div class="inline-cta">
             <span><strong>Resume has the full picture.</strong> Projects, research, internships — all in one place.</span>
             <a href="resume.pdf" target="_blank" class="btn btn-gold">
                 <i class="fas fa-file-alt"></i> Open Resume
             </a>
-            <a href="mailto:ghosh.ani@northeastern.edu" class="btn btn-outline">
-                <i class="fas fa-envelope"></i> Email Me
-            </a>
+            <div class="email-with-copy">
+                <a href="mailto:ghosh.ani@northeastern.edu" class="btn btn-outline">
+                    <i class="fas fa-envelope"></i> Email Me
+                </a>
+                <button class="copy-btn" onclick="copyEmailBtn(this)" title="Copy email">
+                    <i class="fas fa-copy"></i> Copy Email
+                </button>
+            </div>
         </div>
     </section>
 
     <div class="section-divider"></div>
 
-    <!-- ═══════════════════════════════════
-         LETTER
-    ═══════════════════════════════════ -->
     <section class="reveal">
         <p class="sec-label">A direct note</p>
         <h2 class="sec-title">Before you open the resume</h2>
@@ -769,13 +610,12 @@
             <div class="letter-body">
                 <p>Here's my two cents: <span class="hl">I care a lot about impact.</span> I'm not chasing work just because it sounds impressive on paper. I'm looking for the kind of work where the stakes are real, the learning curve is steep, and the output actually matters.</p>
                 <p>I've always been pulled toward technology not just because it is intellectually exciting, but because I believe it can change who gets access, who gets heard, and who gets lifted. That belief is still underneath everything I build.</p>
-                <p>Right now I'm in the <span class="hl">MS in Artificial Intelligence program at Northeastern</span>, and I also serve as a <span class="hl">Teaching Assistant for the graduate NLP course</span>. One thing I'm genuinely proud of is that <span class="hl">I did not take NLP here first and still earned that role on pure skill</span>. To me, that says something important about how I prepare, how I learn, and how I show up when trust has to be earned.</p>
+                <p>Right now I'm in the <span class="hl">MS in Artificial Intelligence program at Northeastern</span>, and I also serve as a <span class="hl">Teaching Assistant for the graduate NLP course</span>. One thing I'm genuinely proud of is that <span class="hl">I did not take NLP here first and still earned that role on pure skill</span>. To me, that says something important about how I prepare, how I learn, and how I show up when trust has to be earned. I'm also taking <span class="hl">Actionable Interpretability</span> — a PhD-level seminar — sitting alongside doctoral researchers and holding my own. I don't just take the path of least resistance.</p>
                 <p>I've also done <span class="hl">multiple internships, multiple research projects, leadership work as a GSG Senator, and I've shipped deployed projects people can actually use.</span> So when you look at me, I don't want you to see someone who only fits one category. I want you to see someone who can build, research, teach, communicate, and take ownership.</p>
                 <p>The simplest way I can put it: <span class="hl">throw me into the ocean and I'll figure out how to swim, read the current, and still bring something back to shore.</span> I like being challenged. I like steep ramps. I like environments that expect a lot — because I expect a lot from myself too.</p>
                 <p>If that sounds like the kind of person your team values, start with the resume. The full portfolio has the longer version — projects, research, deployed work, and the details behind how I think.</p>
             </div>
 
-            <!-- CTA #3 — inside letter card -->
             <div class="inline-cta" style="margin-top:1.75rem;">
                 <span><strong>Convinced?</strong> Reach out directly or open the resume.</span>
                 <a href="resume.pdf" target="_blank" class="btn btn-gold">
@@ -784,18 +624,20 @@
                 <a href="https://ag-hosh-my-digital-twin.hf.space/" target="_blank" class="btn btn-green">
                     <i class="fas fa-robot"></i> Ask My AI Twin
                 </a>
-                <a href="mailto:ghosh.ani@northeastern.edu" class="btn btn-outline">
-                    <i class="fas fa-envelope"></i> Email
-                </a>
+                <div class="email-with-copy">
+                    <a href="mailto:ghosh.ani@northeastern.edu" class="btn btn-outline">
+                        <i class="fas fa-envelope"></i> Email
+                    </a>
+                    <button class="copy-btn" onclick="copyEmailBtn(this)" title="Copy email">
+                        <i class="fas fa-copy"></i> Copy Email
+                    </button>
+                </div>
             </div>
         </div>
     </section>
 
     <div class="section-divider"></div>
 
-    <!-- ═══════════════════════════════════
-         SKILLS
-    ═══════════════════════════════════ -->
     <section class="reveal">
         <p class="sec-label">Technical</p>
         <h2 class="sec-title">Skills at a glance</h2>
@@ -860,9 +702,6 @@
 
     <div class="section-divider"></div>
 
-    <!-- ═══════════════════════════════════
-         PROJECTS
-    ═══════════════════════════════════ -->
     <section class="reveal">
         <p class="sec-label">Built & Shipped</p>
         <h2 class="sec-title">Selected projects</h2>
@@ -907,7 +746,6 @@
             </div>
         </div>
 
-        <!-- CTA #4 — after projects -->
         <div class="inline-cta">
             <span><strong>Want the technical details?</strong> The full portfolio has architecture decisions, metrics, and code.</span>
             <a href="index.html#projects" class="btn btn-outline">
@@ -921,9 +759,6 @@
 
     <div class="section-divider"></div>
 
-    <!-- ═══════════════════════════════════
-         WHY ME
-    ═══════════════════════════════════ -->
     <section class="reveal">
         <div class="two-col">
             <div>
@@ -938,14 +773,18 @@
                     <li>I ranked 2nd out of 180+ students in my B.Tech with a 4/4 GPA and received the Director's Award.</li>
                 </ul>
 
-                <!-- CTA #5 — after why me -->
                 <div style="display:flex;flex-wrap:wrap;gap:0.75rem;margin-top:1.75rem;">
                     <a href="resume.pdf" target="_blank" class="btn btn-gold">
                         <i class="fas fa-file-alt"></i> Open Resume
                     </a>
-                    <a href="mailto:ghosh.ani@northeastern.edu" class="btn btn-outline">
-                        <i class="fas fa-envelope"></i> Email Me
-                    </a>
+                    <div class="email-with-copy">
+                        <a href="mailto:ghosh.ani@northeastern.edu" class="btn btn-outline">
+                            <i class="fas fa-envelope"></i> Email Me
+                        </a>
+                        <button class="copy-btn" onclick="copyEmailBtn(this)" title="Copy email">
+                            <i class="fas fa-copy"></i> Copy Email
+                        </button>
+                    </div>
                     <a href="https://linkedin.com/in/aniketghosh-" target="_blank" class="btn btn-outline">
                         <i class="fab fa-linkedin"></i> LinkedIn
                     </a>
@@ -962,7 +801,7 @@
                         </div>
                         <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);padding-bottom:0.6rem;">
                             <span style="font-size:0.85rem;color:var(--text-muted);">Location</span>
-                            <span style="font-size:0.85rem;font-weight:600;">Boston / Remote  (open to relocate)</span>
+                            <span style="font-size:0.85rem;font-weight:600;">Boston / Remote (open to relocate)</span>
                         </div>
                         <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);padding-bottom:0.6rem;">
                             <span style="font-size:0.85rem;color:var(--text-muted);">Degree</span>
@@ -982,9 +821,17 @@
                 <div class="card" style="padding:1.5rem;">
                     <h3 style="font-size:1.1rem;margin-bottom:1rem;">Contact</h3>
                     <div style="display:flex;flex-direction:column;gap:0.75rem;">
-                        <a href="mailto:ghosh.ani@northeastern.edu" class="contact-item">
-                            <i class="fas fa-envelope"></i> ghosh.ani@northeastern.edu
-                        </a>
+
+                        <!-- Email row with copy button -->
+                        <div style="display:flex;align-items:center;gap:0.75rem;">
+                            <a href="mailto:ghosh.ani@northeastern.edu" class="contact-item">
+                                <i class="fas fa-envelope"></i> ghosh.ani@northeastern.edu
+                            </a>
+                            <button class="copy-btn" onclick="copyEmail()" id="copyEmailBtn" title="Copy email">
+                                <i class="fas fa-copy"></i> Copy Email
+                            </button>
+                        </div>
+
                         <a href="https://linkedin.com/in/aniketghosh-" target="_blank" class="contact-item">
                             <i class="fab fa-linkedin"></i> linkedin.com/in/aniketghosh-
                         </a>
@@ -999,9 +846,6 @@
 
     <div class="section-divider"></div>
 
-    <!-- ═══════════════════════════════════
-         FINAL CTA
-    ═══════════════════════════════════ -->
     <section class="reveal">
         <div class="cta-block">
             <h2>Ready to connect?</h2>
@@ -1013,9 +857,14 @@
                 <a href="https://ag-hosh-my-digital-twin.hf.space/" target="_blank" class="btn btn-green" style="font-size:0.95rem;padding:0.85rem 1.75rem;">
                     <i class="fas fa-robot"></i> Talk to My AI Twin
                 </a>
-                <a href="mailto:ghosh.ani@northeastern.edu" class="btn btn-outline" style="font-size:0.95rem;padding:0.85rem 1.75rem;">
-                    <i class="fas fa-envelope"></i> Email Me
-                </a>
+                <div class="email-with-copy">
+                    <a href="mailto:ghosh.ani@northeastern.edu" class="btn btn-outline" style="font-size:0.95rem;padding:0.85rem 1.75rem;">
+                        <i class="fas fa-envelope"></i> Email Me
+                    </a>
+                    <button class="copy-btn" onclick="copyEmailBtn(this)" title="Copy email">
+                        <i class="fas fa-copy"></i> Copy Email
+                    </button>
+                </div>
                 <a href="index.html" class="btn btn-ghost" style="font-size:0.95rem;padding:0.85rem 1.75rem;">
                     <i class="fas fa-layer-group"></i> Full Portfolio
                 </a>
@@ -1026,17 +875,14 @@
 
 </main>
 
-<!-- Footer -->
 <footer>
     <p>Aniket Ghosh · <a href="index.html">Full Portfolio</a> · 2026</p>
 </footer>
 
-<!-- Back to top -->
 <a href="#top" class="back-to-top" id="backToTop" title="Back to top">
     <i class="fas fa-arrow-up"></i>
 </a>
 
-<!-- Mobile sticky bar -->
 <div class="mobile-bar">
     <a href="resume.pdf" target="_blank" class="btn btn-gold">
         <i class="fas fa-file-alt"></i> Resume
@@ -1073,6 +919,24 @@
         });
     }, { threshold: 0.1 });
     reveals.forEach(el => observer.observe(el));
+
+    // Copy email — works for any copy button
+    function copyEmailBtn(btn) {
+        navigator.clipboard.writeText('ghosh.ani@northeastern.edu').then(() => {
+            btn.classList.add('copied');
+            btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+            setTimeout(() => {
+                btn.classList.remove('copied');
+                btn.innerHTML = '<i class="fas fa-copy"></i> Copy Email';
+            }, 2000);
+        });
+    }
+
+    // Contact card copy button (kept for backwards compat)
+    function copyEmail() {
+        const btn = document.getElementById('copyEmailBtn');
+        copyEmailBtn(btn);
+    }
 </script>
 
 </body>
