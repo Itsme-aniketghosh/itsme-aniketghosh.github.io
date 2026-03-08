@@ -40,29 +40,62 @@
         ::-webkit-scrollbar-track { background: var(--bg-secondary); }
         ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
 
-        .bg-orb {
+
+        .background-container {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .background-container canvas {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+        }
+        #gradient-canvas { opacity: 0.6; }
+        #particles-canvas { opacity: 0.8; }
+        #neural-canvas { opacity: 0.6; }
+
+        .cosmic-orb {
             position: fixed;
             border-radius: 50%;
             pointer-events: none;
             z-index: 0;
-            filter: blur(70px);
         }
         .orb1 {
             width: 600px; height: 600px;
-            background: radial-gradient(circle, rgba(245,158,11,0.15), transparent);
+            background: radial-gradient(circle at 30% 30%, rgba(245,158,11,0.2), rgba(0,170,255,0.15), transparent);
             top: -200px; left: -200px;
-            animation: drift 20s ease-in-out infinite;
+            animation: float 20s ease-in-out infinite;
+            filter: blur(60px);
         }
         .orb2 {
-            width: 500px; height: 500px;
-            background: radial-gradient(circle, rgba(0,255,136,0.12), transparent);
-            bottom: -150px; right: -150px;
-            animation: drift 25s ease-in-out infinite reverse;
+            width: 700px; height: 700px;
+            background: radial-gradient(circle at 70% 70%, rgba(0,255,136,0.2), rgba(147,51,234,0.15), transparent);
+            bottom: -300px; right: -300px;
+            animation: float 25s ease-in-out infinite reverse;
+            filter: blur(70px);
         }
-        @keyframes drift {
-            0%,100% { transform: translate(0,0); }
-            50% { transform: translate(60px,-60px); }
+        .orb3 {
+            width: 400px; height: 400px;
+            background: radial-gradient(circle at 50% 50%, rgba(245,158,11,0.25), rgba(0,255,136,0.15), transparent);
+            top: 50%; left: 50%;
+            transform: translate(-50%,-50%);
+            animation: pulse-orb 15s ease-in-out infinite;
+            filter: blur(50px);
         }
+        @keyframes float {
+            0%,100% { transform: translate(0,0) rotate(0deg); }
+            33% { transform: translate(80px,-80px) rotate(120deg); }
+            66% { transform: translate(-80px,80px) rotate(240deg); }
+        }
+        @keyframes pulse-orb {
+            0%,100% { transform: translate(-50%,-50%) scale(1); opacity: 0.5; }
+            50% { transform: translate(-50%,-50%) scale(1.2); opacity: 0.7; }
+        }
+
 
         nav {
             position: fixed;
@@ -251,11 +284,12 @@
         }
 
         .card {
-            background: var(--bg-card);
+            background: rgba(10, 10, 11, 0.8);
             border: 1px solid var(--border);
             border-radius: 20px;
             padding: 2rem;
-            backdrop-filter: blur(12px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
         }
         .card h3 {
             font-family: 'Crimson Pro', serif;
@@ -274,7 +308,9 @@
             border: 1px solid var(--border);
             border-radius: 16px;
             padding: 1.25rem;
-            background: rgba(255,255,255,0.02);
+            background: rgba(10, 10, 11, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             transition: border-color 0.2s ease, transform 0.2s ease;
         }
         .snap-card:hover { border-color: rgba(245,158,11,0.35); transform: translateY(-2px); }
@@ -311,7 +347,9 @@
             border: 1px solid var(--border);
             border-radius: 16px;
             padding: 1.25rem;
-            background: rgba(255,255,255,0.02);
+            background: rgba(10, 10, 11, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             transition: all 0.25s ease;
             text-decoration: none;
             display: flex;
@@ -349,11 +387,13 @@
         .skill-pill:hover { color: var(--accent); border-color: var(--accent); }
 
         .cta-block {
-            background: linear-gradient(135deg, rgba(245,158,11,0.06), rgba(0,255,136,0.04));
+            background: rgba(10, 10, 11, 0.8);
             border: 1px solid rgba(245,158,11,0.25);
             border-radius: 20px;
             padding: 2.5rem;
             text-align: center;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
         }
         .cta-block h2 { font-family: 'Crimson Pro', serif; font-size: 2.2rem; margin-bottom: 0.75rem; }
         .cta-block p { color: var(--text-secondary); font-size: 1rem; max-width: 520px; margin: 0 auto 2rem; line-height: 1.75; }
@@ -365,10 +405,12 @@
             gap: 0.75rem;
             align-items: center;
             padding: 1.25rem 1.5rem;
-            background: rgba(245,158,11,0.05);
+            background: rgba(10, 10, 11, 0.75);
             border: 1px solid rgba(245,158,11,0.2);
             border-radius: 14px;
             margin-top: 1.75rem;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
         }
         .inline-cta span { font-size: 0.85rem; color: var(--text-secondary); flex: 1; min-width: 180px; }
         .inline-cta span strong { color: var(--text-primary); }
@@ -384,6 +426,65 @@
             transition: all 0.2s ease;
         }
         .contact-item:hover { color: var(--accent-secondary); }
+
+        /* ── Contact rows ── */
+        .contact-row-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.65rem 0.75rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,0.02);
+            transition: border-color 0.2s ease;
+        }
+        .contact-row-item:hover { border-color: rgba(245,158,11,0.3); }
+        .contact-row-icon {
+            font-size: 0.95rem;
+            color: var(--accent);
+            width: 16px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        .contact-row-text {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .contact-row-actions {
+            display: flex;
+            gap: 0.35rem;
+            flex-shrink: 0;
+        }
+        .contact-row-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.3rem 0.65rem;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: var(--bg-tertiary);
+            color: var(--text-muted);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+        .contact-row-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        .contact-row-btn.copied {
+            border-color: var(--accent-secondary);
+            color: var(--accent-secondary);
+        }
 
         /* ── Split email button ── */
         .email-split {
@@ -520,8 +621,14 @@
 </head>
 <body>
 
-<div class="bg-orb orb1"></div>
-<div class="bg-orb orb2"></div>
+<div class="background-container">
+    <canvas id="gradient-canvas"></canvas>
+    <canvas id="particles-canvas"></canvas>
+    <canvas id="neural-canvas"></canvas>
+</div>
+<div class="cosmic-orb orb1"></div>
+<div class="cosmic-orb orb2"></div>
+<div class="cosmic-orb orb3"></div>
 
 <nav id="navbar">
     <a href="#top" class="nav-logo">
@@ -649,7 +756,7 @@
                 <p>Here's my two cents: <span class="hl">I care a lot about impact.</span> I'm not chasing work just because it sounds impressive on paper. I'm looking for the kind of work where the stakes are real, the learning curve is steep, and the output actually matters.</p>
                 <p>I've always been pulled toward technology not just because it is intellectually exciting, but because I believe it can change who gets access, who gets heard, and who gets lifted. That belief is still underneath everything I build.</p>
                 <p>Right now I'm in the <span class="hl">MS in Artificial Intelligence program at Northeastern</span>, and I also serve as a <span class="hl">Teaching Assistant for the graduate NLP course</span>. One thing I'm genuinely proud of is that <span class="hl">I did not take NLP here first and still earned that role on pure skill</span>. To me, that says something important about how I prepare, how I learn, and how I show up when trust has to be earned. I'm also taking <span class="hl">Actionable Interpretability</span> — a PhD-level seminar — sitting alongside doctoral researchers and holding my own. I don't just take the path of least resistance.</p>
-                <p>I've also done <span class="hl">multiple internships, multiple research projects, leadership work as a GSG(Graduate Student Government) Senator, and I've shipped deployed projects people can actually use.</span> So when you look at me, I don't want you to see someone who only fits one category. I want you to see someone who can build, research, teach, communicate, and take ownership.</p>
+                <p>I've also done <span class="hl">multiple internships, multiple research projects, leadership work as a GSG Senator, and I've shipped deployed projects people can actually use.</span> So when you look at me, I don't want you to see someone who only fits one category. I want you to see someone who can build, research, teach, communicate, and take ownership.</p>
                 <p>The simplest way I can put it: <span class="hl">throw me into the ocean and I'll figure out how to swim, read the current, and still bring something back to shore.</span> I like being challenged. I like steep ramps. I like environments that expect a lot — because I expect a lot from myself too.</p>
                 <p>If that sounds like the kind of person your team values, start with the resume. The full portfolio has the longer version — projects, research, deployed work, and the details behind how I think.</p>
             </div>
@@ -860,25 +967,41 @@
 
                 <div class="card" style="padding:1.5rem;">
                     <h3 style="font-size:1.1rem;margin-bottom:1rem;">Contact</h3>
-                    <div style="display:flex;flex-direction:column;gap:0.75rem;">
+                    <div style="display:flex;flex-direction:column;gap:0.5rem;">
 
-                        <!-- Email row with split button -->
-                        <div class="email-split" id="copyEmailBtn">
-                            <a href="mailto:ghosh.ani@northeastern.edu" class="email-split-main">
-                                <i class="fas fa-envelope"></i> ghosh.ani@northeastern.edu
-                            </a>
-                            <div class="email-split-divider"></div>
-                            <button class="email-split-copy" onclick="copyEmail()" title="Copy email address">
-                                <i class="fas fa-copy"></i> Copy
-                            </button>
+                        <div class="contact-row-item">
+                            <i class="fas fa-envelope contact-row-icon"></i>
+                            <span class="contact-row-text">ghosh.ani@northeastern.edu</span>
+                            <div class="contact-row-actions">
+                                <a href="mailto:ghosh.ani@northeastern.edu" class="contact-row-btn">
+                                    <i class="fas fa-paper-plane"></i> Send
+                                </a>
+                                <button class="contact-row-btn" onclick="copyEmail()" id="copyEmailBtn" title="Copy">
+                                    <i class="fas fa-copy"></i> Copy
+                                </button>
+                            </div>
                         </div>
 
-                        <a href="https://linkedin.com/in/aniketghosh-" target="_blank" class="contact-item">
-                            <i class="fab fa-linkedin"></i> linkedin.com/in/aniketghosh-
-                        </a>
-                        <a href="https://github.com/Itsme-aniketghosh" target="_blank" class="contact-item">
-                            <i class="fab fa-github"></i> github.com/Itsme-aniketghosh
-                        </a>
+                        <div class="contact-row-item">
+                            <i class="fab fa-linkedin contact-row-icon" style="color:#0a66c2;"></i>
+                            <span class="contact-row-text">aniketghosh-</span>
+                            <div class="contact-row-actions">
+                                <a href="https://linkedin.com/in/aniketghosh-" target="_blank" class="contact-row-btn">
+                                    <i class="fas fa-arrow-up-right-from-square"></i> Open
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="contact-row-item">
+                            <i class="fab fa-github contact-row-icon"></i>
+                            <span class="contact-row-text">Itsme-aniketghosh</span>
+                            <div class="contact-row-actions">
+                                <a href="https://github.com/Itsme-aniketghosh" target="_blank" class="contact-row-btn">
+                                    <i class="fas fa-arrow-up-right-from-square"></i> Open
+                                </a>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -938,6 +1061,147 @@
 </div>
 
 <script>
+    // Canvas background
+    const gradientCanvas = document.getElementById('gradient-canvas');
+    const particlesCanvas = document.getElementById('particles-canvas');
+    const neuralCanvas = document.getElementById('neural-canvas');
+    const gradientCtx = gradientCanvas.getContext('2d');
+    const particlesCtx = particlesCanvas.getContext('2d');
+    const neuralCtx = neuralCanvas.getContext('2d');
+
+    function resizeCanvases() {
+        [gradientCanvas, particlesCanvas, neuralCanvas].forEach(canvas => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    }
+    resizeCanvases();
+    window.addEventListener('resize', resizeCanvases);
+
+    let gradientAngle = 0;
+    function animateGradient() {
+        gradientAngle += 0.002;
+        const centerX = gradientCanvas.width / 2;
+        const centerY = gradientCanvas.height / 2;
+        const gradient = gradientCtx.createRadialGradient(
+            centerX + Math.cos(gradientAngle) * 200,
+            centerY + Math.sin(gradientAngle) * 200, 0,
+            centerX, centerY,
+            Math.max(gradientCanvas.width, gradientCanvas.height)
+        );
+        gradient.addColorStop(0, 'rgba(245, 158, 11, 0.15)');
+        gradient.addColorStop(0.3, 'rgba(0, 255, 136, 0.08)');
+        gradient.addColorStop(0.6, 'rgba(0, 170, 255, 0.1)');
+        gradient.addColorStop(1, 'rgba(10, 10, 11, 0)');
+        gradientCtx.clearRect(0, 0, gradientCanvas.width, gradientCanvas.height);
+        gradientCtx.fillStyle = gradient;
+        gradientCtx.fillRect(0, 0, gradientCanvas.width, gradientCanvas.height);
+    }
+
+    class Particle {
+        constructor() { this.reset(); }
+        reset() {
+            this.x = Math.random() * particlesCanvas.width;
+            this.y = Math.random() * particlesCanvas.height;
+            this.z = Math.random() * 1000;
+            this.size = Math.random() * 2 + 0.5;
+            this.speedX = (Math.random() - 0.5) * 0.3;
+            this.speedY = (Math.random() - 0.5) * 0.3;
+            this.speedZ = Math.random() * 1.5 + 0.5;
+        }
+        update() {
+            this.x += this.speedX; this.y += this.speedY; this.z -= this.speedZ;
+            if (this.z < 1) this.reset();
+            if (this.x < 0 || this.x > particlesCanvas.width) this.speedX *= -1;
+            if (this.y < 0 || this.y > particlesCanvas.height) this.speedY *= -1;
+            const scale = 1000 / (1000 + this.z);
+            this.screenX = (this.x - particlesCanvas.width / 2) * scale + particlesCanvas.width / 2;
+            this.screenY = (this.y - particlesCanvas.height / 2) * scale + particlesCanvas.height / 2;
+            this.screenSize = this.size * scale;
+        }
+        draw() {
+            const opacity = 1 - this.z / 1000;
+            particlesCtx.beginPath();
+            particlesCtx.arc(this.screenX, this.screenY, this.screenSize, 0, Math.PI * 2);
+            particlesCtx.fillStyle = `rgba(245, 158, 11, ${opacity * 0.8})`;
+            particlesCtx.fill();
+        }
+    }
+
+    const particles = Array.from({ length: 80 }, () => new Particle());
+
+    class NeuralNode {
+        constructor() {
+            this.x = Math.random() * neuralCanvas.width;
+            this.y = Math.random() * neuralCanvas.height;
+            this.vx = (Math.random() - 0.5) * 0.4;
+            this.vy = (Math.random() - 0.5) * 0.4;
+            this.radius = Math.random() * 3 + 2;
+            this.pulsePhase = Math.random() * Math.PI * 2;
+            this.active = Math.random() > 0.7;
+        }
+        update() {
+            this.x += this.vx; this.y += this.vy; this.pulsePhase += 0.03;
+            if (this.x < 0 || this.x > neuralCanvas.width) this.vx *= -1;
+            if (this.y < 0 || this.y > neuralCanvas.height) this.vy *= -1;
+            if (Math.random() > 0.995) this.active = !this.active;
+        }
+    }
+
+    const neuralNodes = Array.from({ length: 40 }, () => new NeuralNode());
+
+    function animateBg() {
+        particlesCtx.clearRect(0, 0, particlesCanvas.width, particlesCanvas.height);
+        neuralCtx.clearRect(0, 0, neuralCanvas.width, neuralCanvas.height);
+        animateGradient();
+        particles.forEach(p => { p.update(); p.draw(); });
+        particles.forEach((p1, i) => {
+            particles.slice(i + 1).forEach(p2 => {
+                const dx = p1.screenX - p2.screenX, dy = p1.screenY - p2.screenY;
+                const dist = Math.sqrt(dx*dx + dy*dy);
+                if (dist < 100) {
+                    particlesCtx.strokeStyle = `rgba(245,158,11,${0.15*(1-dist/100)})`;
+                    particlesCtx.lineWidth = 1;
+                    particlesCtx.beginPath();
+                    particlesCtx.moveTo(p1.screenX, p1.screenY);
+                    particlesCtx.lineTo(p2.screenX, p2.screenY);
+                    particlesCtx.stroke();
+                }
+            });
+        });
+        neuralNodes.forEach(n => n.update());
+        neuralNodes.forEach((n1, i) => {
+            neuralNodes.slice(i + 1).forEach(n2 => {
+                const dx = n1.x - n2.x, dy = n1.y - n2.y;
+                const dist = Math.sqrt(dx*dx + dy*dy);
+                if (dist < 150) {
+                    const opacity = (1 - dist/150) * (n1.active || n2.active ? 0.4 : 0.1);
+                    neuralCtx.strokeStyle = `rgba(0,255,136,${opacity})`;
+                    neuralCtx.lineWidth = n1.active || n2.active ? 2 : 1;
+                    neuralCtx.beginPath();
+                    neuralCtx.moveTo(n1.x, n1.y);
+                    neuralCtx.lineTo(n2.x, n2.y);
+                    neuralCtx.stroke();
+                }
+            });
+        });
+        neuralNodes.forEach(node => {
+            const pulse = Math.sin(node.pulsePhase) * 0.3 + 0.7;
+            const g = neuralCtx.createRadialGradient(node.x, node.y, 0, node.x, node.y, node.radius * pulse * 3);
+            g.addColorStop(0, node.active ? 'rgba(0,255,136,0.8)' : 'rgba(0,170,255,0.5)');
+            g.addColorStop(1, 'rgba(0,255,136,0)');
+            neuralCtx.fillStyle = g;
+            neuralCtx.beginPath();
+            neuralCtx.arc(node.x, node.y, node.radius * pulse * 3, 0, Math.PI * 2);
+            neuralCtx.fill();
+            neuralCtx.fillStyle = node.active ? '#00ff88' : '#00aaff';
+            neuralCtx.beginPath();
+            neuralCtx.arc(node.x, node.y, node.radius * pulse, 0, Math.PI * 2);
+            neuralCtx.fill();
+        });
+        requestAnimationFrame(animateBg);
+    }
+    animateBg();
     // Nav scroll
     const navbar = document.getElementById('navbar');
     window.addEventListener('scroll', () => {
@@ -976,8 +1240,15 @@
 
     // Contact card copy button
     function copyEmail() {
-        const btn = document.querySelector('#copyEmailBtn .email-split-copy');
-        copyEmailBtn(btn);
+        const btn = document.getElementById('copyEmailBtn');
+        navigator.clipboard.writeText('ghosh.ani@northeastern.edu').then(() => {
+            btn.classList.add('copied');
+            btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+            setTimeout(() => {
+                btn.classList.remove('copied');
+                btn.innerHTML = '<i class="fas fa-copy"></i> Copy';
+            }, 2000);
+        });
     }
 </script>
 
