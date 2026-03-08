@@ -143,6 +143,8 @@
         .btn-ghost { background: rgba(255,255,255,0.04); color: var(--text-secondary); border: 1px solid var(--border); }
         .btn-ghost:hover { background: rgba(255,255,255,0.08); color: var(--text-primary); }
         .btn i { font-size: 0.85rem; }
+        /* Nav buttons slightly smaller */
+        .nav-actions .btn { font-size: 0.8rem; padding: 0.5rem 1rem; }
 
         main {
             position: relative;
@@ -383,29 +385,64 @@
         }
         .contact-item:hover { color: var(--accent-secondary); }
 
-        /* ── Copy button ── */
-        .copy-btn {
-            background: var(--bg-tertiary);
+        /* ── Split email button ── */
+        .email-split {
+            display: inline-flex;
+            align-items: stretch;
             border: 1px solid var(--border);
-            color: var(--text-muted);
-            padding: 0.4rem 0.6rem;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: border-color 0.25s ease;
         }
-        .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
-        .copy-btn.copied { border-color: var(--accent-secondary); color: var(--accent-secondary); }
-
-        /* Wrap email btn + copy btn together */
-        .email-with-copy {
+        .email-split:hover {
+            border-color: var(--accent);
+        }
+        .email-split-main {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.7rem 1.1rem;
+            background: transparent;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.88rem;
+            font-weight: 600;
+            transition: color 0.25s ease, background 0.25s ease;
+            white-space: nowrap;
+        }
+        .email-split-main:hover {
+            color: var(--accent);
+            background: rgba(245,158,11,0.06);
+        }
+        .email-split-divider {
+            width: 1px;
+            background: var(--border);
+            flex-shrink: 0;
+        }
+        .email-split-copy {
             display: inline-flex;
             align-items: center;
             gap: 0.4rem;
-        }
-        .email-with-copy .copy-btn {
-            padding: 0.4rem 0.55rem;
+            padding: 0.7rem 0.9rem;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-family: 'Space Grotesk', sans-serif;
             font-size: 0.78rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: color 0.25s ease, background 0.25s ease;
+            white-space: nowrap;
         }
+        .email-split-copy:hover {
+            color: var(--accent);
+            background: rgba(245,158,11,0.06);
+        }
+        .email-split-copy.copied {
+            color: var(--accent-secondary);
+        }
+        .email-split-copy i { font-size: 0.8rem; }
 
         .back-to-top {
             position: fixed;
@@ -494,10 +531,10 @@
     <div style="display:flex;align-items:center;gap:0.75rem;">
         <span class="nav-badge"><i class="fas fa-briefcase"></i> Recruiter View</span>
         <div class="nav-actions">
-            <a href="index.html" class="btn btn-outline btn-ghost" style="font-size:0.8rem;padding:0.55rem 1rem;">
+            <a href="index.html" class="btn btn-outline btn-ghost">
                 <i class="fas fa-layer-group"></i> Full Portfolio
             </a>
-            <a href="resume.pdf" target="_blank" class="btn btn-gold" style="font-size:0.8rem;padding:0.55rem 1.1rem;">
+            <a href="resume.pdf" target="_blank" class="btn btn-gold">
                 <i class="fas fa-file-alt"></i> Resume
             </a>
         </div>
@@ -589,12 +626,13 @@
             <a href="resume.pdf" target="_blank" class="btn btn-gold">
                 <i class="fas fa-file-alt"></i> Open Resume
             </a>
-            <div class="email-with-copy">
-                <a href="mailto:ghosh.ani@northeastern.edu" class="btn btn-outline">
+            <div class="email-split">
+                <a href="mailto:ghosh.ani@northeastern.edu" class="email-split-main">
                     <i class="fas fa-envelope"></i> Email Me
                 </a>
-                <button class="copy-btn" onclick="copyEmailBtn(this)" title="Copy email">
-                    <i class="fas fa-copy"></i> Copy Email
+                <div class="email-split-divider"></div>
+                <button class="email-split-copy" onclick="copyEmailBtn(this)" title="Copy email address">
+                    <i class="fas fa-copy"></i> Copy
                 </button>
             </div>
         </div>
@@ -611,7 +649,7 @@
                 <p>Here's my two cents: <span class="hl">I care a lot about impact.</span> I'm not chasing work just because it sounds impressive on paper. I'm looking for the kind of work where the stakes are real, the learning curve is steep, and the output actually matters.</p>
                 <p>I've always been pulled toward technology not just because it is intellectually exciting, but because I believe it can change who gets access, who gets heard, and who gets lifted. That belief is still underneath everything I build.</p>
                 <p>Right now I'm in the <span class="hl">MS in Artificial Intelligence program at Northeastern</span>, and I also serve as a <span class="hl">Teaching Assistant for the graduate NLP course</span>. One thing I'm genuinely proud of is that <span class="hl">I did not take NLP here first and still earned that role on pure skill</span>. To me, that says something important about how I prepare, how I learn, and how I show up when trust has to be earned. I'm also taking <span class="hl">Actionable Interpretability</span> — a PhD-level seminar — sitting alongside doctoral researchers and holding my own. I don't just take the path of least resistance.</p>
-                <p>I've also done <span class="hl">multiple internships, multiple research projects, leadership work as a GSG Senator, and I've shipped deployed projects people can actually use.</span> So when you look at me, I don't want you to see someone who only fits one category. I want you to see someone who can build, research, teach, communicate, and take ownership.</p>
+                <p>I've also done <span class="hl">multiple internships, multiple research projects, leadership work as a GSG(Graduate Student Government) Senator, and I've shipped deployed projects people can actually use.</span> So when you look at me, I don't want you to see someone who only fits one category. I want you to see someone who can build, research, teach, communicate, and take ownership.</p>
                 <p>The simplest way I can put it: <span class="hl">throw me into the ocean and I'll figure out how to swim, read the current, and still bring something back to shore.</span> I like being challenged. I like steep ramps. I like environments that expect a lot — because I expect a lot from myself too.</p>
                 <p>If that sounds like the kind of person your team values, start with the resume. The full portfolio has the longer version — projects, research, deployed work, and the details behind how I think.</p>
             </div>
@@ -624,12 +662,13 @@
                 <a href="https://ag-hosh-my-digital-twin.hf.space/" target="_blank" class="btn btn-green">
                     <i class="fas fa-robot"></i> Ask My AI Twin
                 </a>
-                <div class="email-with-copy">
-                    <a href="mailto:ghosh.ani@northeastern.edu" class="btn btn-outline">
+                <div class="email-split">
+                    <a href="mailto:ghosh.ani@northeastern.edu" class="email-split-main">
                         <i class="fas fa-envelope"></i> Email
                     </a>
-                    <button class="copy-btn" onclick="copyEmailBtn(this)" title="Copy email">
-                        <i class="fas fa-copy"></i> Copy Email
+                    <div class="email-split-divider"></div>
+                    <button class="email-split-copy" onclick="copyEmailBtn(this)" title="Copy email address">
+                        <i class="fas fa-copy"></i> Copy
                     </button>
                 </div>
             </div>
@@ -777,12 +816,13 @@
                     <a href="resume.pdf" target="_blank" class="btn btn-gold">
                         <i class="fas fa-file-alt"></i> Open Resume
                     </a>
-                    <div class="email-with-copy">
-                        <a href="mailto:ghosh.ani@northeastern.edu" class="btn btn-outline">
+                    <div class="email-split">
+                        <a href="mailto:ghosh.ani@northeastern.edu" class="email-split-main">
                             <i class="fas fa-envelope"></i> Email Me
                         </a>
-                        <button class="copy-btn" onclick="copyEmailBtn(this)" title="Copy email">
-                            <i class="fas fa-copy"></i> Copy Email
+                        <div class="email-split-divider"></div>
+                        <button class="email-split-copy" onclick="copyEmailBtn(this)" title="Copy email address">
+                            <i class="fas fa-copy"></i> Copy
                         </button>
                     </div>
                     <a href="https://linkedin.com/in/aniketghosh-" target="_blank" class="btn btn-outline">
@@ -822,13 +862,14 @@
                     <h3 style="font-size:1.1rem;margin-bottom:1rem;">Contact</h3>
                     <div style="display:flex;flex-direction:column;gap:0.75rem;">
 
-                        <!-- Email row with copy button -->
-                        <div style="display:flex;align-items:center;gap:0.75rem;">
-                            <a href="mailto:ghosh.ani@northeastern.edu" class="contact-item">
+                        <!-- Email row with split button -->
+                        <div class="email-split" id="copyEmailBtn">
+                            <a href="mailto:ghosh.ani@northeastern.edu" class="email-split-main">
                                 <i class="fas fa-envelope"></i> ghosh.ani@northeastern.edu
                             </a>
-                            <button class="copy-btn" onclick="copyEmail()" id="copyEmailBtn" title="Copy email">
-                                <i class="fas fa-copy"></i> Copy Email
+                            <div class="email-split-divider"></div>
+                            <button class="email-split-copy" onclick="copyEmail()" title="Copy email address">
+                                <i class="fas fa-copy"></i> Copy
                             </button>
                         </div>
 
@@ -851,21 +892,22 @@
             <h2>Ready to connect?</h2>
             <p>Open the resume, reach out directly, or ask my AI twin anything — about my internships, research, deployed projects, or what kind of team I'm looking for.</p>
             <div class="cta-row">
-                <a href="resume.pdf" target="_blank" class="btn btn-gold" style="font-size:0.95rem;padding:0.85rem 1.75rem;">
+                <a href="resume.pdf" target="_blank" class="btn btn-gold">
                     <i class="fas fa-file-alt"></i> Open Resume
                 </a>
-                <a href="https://ag-hosh-my-digital-twin.hf.space/" target="_blank" class="btn btn-green" style="font-size:0.95rem;padding:0.85rem 1.75rem;">
+                <a href="https://ag-hosh-my-digital-twin.hf.space/" target="_blank" class="btn btn-green">
                     <i class="fas fa-robot"></i> Talk to My AI Twin
                 </a>
-                <div class="email-with-copy">
-                    <a href="mailto:ghosh.ani@northeastern.edu" class="btn btn-outline" style="font-size:0.95rem;padding:0.85rem 1.75rem;">
+                <div class="email-split">
+                    <a href="mailto:ghosh.ani@northeastern.edu" class="email-split-main">
                         <i class="fas fa-envelope"></i> Email Me
                     </a>
-                    <button class="copy-btn" onclick="copyEmailBtn(this)" title="Copy email">
-                        <i class="fas fa-copy"></i> Copy Email
+                    <div class="email-split-divider"></div>
+                    <button class="email-split-copy" onclick="copyEmailBtn(this)" title="Copy email address">
+                        <i class="fas fa-copy"></i> Copy
                     </button>
                 </div>
-                <a href="index.html" class="btn btn-ghost" style="font-size:0.95rem;padding:0.85rem 1.75rem;">
+                <a href="index.html" class="btn btn-ghost">
                     <i class="fas fa-layer-group"></i> Full Portfolio
                 </a>
             </div>
@@ -927,14 +969,14 @@
             btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
             setTimeout(() => {
                 btn.classList.remove('copied');
-                btn.innerHTML = '<i class="fas fa-copy"></i> Copy Email';
+                btn.innerHTML = '<i class="fas fa-copy"></i> Copy';
             }, 2000);
         });
     }
 
-    // Contact card copy button (kept for backwards compat)
+    // Contact card copy button
     function copyEmail() {
-        const btn = document.getElementById('copyEmailBtn');
+        const btn = document.querySelector('#copyEmailBtn .email-split-copy');
         copyEmailBtn(btn);
     }
 </script>
