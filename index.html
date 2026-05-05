@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="GVuhYMlGv-AJyz32BlkPGRO2qJkWjWT4QDz5Tuo4-YA" />
-    <meta name="description" content="Aniket Ghosh - AI/ML Engineer, NLP Teaching Assistant at Northeastern University. Specializing in multi-agent systems, healthcare AI, computer vision, and MLOps. MS in Artificial Intelligence." />
+    <meta name="description" content="Aniket Ghosh - AI/ML Researcher at Varosync building frontier models for molecular design. MS AI at Northeastern University. Specializing in multi-agent systems, NLP, computer vision, and MLOps." />
     <meta name="keywords" content="Aniket Ghosh, AI Engineer, Machine Learning, NLP, Northeastern University, Healthcare AI, Computer Vision, MLOps" />
     <meta name="author" content="Aniket Ghosh" />
     <meta property="og:title" content="Aniket Ghosh | AI/ML Engineer & Researcher" />
@@ -2218,10 +2218,233 @@
             transform: translateY(-3px);
             box-shadow: 0 8px 28px rgba(245,158,11,0.65);
         }
+
+        /* ═══════════════════════════════════════════════════════════════
+           EPIC ENHANCEMENTS v2.0
+        ═══════════════════════════════════════════════════════════════ */
+
+
+        /* Loading Screen */
+        #loading-screen {
+            position: fixed; inset: 0;
+            background: var(--bg-primary); z-index: 9999;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: 2rem;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+        #loading-screen.done { opacity: 0; visibility: hidden; pointer-events: none; }
+        .ld-hex-wrap {
+            position: relative; width: 80px; height: 80px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .ld-hex {
+            position: absolute; inset: 0;
+            background: var(--gradient-1);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            animation: ld-spin 2s linear infinite;
+        }
+        .ld-hex-in {
+            position: absolute; inset: 5px;
+            background: var(--bg-primary); z-index: 1;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        }
+        .ld-initials {
+            position: relative; z-index: 2;
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.6rem; font-weight: 600;
+            background: var(--gradient-1);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        @keyframes ld-spin { to { transform: rotate(360deg); } }
+        .ld-bar-wrap {
+            width: 220px; height: 2px;
+            background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden;
+        }
+        .ld-bar {
+            height: 100%; width: 0%; background: var(--gradient-1);
+            border-radius: 2px; box-shadow: 0 0 10px var(--accent-glow);
+            transition: width 0.08s linear;
+        }
+        .ld-txt {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.68rem; letter-spacing: 3px;
+            text-transform: uppercase; color: var(--text-muted);
+        }
+
+        /* Scroll Progress Bar */
+        .scroll-progress {
+            position: fixed; top: 0; left: 0; height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-secondary), var(--accent-tertiary));
+            z-index: 2000; width: 0%;
+            box-shadow: 0 0 8px var(--accent-glow); pointer-events: none;
+        }
+
+        /* Mouse Glow */
+        .mouse-glow {
+            position: fixed; width: 280px; height: 280px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(245,158,11,0.05) 0%, transparent 70%);
+            pointer-events: none; z-index: 0;
+            transform: translate(-50%, -50%);
+            will-change: left, top;
+        }
+
+        /* Section Navigation Dots */
+        .section-dots {
+            position: fixed; right: 2rem; top: 50%;
+            transform: translateY(-50%);
+            display: flex; flex-direction: column; gap: 14px; z-index: 500;
+        }
+        .section-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: rgba(255,255,255,0.18);
+            border: 1px solid rgba(255,255,255,0.08);
+            cursor: pointer; transition: all 0.3s ease; position: relative;
+        }
+        .section-dot.active {
+            background: var(--accent); border-color: var(--accent);
+            box-shadow: 0 0 10px var(--accent-glow); transform: scale(1.4);
+        }
+        .section-dot::before {
+            content: attr(data-label);
+            position: absolute; right: calc(100% + 12px); top: 50%;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+            padding: 3px 9px; border-radius: 4px;
+            background: rgba(17,17,19,0.96); border: 1px solid var(--border);
+            color: var(--text-secondary); white-space: nowrap;
+            opacity: 0; pointer-events: none; letter-spacing: 0.5px;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            transform: translateY(-50%) translateX(6px);
+        }
+        .section-dot:hover::before { opacity: 1; transform: translateY(-50%) translateX(0); }
+        @media (max-width: 1200px) { .section-dots { display: none; } }
+
+        /* Live Badge */
+        .exp-live-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.58rem; letter-spacing: 2px;
+            color: var(--accent-secondary);
+            background: rgba(0,255,136,0.08);
+            border: 1px solid rgba(0,255,136,0.25);
+            padding: 0.2rem 0.65rem; border-radius: 50px;
+            animation: live-pulse 2s ease-in-out infinite;
+            white-space: nowrap;
+        }
+        @keyframes live-pulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 6px rgba(0,255,136,0.4); }
+            50% { opacity: 0.6; box-shadow: none; }
+        }
+
+        /* Glitch on Hero Name hover */
+        .hero-name { position: relative; }
+        .hero-name::before, .hero-name::after {
+            content: attr(data-text);
+            position: absolute; top: 0; left: 0;
+            font-family: inherit; font-size: inherit; font-weight: inherit;
+            color: inherit; opacity: 0; pointer-events: none;
+        }
+        .hero-name:hover::before {
+            color: var(--accent-secondary); opacity: 0.85;
+            clip-path: polygon(0 0, 100% 0, 100% 38%, 0 38%);
+            animation: glitch-a 0.45s steps(3) forwards;
+        }
+        .hero-name:hover::after {
+            color: var(--accent-tertiary); opacity: 0.85;
+            clip-path: polygon(0 62%, 100% 62%, 100% 100%, 0 100%);
+            animation: glitch-b 0.45s steps(3) forwards;
+        }
+        @keyframes glitch-a {
+            0%   { transform: translate(0); }
+            25%  { transform: translate(-5px, 2px); }
+            50%  { transform: translate(5px, -2px); }
+            75%  { transform: translate(-3px, 1px); }
+            100% { transform: translate(0); opacity: 0; }
+        }
+        @keyframes glitch-b {
+            0%   { transform: translate(0); }
+            25%  { transform: translate(5px, -2px); }
+            50%  { transform: translate(-5px, 2px); }
+            75%  { transform: translate(3px, -1px); }
+            100% { transform: translate(0); opacity: 0; }
+        }
+
+        /* Button Ripple */
+        .btn-ripple {
+            position: absolute; border-radius: 50%;
+            transform: scale(0); background: rgba(255,255,255,0.22);
+            animation: ripple-out 0.6s linear; pointer-events: none;
+        }
+        @keyframes ripple-out { to { transform: scale(4); opacity: 0; } }
+
+        /* Enhanced card hover transitions */
+        .experience-card {
+            transition: transform 0.15s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+        .project-card, .cert-card, .research-card, .skill-card {
+            transition: transform 0.15s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        /* Make cert-card and research-card overflow hidden for shine effect */
+        .cert-card { position: relative; overflow: hidden; }
+        .research-card { position: relative; overflow: hidden; }
+
+        /* Shine sweep on project / cert / research / skill cards */
+        .project-card::after,
+        .cert-card::after,
+        .research-card::after,
+        .skill-card::after {
+            content: '';
+            position: absolute; top: 0; left: -120%; width: 60%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
+            pointer-events: none; transition: left 0.65s ease;
+        }
+        .project-card:hover::after,
+        .cert-card:hover::after,
+        .research-card:hover::after,
+        .skill-card:hover::after { left: 130%; }
+
+        /* Enhanced skill chip bounce hover */
+        .skill-chip {
+            transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1),
+                        box-shadow 0.2s ease, background 0.2s ease,
+                        border-color 0.2s ease !important;
+        }
+        .skill-chip:hover {
+            transform: translateY(-3px) scale(1.05) !important;
+            box-shadow: 0 6px 18px rgba(245,158,11,0.2) !important;
+            border-color: var(--accent) !important;
+            background: rgba(245,158,11,0.1) !important;
+            color: var(--text-primary) !important;
+        }
+
+        /* Profile 3D tilt transitions */
+        .profile-container { transition: transform 0.2s ease; transform-style: preserve-3d; }
+
+        /* Text selection */
+        ::selection { background: rgba(245,158,11,0.25); color: var(--text-primary); }
+
+        /* Enhanced section reveal */
+        .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
     </style>
 </head>
 
 <body>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="ld-hex-wrap">
+            <div class="ld-hex"></div>
+            <div class="ld-hex-in"></div>
+            <span class="ld-initials">AG</span>
+        </div>
+        <div class="ld-bar-wrap"><div class="ld-bar" id="ldBar"></div></div>
+        <p class="ld-txt" id="ldTxt">Initializing...</p>
+    </div>
+
+    <!-- Fixed Overlays -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+    <div class="mouse-glow" id="mouseGlow"></div>
 
     <!-- Background -->
     <div class="background-container">
@@ -2261,6 +2484,18 @@
         <div class="email-sidebar">
             <a href="mailto:ghosh.anik@northeastern.edu">ghosh.anik@northeastern.edu</a>
         </div>
+        <!-- Section Navigation Dots -->
+        <div class="section-dots" id="sectionDots">
+            <div class="section-dot active" data-section="hero" data-label="Home"></div>
+            <div class="section-dot" data-section="about" data-label="About"></div>
+            <div class="section-dot" data-section="skills" data-label="Skills"></div>
+            <div class="section-dot" data-section="experience" data-label="Experience"></div>
+            <div class="section-dot" data-section="projects" data-label="Projects"></div>
+            <div class="section-dot" data-section="research" data-label="Research"></div>
+            <div class="section-dot" data-section="certifications" data-label="Certifications"></div>
+            <div class="section-dot" data-section="contact" data-label="Contact"></div>
+        </div>
+
         <!-- Navigation -->
         <nav id="navbar">
             <a href="#hero" class="logo">
@@ -2334,12 +2569,13 @@
         <section class="hero" id="hero">
             <div class="hero-content">
                 <p class="hero-pretext">Hi, my name is</p>
-                <h1 class="hero-name">Aniket Ghosh.</h1>
+                <h1 class="hero-name" data-text="Aniket Ghosh.">Aniket Ghosh.</h1>
                 <h2 class="hero-title"><span class="typewriter" id="typewriter"></span></h2>
                 <p class="hero-description">
-                    First-year grad student learning the ropes at Northeastern's Khoury College.
-                    TAing NLP, sitting in on a PhD interpretability seminar, elected GSG Senator,
-                    and spending too much time on side projects involving multi-agent systems.
+                    MS AI at Northeastern's Khoury College — now building frontier models for
+                    molecular design at <strong style="color:var(--accent-secondary)">Varosync</strong>.
+                    Previously TAed the graduate NLP course, served as GSG Senator, and spent
+                    way too many late nights on multi-agent systems.
                 </p>
                 <div class="hero-buttons">
                     <a href="https://ag-hosh-my-digital-twin.hf.space/" target="_blank" class="btn-ai">
@@ -2419,15 +2655,17 @@
                         scholarship, focusing on the Machine Learning concentration.
                     </p>
                     <p>
-                        Currently, I'm a Teaching Assistant for the graduate NLP course under
-                        Professor Amir Tahmasebi, where I teach PyTorch and ML/DL labs. I was
-                        also elected GSG(Graduate Student Government) Senator, representing graduate students
-                        in university governance. My coursework spans Foundations of AI,
-                        Algorithms, Interpretable AI, and Applied Programming for AI — including
-                        Actionable Interpretability, a PhD-level seminar I'm taking alongside
-                        doctoral researchers. Outside class, I'm deep into multi-agent
-                        systems — building autonomous trading simulations and benchmarking
-                        link prediction methods on biomedical knowledge graphs.
+                        I finished TAing the graduate NLP course under Professor Amir Tahmasebi —
+                        teaching PyTorch and ML/DL labs — and was elected GSG (Graduate Student
+                        Government) Senator. I'm now working at
+                        <strong style="color:var(--accent-secondary)">Varosync, Inc.</strong>,
+                        a startup developing next-generation frontier models for molecular design,
+                        where I build computational ML pipelines and contribute to drug discovery
+                        research. My coursework spans Foundations of AI, Algorithms, Interpretable
+                        AI, and Applied Programming for AI — including Actionable Interpretability,
+                        a PhD-level seminar alongside doctoral researchers. Outside class, I'm deep
+                        into multi-agent systems — building autonomous trading simulations and
+                        benchmarking link prediction on biomedical knowledge graphs.
                     </p>
                 </div>
                 <div class="about-highlights">
@@ -2588,11 +2826,51 @@
                 <div class="experience-card current">
                     <div class="experience-header">
                         <div>
+                            <h3 class="experience-role">AI/ML Researcher</h3>
+                            <p class="experience-company">Varosync, Inc.</p>
+                            <p class="experience-location"><i class="fas fa-map-marker-alt"></i> Boston, MA</p>
+                        </div>
+                        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.4rem;">
+                            <span class="experience-duration">May 2026 – Present</span>
+                            <span class="exp-live-badge">● NOW</span>
+                        </div>
+                    </div>
+                    <p class="experience-description">
+                        Working at <strong style="color:var(--accent-secondary)">Varosync</strong>,
+                        a startup building next-generation frontier models for molecular design and
+                        drug discovery. Developing computational ML pipelines and simulation workflows
+                        while actively leveling up engineering velocity using AI-native tooling —
+                        <strong style="color:var(--accent)">Claude Code</strong> and
+                        <strong style="color:var(--accent)">Cursor</strong> — to ship faster and
+                        think more clearly about system design.
+                    </p>
+                    <div class="experience-highlights">
+                        <h5><i class="fas fa-star"></i> Key Highlights</h5>
+                        <ul>
+                            <li>Building ML pipelines for molecular property prediction and generation</li>
+                            <li>Developing Python-based computational models and simulation workflows</li>
+                            <li>Mastering agentic coding with Claude Code & Cursor for 10× engineering productivity</li>
+                            <li>Contributing to frontier model research for biosensor and molecule design</li>
+                        </ul>
+                    </div>
+                    <div class="experience-tags">
+                        <span class="tag">Molecular AI</span>
+                        <span class="tag">Computational Modeling</span>
+                        <span class="tag">Drug Discovery</span>
+                        <span class="tag">Claude Code</span>
+                        <span class="tag">Cursor</span>
+                        <span class="tag">Python</span>
+                    </div>
+                </div>
+
+                <div class="experience-card">
+                    <div class="experience-header">
+                        <div>
                             <h3 class="experience-role">Teaching Assistant — NLP</h3>
                             <p class="experience-company">Northeastern University, Khoury College</p>
                             <p class="experience-location"><i class="fas fa-map-marker-alt"></i> Boston, MA</p>
                         </div>
-                        <span class="experience-duration">Jan 2026 – Present</span>
+                        <span class="experience-duration">Jan 2026 – May 2026</span>
                     </div>
                     <p class="experience-description">
                         Teaching PyTorch and ML/DL labs for <a href="https://www.linkedin.com/in/amirtahmasebi/"
@@ -3130,13 +3408,13 @@
             <div class="contact-content">
                 <h2 class="contact-title">Let's Connect</h2>
                 <p class="contact-description">
-                    I'm currently pursuing my MS in AI at Northeastern University
-                    (graduating May 2027) while TAing the graduate NLP course. I'm
-                    actively seeking <strong>Summer 2026 internships</strong> in ML Engineering,
-                    AI Research, or Applied AI roles.
+                    I'm pursuing my MS in AI at Northeastern University (graduating May 2027)
+                    and currently working at <strong style="color:var(--accent-secondary)">Varosync, Inc.</strong>
+                    on next-generation frontier models for molecular design.
                     <br><br>
-                    Whether you have an opportunity, a research collaboration idea,
-                    or just want to chat about multi-agent systems — my inbox is always open.
+                    Open to research collaborations, full-time opportunities, and internships
+                    in ML Engineering, Applied AI, or AI Research. If you want to skip the
+                    formalities — just ask my AI twin.
                 </p>
                 <div class="contact-buttons">
                     <a href="https://ag-hosh-my-digital-twin.hf.space/" target="_blank"
@@ -3385,10 +3663,10 @@
         // Typewriter effect
         const titles = [
             "AI/ML Engineer",
-            "NLP Teaching Assistant",
+            "Computational AI Researcher",
             "Multi-Agent Systems Builder",
             "MS AI @ Northeastern",
-            "Healthcare AI Researcher",
+            "Molecular AI Engineer",
             "Computer Vision Engineer",
             "MLOps Engineer",
             "Graduate Researcher"
@@ -3497,7 +3775,152 @@
             e.preventDefault();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
-        //
+        // ─────────────────────────────────────────────────────────────────
+        // EPIC ENHANCEMENTS v2.0
+        // ─────────────────────────────────────────────────────────────────
+
+        // Loading Screen
+        ;(function () {
+            document.body.style.overflow = 'hidden';
+            const scr = document.getElementById('loading-screen');
+            const bar = document.getElementById('ldBar');
+            const txt = document.getElementById('ldTxt');
+            const msgs = ['Initializing...', 'Loading assets...', 'Building neurons...', 'Ready.'];
+            let prog = 0, mi = 0;
+            const t = setInterval(() => {
+                prog += Math.random() * 20 + 8;
+                if (prog > 100) prog = 100;
+                bar.style.width = prog + '%';
+                if (prog > 30 && mi === 0) { txt.textContent = msgs[1]; mi++; }
+                if (prog > 65 && mi === 1) { txt.textContent = msgs[2]; mi++; }
+                if (prog > 90 && mi === 2) { txt.textContent = msgs[3]; mi++; }
+                if (prog >= 100) {
+                    clearInterval(t);
+                    setTimeout(() => {
+                        scr.classList.add('done');
+                        document.body.style.overflow = '';
+                    }, 380);
+                }
+            }, 75);
+        })();
+
+        // Mouse glow follows cursor
+        ;(function () {
+            const glow = document.getElementById('mouseGlow');
+            if (!glow) return;
+            document.addEventListener('mousemove', e => {
+                glow.style.left = e.clientX + 'px';
+                glow.style.top  = e.clientY + 'px';
+            }, { passive: true });
+        })();
+
+        // Scroll Progress Bar
+        const _sp = document.getElementById('scrollProgress');
+        if (_sp) {
+            window.addEventListener('scroll', () => {
+                const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100;
+                _sp.style.width = pct + '%';
+            }, { passive: true });
+        }
+
+        // Section Navigation Dots
+        ;(function () {
+            const dots = document.querySelectorAll('.section-dot');
+            const ids  = ['hero','about','skills','experience','projects','research','certifications','contact'];
+
+            dots.forEach(d => {
+                d.addEventListener('click', () => {
+                    const el = document.getElementById(d.getAttribute('data-section'));
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+
+            function syncDots() {
+                const mid = window.innerHeight * 0.5;
+                ids.forEach((id, i) => {
+                    const el = document.getElementById(id);
+                    if (!el || !dots[i]) return;
+                    const r = el.getBoundingClientRect();
+                    if (r.top <= mid && r.bottom > mid) {
+                        dots.forEach(d => d.classList.remove('active'));
+                        dots[i].classList.add('active');
+                    }
+                });
+            }
+            window.addEventListener('scroll', syncDots, { passive: true });
+            syncDots();
+        })();
+
+        // 3D Card Tilt
+        ;(function () {
+            function applyTilt(sel, deg) {
+                document.querySelectorAll(sel).forEach(card => {
+                    card.addEventListener('mousemove', e => {
+                        const r = card.getBoundingClientRect();
+                        const x = (e.clientX - r.left - r.width  / 2) / (r.width  / 2);
+                        const y = (e.clientY - r.top  - r.height / 2) / (r.height / 2);
+                        card.style.transform = `perspective(900px) rotateX(${y * -deg}deg) rotateY(${x * deg}deg) translateZ(10px)`;
+                    });
+                    card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+                });
+            }
+
+            applyTilt('.project-card:not(.digital-twin):not(.featured)', 5);
+            applyTilt('.cert-card', 5);
+            applyTilt('.research-card', 4);
+            applyTilt('.skill-card', 4);
+
+            // Experience cards: add translateX to preserve the hover slide
+            document.querySelectorAll('.experience-card').forEach(card => {
+                card.addEventListener('mousemove', e => {
+                    const r = card.getBoundingClientRect();
+                    const x = (e.clientX - r.left - r.width  / 2) / (r.width  / 2);
+                    const y = (e.clientY - r.top  - r.height / 2) / (r.height / 2);
+                    card.style.transform = `perspective(900px) rotateX(${y * -3}deg) rotateY(${x * 3}deg) translateZ(6px) translateX(6px)`;
+                });
+                card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+            });
+        })();
+
+        // Hero Profile 3D Tilt
+        ;(function () {
+            const hero = document.getElementById('hero');
+            const prof = document.querySelector('.profile-container');
+            if (!hero || !prof) return;
+            hero.addEventListener('mousemove', e => {
+                const r = hero.getBoundingClientRect();
+                const x = (e.clientX - r.width  / 2) / (r.width  / 2);
+                const y = (e.clientY - r.height / 2) / (r.height / 2);
+                prof.style.transform = `perspective(900px) rotateX(${y * -8}deg) rotateY(${x * 8}deg) translateZ(20px)`;
+            });
+            hero.addEventListener('mouseleave', () => { prof.style.transform = ''; });
+        })();
+
+        // Button Ripple Effect
+        document.querySelectorAll('.btn-primary, .btn-ai, .btn-secondary, .contact-btn, .ai-cta-button').forEach(btn => {
+            btn.addEventListener('click', e => {
+                const r    = btn.getBoundingClientRect();
+                const size = Math.max(r.width, r.height);
+                const el   = document.createElement('span');
+                el.className = 'btn-ripple';
+                el.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX - r.left - size / 2}px;top:${e.clientY - r.top - size / 2}px`;
+                btn.appendChild(el);
+                setTimeout(() => el.remove(), 650);
+            });
+        });
+
+        // Active Nav Link via IntersectionObserver
+        ;(function () {
+            const links = document.querySelectorAll('.nav-center a');
+            const obs = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + entry.target.id));
+                    }
+                });
+            }, { threshold: 0.4 });
+            document.querySelectorAll('section[id]').forEach(s => obs.observe(s));
+        })();
     </script>
 </body>
 
