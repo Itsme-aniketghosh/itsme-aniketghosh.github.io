@@ -379,8 +379,12 @@
       width: 100%;
       max-width: 400px;
       aspect-ratio: 1 / 1;
-      overflow: hidden;
       border: 1px solid var(--border);
+    }
+    .hero-photo-inner {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
     }
     .hero-photo {
       position: absolute;
@@ -419,24 +423,26 @@
       align-items: center;
       gap: 0.5rem;
       background: var(--bg);
-      border: 1px solid var(--border);
-      padding: 0.4rem 0.8rem;
+      border: 1px solid var(--text);
+      padding: 0.5rem 1rem;
       font-family: var(--mono);
-      font-size: 0.65rem;
+      font-size: 0.75rem;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: var(--muted);
+      color: var(--text);
+      z-index: 10;
     }
     .hero-status-sub {
       position: absolute;
-      bottom: -1.35rem;
+      bottom: -1.6rem;
       left: 1rem;
       font-family: var(--mono);
-      font-size: 0.54rem;
+      font-size: 0.7rem;
       letter-spacing: 0.07em;
-      color: var(--muted);
+      color: var(--text);
       pointer-events: none;
       white-space: nowrap;
+      z-index: 10;
     }
     .status-dot {
       width: 6px; height: 6px;
@@ -1531,8 +1537,10 @@
 
       <div class="hero-right">
         <div class="hero-photo-wrap">
-          <img src="profile-black and white.jpg" alt="" class="hero-photo hero-photo-bw" loading="eager">
-          <img src="profile.jpg" alt="Aniket Ghosh" class="hero-photo hero-photo-color" loading="eager">
+          <div class="hero-photo-inner">
+            <img src="profile-black and white.jpg" alt="" class="hero-photo hero-photo-bw" loading="eager">
+            <img src="profile.jpg" alt="Aniket Ghosh" class="hero-photo hero-photo-color" loading="eager">
+          </div>
           <div class="hero-status">
             <span class="status-dot"></span>
             Spring 2027 Opportunities
@@ -1578,7 +1586,7 @@
             my father, an SAP consultant at IBM, through cities like Chicago,
             Bonn, and Zurich. At the same time, I spent seven years teaching
             mathematics and computer science to underprivileged students through
-            The Hope Foundation. That gap between what technology could do and
+            <a href="https://www.hope-foundation.in/" target="_blank">The Hope Foundation</a>. That gap between what technology could do and
             who it actually reached became the question I have been trying to
             answer ever since.
           </p>
@@ -1763,7 +1771,7 @@
               </div>
             </div>
             <p class="timeline-desc">
-              Nine-week summer intensive funded by the Alfred P. Sloan Foundation, bringing together
+              Nine-week summer intensive led by <a href="https://cssh.northeastern.edu/faculty/kathleen-katie-creel/" target="_blank">Kathleen (Katie) Creel</a>, funded by the Alfred P. Sloan Foundation, bringing together
               ~10-12 philosophy PhD students from institutions across the country for training in
               ML, AI ethics, and metascience. Designing and leading a 12-session hands-on ML lab
               built from scratch -- covering Python, fairness, differential privacy, neural networks
@@ -1822,7 +1830,7 @@
           <div class="timeline-body">
             <div class="timeline-top">
               <div>
-                <h3 class="timeline-company">CMATER Lab, Jadavpur University</h3>
+                <h3 class="timeline-company"><a href="https://www.cmaterju.in/" target="_blank">CMATER Lab</a>, Jadavpur University</h3>
                 <p class="timeline-role">Researcher and Research Mentor</p>
                 <p class="timeline-role" style="font-size:0.78rem; margin-top:0.2rem; color:var(--muted);">Kolkata, India</p>
               </div>
@@ -1832,7 +1840,7 @@
             </div>
             <p class="timeline-desc">
               Developed custom ML pipelines for cell segmentation in histopathological
-              images under Dr. Kaushiki Roy and Dr. Debotosh Bhattacharjee. Implemented
+              images under Dr. Kaushiki Roy and <a href="https://cse.jadavpuruniversity.in/faculty/debotosh-bhattacharjee" target="_blank">Dr. Debotosh Bhattacharjee</a>. Implemented
               preprocessing techniques using color quantization and DBSCAN clustering
               for densely packed cell detection. Guided junior researchers in deep learning
               for medical imaging.
@@ -1856,7 +1864,7 @@
           <div class="timeline-body">
             <div class="timeline-top">
               <div>
-                <h3 class="timeline-company">North-Eastern Hill University</h3>
+                <h3 class="timeline-company"><a href="https://www.nehu.ac.in/" target="_blank">North-Eastern Hill University</a></h3>
                 <p class="timeline-role">Research Intern</p>
                 <p class="timeline-role" style="font-size:0.78rem; margin-top:0.2rem; color:var(--muted);">Remote</p>
               </div>
@@ -1883,7 +1891,7 @@
           <div class="timeline-body">
             <div class="timeline-top">
               <div>
-                <h3 class="timeline-company">Novotel Kolkata Hotel and Residences</h3>
+                <h3 class="timeline-company"><a href="https://www.novotelkolkata.com/" target="_blank">Novotel Kolkata Hotel and Residences</a></h3>
                 <p class="timeline-role">Industrial Trainee</p>
                 <p class="timeline-role" style="font-size:0.78rem; margin-top:0.2rem; color:var(--muted);">Kolkata, India</p>
               </div>
@@ -1908,7 +1916,7 @@
           <div class="timeline-body">
             <div class="timeline-top">
               <div>
-                <h3 class="timeline-company">The Hope Foundation</h3>
+                <h3 class="timeline-company"><a href="https://www.hope-foundation.in/" target="_blank">The Hope Foundation</a></h3>
                 <p class="timeline-role">Volunteer Educator and Mentor</p>
                 <p class="timeline-role" style="font-size:0.78rem; margin-top:0.2rem; color:var(--muted);">Kolkata, India</p>
               </div>
@@ -2307,7 +2315,6 @@
 
     <!-- ─── CONTACT ─── -->
     <section class="section section-alt" id="contact">
-      <span class="section-num" aria-hidden="true">07</span>
       <div class="contact-inner">
         <h2 class="contact-heading reveal split-text">Get In Touch</h2>
         <p class="contact-sub reveal">
