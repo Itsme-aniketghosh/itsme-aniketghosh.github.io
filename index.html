@@ -850,7 +850,26 @@
       color: var(--muted);
       border: 1px solid var(--border);
       padding: 0.2rem 0.6rem;
+      transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+      cursor: default;
     }
+    .tag:hover {
+      color: var(--bg);
+      background: var(--text);
+      border-color: var(--text);
+    }
+    @keyframes tag-fade-in {
+      from { opacity: 0; transform: translateY(4px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .tags .tag {
+      animation: tag-fade-in 0.35s ease both;
+    }
+    .tags .tag:nth-child(1) { animation-delay: 0.05s; }
+    .tags .tag:nth-child(2) { animation-delay: 0.10s; }
+    .tags .tag:nth-child(3) { animation-delay: 0.15s; }
+    .tags .tag:nth-child(4) { animation-delay: 0.20s; }
+    .tags .tag:nth-child(5) { animation-delay: 0.25s; }
 
     /* ════════════════════════════════════
        10. PROJECTS (BENTO)
@@ -1136,6 +1155,25 @@
       transition: color 0.2s ease, border-color 0.2s ease;
     }
     .copy-btn:hover { color: var(--text); border-color: var(--text); }
+    .contact-ai-row {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+    }
+    .contact-ai-row a {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text);
+      border: 1px solid var(--text);
+      padding: 0.5rem 1.25rem;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .contact-ai-row a:hover {
+      background: var(--text);
+      color: var(--bg);
+    }
     .contact-links-row {
       display: flex;
       align-items: center;
@@ -1529,7 +1567,7 @@
         <div class="hero-socials" id="heroSocials">
           <a href="https://github.com/Itsme-aniketghosh" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
           <a href="https://linkedin.com/in/aniketghosh-" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-          <a href="https://www.codechef.com/users/a_ghosh" target="_blank" aria-label="CodeChef"><i class="fas fa-code"></i></a>
+          <a href="https://www.codechef.com/users/a_ghosh" target="_blank" aria-label="CodeChef"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-0.125em"><path d="M11.257 0C7.112.04 3.398 2.698 2.03 6.646c-.778 2.244-.6 4.776.496 6.882.483.932 1.12 1.78 1.664 2.69.664 1.112 1.008 2.363 1.09 3.643.048.757.015 1.516.024 2.274.007.581.438 1.07 1.012 1.1.528.025 1.01-.384 1.044-.917.014-.222 0-.446.005-.669.01-.604.454-1.1 1.033-1.204.587-.105 1.17.23 1.372.795.088.245.074.512.077.77.006.522.395.987.913 1.04.569.058 1.08-.343 1.12-.92.02-.265.003-.534.007-.8.01-.565.44-1.065 1.003-1.155.585-.093 1.163.263 1.35.83.066.2.057.42.06.633.008.535.413 1.006.947 1.046.578.043 1.087-.387 1.1-.97.01-.449-.015-.902.018-1.35.076-1.025.332-2.035.834-2.934.445-.8 1.01-1.527 1.49-2.3 1.292-2.075 1.657-4.63.955-6.98C18.964 2.658 15.34.035 11.257 0zm.643 3.355c2.55.14 4.884 1.826 5.746 4.24.672 1.893.373 4.046-.786 5.673-.433.601-.963 1.133-1.41 1.726-.613.808-1.053 1.733-1.29 2.707-.21.864-.246 1.756-.24 2.643-1.174-.577-2.56-.567-3.73.007.008-.82-.017-1.643-.18-2.447-.245-1.212-.79-2.352-1.59-3.286-.442-.52-.95-.983-1.368-1.524-1.29-1.672-1.612-3.96-.836-5.924.882-2.244 3.06-3.804 5.484-3.815z"/></svg></a>
           <a href="https://www.hackerrank.com/profile/aniket_ghosh" target="_blank" aria-label="HackerRank"><i class="fab fa-hackerrank"></i></a>
           <a href="mailto:ghosh.anik@northeastern.edu" aria-label="Email"><i class="fas fa-envelope"></i></a>
         </div>
@@ -1807,7 +1845,7 @@
               </div>
             </div>
             <p class="timeline-desc">
-              Teaching PyTorch and ML/DL labs for Professor Amir Tahmasebi's graduate NLP course.
+              Teaching PyTorch and ML/DL labs for <a href="https://linkedin.com/in/amirtahmasebi" target="_blank">Professor Amir Tahmasebi</a>'s graduate NLP course.
               Helping students understand deep learning fundamentals, transformer architectures,
               and practical implementation. Also grading.
             </p>
@@ -2314,7 +2352,7 @@
     </section>
 
     <!-- ─── CONTACT ─── -->
-    <section class="section section-alt" id="contact">
+    <section class="section section-alt" id="contact" style="padding-top:3rem;">
       <div class="contact-inner">
         <h2 class="contact-heading reveal split-text">Get In Touch</h2>
         <p class="contact-sub reveal">
@@ -2329,11 +2367,13 @@
             <i class="fas fa-copy"></i>
           </button>
         </div>
+        <div class="contact-ai-row reveal">
+          <a href="https://ag-hosh-my-digital-twin.hf.space/" target="_blank">Talk to AI Twin</a>
+        </div>
         <div class="contact-links-row reveal-stagger">
           <a href="https://github.com/Itsme-aniketghosh" target="_blank">GitHub</a>
           <a href="https://linkedin.com/in/aniketghosh-" target="_blank">LinkedIn</a>
           <a href="resume.pdf" target="_blank">Resume</a>
-          <a href="https://ag-hosh-my-digital-twin.hf.space/" target="_blank">Talk to AI Twin</a>
           <a href="https://www.codechef.com/users/a_ghosh" target="_blank">CodeChef</a>
           <a href="https://www.hackerrank.com/profile/aniket_ghosh" target="_blank">HackerRank</a>
         </div>
