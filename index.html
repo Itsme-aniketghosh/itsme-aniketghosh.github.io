@@ -858,18 +858,22 @@
       background: var(--text);
       border-color: var(--text);
     }
-    @keyframes tag-fade-in {
-      from { opacity: 0; transform: translateY(4px); }
-      to   { opacity: 1; transform: translateY(0); }
+    /* Tags inside timeline entries slide in from the right after the card settles */
+    .timeline-entry .tags .tag {
+      opacity: 0;
+      transform: translateX(32px);
+      transition: opacity 0.32s ease, transform 0.32s ease,
+                  color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
     }
-    .tags .tag {
-      animation: tag-fade-in 0.35s ease both;
+    .timeline-entry.in-view .tags .tag {
+      opacity: 1;
+      transform: none;
     }
-    .tags .tag:nth-child(1) { animation-delay: 0.05s; }
-    .tags .tag:nth-child(2) { animation-delay: 0.10s; }
-    .tags .tag:nth-child(3) { animation-delay: 0.15s; }
-    .tags .tag:nth-child(4) { animation-delay: 0.20s; }
-    .tags .tag:nth-child(5) { animation-delay: 0.25s; }
+    .timeline-entry.in-view .tags .tag:nth-child(1) { transition-delay: 0.50s; }
+    .timeline-entry.in-view .tags .tag:nth-child(2) { transition-delay: 0.58s; }
+    .timeline-entry.in-view .tags .tag:nth-child(3) { transition-delay: 0.66s; }
+    .timeline-entry.in-view .tags .tag:nth-child(4) { transition-delay: 0.74s; }
+    .timeline-entry.in-view .tags .tag:nth-child(5) { transition-delay: 0.82s; }
 
     /* ════════════════════════════════════
        10. PROJECTS (BENTO)
