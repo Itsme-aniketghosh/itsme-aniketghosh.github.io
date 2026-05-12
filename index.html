@@ -648,6 +648,14 @@
     }
     .about-text p:last-child { margin-bottom: 0; }
     .about-text strong { color: var(--text); font-weight: 600; }
+    .about-text a {
+      color: var(--text);
+      text-decoration: underline;
+      text-decoration-color: var(--muted);
+      text-underline-offset: 3px;
+      transition: text-decoration-color 0.2s;
+    }
+    .about-text a:hover { text-decoration-color: var(--text); }
 
     .about-stats {
       display: grid;
