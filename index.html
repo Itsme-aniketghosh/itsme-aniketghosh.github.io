@@ -663,7 +663,16 @@
       gap: 2.5rem 3rem;
       padding-top: 0.5rem;
     }
-    .stat-block {}
+    .stat-block { border-top: 1px solid transparent; }
+    .about-stats.reveal-stagger > * {
+      transform: translateY(30px) scale(0.94);
+    }
+    .about-stats.reveal-stagger.in-view > * { transform: none; }
+    .about-stats.in-view .stat-block:hover {
+      transform: translateY(-4px);
+      border-top-color: var(--text);
+      transition: transform 0.2s ease, border-top-color 0.2s ease;
+    }
     .stat-val {
       display: block;
       font-family: var(--display);
@@ -1656,8 +1665,8 @@
         <span class="eyebrow">Introduction</span>
         <h2 class="section-heading split-text">About Me</h2>
       </div>
-      <div class="about-grid reveal">
-        <div class="about-text">
+      <div class="about-grid">
+        <div class="about-text reveal-stagger">
           <p>
             My path into AI started with contrasts. I grew up traveling with my father, an SAP consultant at IBM,
             through cities like Chicago, Bonn, and Zurich, while spending seven years teaching mathematics and
@@ -1677,7 +1686,7 @@
             <a href="https://cssh.northeastern.edu/ethics/aide-summer/" target="_blank">AIDE program</a> at
             Northeastern's Ethics Institute, bringing Python, ML, and interpretability to a residential cohort of
             PhD philosophers and AI ethicists. I also work as an AI/ML Engineer at <a href="https://varosync.com/" target="_blank"><strong>Varosync, Inc.</strong></a>,
-            a Boston startup simulating a drug's 24-hour pharmacological performance to predict safety and efficacy
+            a New York startup simulating a drug's 24-hour pharmacological performance to predict safety and efficacy
             in clinical trials.
           </p>
           <p>
