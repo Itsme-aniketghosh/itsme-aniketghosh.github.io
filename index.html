@@ -786,7 +786,9 @@
       margin-bottom: 0.4rem;
     }
     .stat-pill {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
       font-family: var(--mono);
       font-size: 0.58rem;
       letter-spacing: 0.08em;
@@ -796,6 +798,14 @@
       padding: 0.15rem 0.45rem;
       border-radius: 2px;
       margin-top: 0.4rem;
+    }
+    .stat-pill::before {
+      content: '';
+      width: 5px; height: 5px;
+      background: var(--bg);
+      border-radius: 50%;
+      flex-shrink: 0;
+      animation: dot-pulse 1.5s ease-in-out infinite;
     }
     .stat-label {
       font-family: var(--mono);
@@ -818,9 +828,23 @@
       padding: 1.75rem 0;
       border-top: 1px solid var(--border);
       transition: background 0.25s ease;
+      position: relative;
+      overflow: hidden;
     }
     .skill-category:last-child { border-bottom: 1px solid var(--border); }
     .skill-category:hover { background: rgba(240, 236, 228, 0.025); }
+
+    /* scan-line sweep on scroll-reveal */
+    .skill-category::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(240,236,228,0.07) 50%, transparent 100%);
+      transform: translateX(-110%);
+      transition: transform 1s cubic-bezier(0.4,0,0.2,1);
+      pointer-events: none;
+    }
+    .skill-category.in-view::after { transform: translateX(110%); }
 
     .skill-cat-label {
       font-family: var(--mono);
@@ -831,8 +855,10 @@
       opacity: 0.45;
       padding-top: 0.35rem;
       white-space: nowrap;
-      transition: opacity 0.25s ease;
+      transform: translateX(-10px);
+      transition: opacity 0.25s ease, transform 0.5s cubic-bezier(0.22,1,0.36,1) 0.1s;
     }
+    .skill-category.in-view .skill-cat-label { transform: none; }
     .skill-category:hover .skill-cat-label { opacity: 0.8; }
 
     .skill-pills {
@@ -997,14 +1023,16 @@
       color: var(--muted);
       border: 1px solid var(--border);
       padding: 0.2rem 0.6rem;
-      transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+      transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease, transform 0.18s ease;
       cursor: default;
     }
     .tag:hover {
       color: var(--bg);
       background: var(--text);
       border-color: var(--text);
+      transform: translateY(-2px) scale(1.04);
     }
+    .timeline-entry.in-view .tags .tag:hover { transform: translateY(-2px) scale(1.04); }
     /* Tags inside timeline entries slide in from the right after the card settles */
     .timeline-entry .tags .tag {
       opacity: 0;
@@ -2761,7 +2789,40 @@
       update();
     })();
 
-    /* ═══════ 8. COPY EMAIL ═══════ */
+    /* ═══════ 8. BENTO 3D TILT ═══════ */
+    ;(function initBentoTilt() {
+      document.querySelectorAll('.bento-cell').forEach(card => {
+        card.addEventListener('mousemove', e => {
+          const r  = card.getBoundingClientRect();
+          const dx = (e.clientX - r.left  - r.width  / 2) / (r.width  / 2);
+          const dy = (e.clientY - r.top   - r.height / 2) / (r.height / 2);
+          card.style.transform = `perspective(700px) rotateY(${dx * 5}deg) rotateX(${-dy * 3}deg) translateZ(8px)`;
+        });
+        card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+      });
+    })();
+
+    /* ═══════ 9. NAV SCRAMBLE ═══════ */
+    ;(function initNavScramble() {
+      const pool = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#%&?';
+      function scramble(el) {
+        const orig = el.dataset.orig || el.textContent;
+        el.dataset.orig = orig;
+        let f = 0, total = orig.length * 3;
+        clearInterval(el._si);
+        el._si = setInterval(() => {
+          el.textContent = orig.split('').map((ch, i) =>
+            i < f / 3 ? orig[i] : (ch === ' ' ? ' ' : pool[Math.floor(Math.random() * pool.length)])
+          ).join('');
+          if (++f > total) { el.textContent = orig; clearInterval(el._si); }
+        }, 28);
+      }
+      document.querySelectorAll('.nav-links a').forEach(a => {
+        a.addEventListener('mouseenter', () => scramble(a));
+      });
+    })();
+
+    /* ═══════ 10. COPY EMAIL ═══════ */
     function copyEmail() {
       navigator.clipboard.writeText('ghosh.anik@northeastern.edu').then(() => {
         const btns = document.querySelectorAll('.copy-btn');
