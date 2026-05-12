@@ -665,6 +665,18 @@
       line-height: 1;
       margin-bottom: 0.4rem;
     }
+    .stat-pill {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--text);
+      padding: 0.15rem 0.45rem;
+      border-radius: 2px;
+      margin-top: 0.4rem;
+    }
     .stat-label {
       font-family: var(--mono);
       font-size: 0.68rem;
@@ -1445,7 +1457,7 @@
     @media (max-width: 1024px) {
       .nav-links { gap: 1.75rem; }
       .about-grid { grid-template-columns: 1fr; gap: 3rem; }
-      .about-stats { grid-template-columns: repeat(4, 1fr); }
+      .about-stats { grid-template-columns: repeat(3, 1fr); }
       .research-grid { grid-template-columns: 1fr; }
     }
 
@@ -1639,47 +1651,60 @@
       <div class="about-grid reveal">
         <div class="about-text">
           <p>
-            My path into AI started with contrasts. Growing up, I traveled with
-            my father, an SAP consultant at IBM, through cities like Chicago,
-            Bonn, and Zurich. At the same time, I spent seven years teaching
-            mathematics and computer science to underprivileged students through
-            <a href="https://www.hope-foundation.in/" target="_blank">The Hope Foundation</a>. That gap between what technology could do and
-            who it actually reached became the question I have been trying to
-            answer ever since.
+            My path into AI started with contrasts. I grew up traveling with my father, an SAP consultant at IBM,
+            through cities like Chicago, Bonn, and Zurich, while spending seven years teaching mathematics and
+            computer science to underprivileged students through
+            <a href="https://www.hope-foundation.in/" target="_blank">The Hope Foundation</a> in Kolkata.
+            The gap between what technology could do and who it actually reached became the question I have kept
+            returning to. Over time, that question became more specific. If AI is going to keep deciding who gets
+            hired, who gets treated, and on what evidence, who is checking its reasoning, and on whose behalf?
           </p>
           <p>
-            I graduated with a B.Tech in Computer Science and Business Systems from
-            the Institute of Engineering and Management, Kolkata, ranking 2nd in a
-            department of 180+ students with a 4/4 GPA and receiving the
-            Director's Award. In Fall 2025, I joined Northeastern University's
-            Khoury College for my MS in Artificial Intelligence with a 15% merit
-            scholarship, focusing on the Machine Learning concentration.
+            My undergraduate years at IEM Kolkata went mostly into research. I worked on medical imaging at CMATER
+            Lab, helped build an Indian Sign Language dataset at NEHU, and published in computer vision (Springer
+            AISC, first author) and network intrusion detection (IEEE, with a patent filed by SRM). Each project
+            was in a domain where being wrong has real consequences. At Northeastern's Khoury College, where I am
+            completing my MS in AI, I took a PhD-level seminar on mechanistic interpretability alongside doctoral
+            researchers. This summer, I will be teaching the CS lab for the
+            <a href="https://cssh.northeastern.edu/ethics/aide-summer/" target="_blank">AIDE program</a> at
+            Northeastern's Ethics Institute, bringing Python, ML, and interpretability to a residential cohort of
+            PhD philosophers and AI ethicists. I also work as an AI/ML Engineer at <strong>Varosync, Inc.</strong>,
+            a Boston startup simulating a drug's 24-hour pharmacological performance to predict safety and efficacy
+            in clinical trials.
           </p>
           <p>
-            I finished TAing the graduate NLP course under Professor Amir Tahmasebi,
-            teaching PyTorch and ML/DL labs, and currently serve as GSG Senator
-            representing graduate students in university governance.
-            I work at <strong>Varosync, Inc.</strong>, a computational drug development
-            startup building an AI engine that simulates a drug's 24-hour pharmacological
-            performance to predict safety and efficacy in clinical trials.
+            I want to spend my career on problems where technical difficulty and real-world stakes are both high.
+            For me, that means medical AI built to be interpretable by design: drug-development pipelines and
+            clinical decision tools where the model's reasoning is inspectable to a clinician, a regulator, and the
+            patient. Effectiveness and interpretability are too often treated as a trade-off. For medicine, I do not
+            think either is optional.
           </p>
         </div>
         <div class="about-stats reveal-stagger">
           <div class="stat-block">
             <span class="stat-val" data-count="4.0" data-suffix="">4.0</span>
-            <span class="stat-label">MS GPA</span>
+            <span class="stat-label">MS GPA · Northeastern Khoury</span>
           </div>
           <div class="stat-block">
-            <span class="stat-val" data-count="2">2nd</span>
-            <span class="stat-label">Rank / 180+ Students</span>
+            <span class="stat-val">2nd / 180+</span>
+            <span class="stat-label">Undergrad Rank · Director's Award</span>
+          </div>
+          <div class="stat-block">
+            <span class="stat-val">3 + 1</span>
+            <span class="stat-label">Publications · Patent Filed</span>
+          </div>
+          <div class="stat-block">
+            <span class="stat-val">AIDE '26</span>
+            <span class="stat-label">CS Lab Instructor · Ethics Institute × Khoury</span>
+            <span class="stat-pill">Upcoming</span>
+          </div>
+          <div class="stat-block">
+            <span class="stat-val" data-count="40" data-suffix="+">40+</span>
+            <span class="stat-label">Graduate NLP TA (Spring '26)</span>
           </div>
           <div class="stat-block">
             <span class="stat-val" data-count="7" data-suffix="+">7+</span>
-            <span class="stat-label">Years Teaching</span>
-          </div>
-          <div class="stat-block">
-            <span class="stat-val" data-count="3">3</span>
-            <span class="stat-label">Published Works</span>
+            <span class="stat-label">Hope Foundation Educator</span>
           </div>
         </div>
       </div>
