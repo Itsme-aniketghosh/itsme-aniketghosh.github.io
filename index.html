@@ -501,6 +501,20 @@
       line-height: 0.95;
       letter-spacing: -0.03em;
       color: var(--text);
+      overflow: hidden;
+    }
+    .name-word {
+      display: block;
+      animation: name-impact 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .name-word:nth-child(1) { animation-delay: 1.55s; }
+    .name-word:nth-child(2) { animation-delay: 1.75s; }
+    @keyframes name-impact {
+      0%   { transform: translateY(-100%) scaleY(1.1); opacity: 0; filter: blur(6px); }
+      60%  { opacity: 1; filter: blur(0); }
+      78%  { transform: translateY(5px) scaleY(0.97); }
+      90%  { transform: translateY(-2px) scaleY(1.01); }
+      100% { transform: translateY(0) scaleY(1); opacity: 1; }
     }
 
     .hero-marquee-wrap {
@@ -566,16 +580,15 @@
       min-width: 0;
       display: flex;
       flex-direction: column;
-      align-items: flex-end;
+      align-items: center;
       position: relative;
     }
 
     .hero-photo-wrap {
       position: relative;
       width: 100%;
-      max-width: 400px;
-      aspect-ratio: 1 / 1;
-      border: 1px solid var(--border);
+      max-width: 340px;
+      aspect-ratio: 3 / 4;
     }
     .hero-photo-inner {
       position: absolute;
@@ -612,33 +625,24 @@
       color: var(--border);
     }
     .hero-status {
-      position: absolute;
-      bottom: 1rem;
-      left: 1rem;
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      background: var(--bg);
-      border: 1px solid var(--text);
-      padding: 0.5rem 1rem;
+      margin-top: 1rem;
       font-family: var(--mono);
       font-size: 0.75rem;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--text);
-      z-index: 10;
     }
     .hero-status-sub {
-      position: absolute;
-      bottom: -1.6rem;
-      left: 1rem;
+      margin-top: 0.35rem;
       font-family: var(--mono);
       font-size: 0.7rem;
       letter-spacing: 0.07em;
       color: var(--text);
       pointer-events: none;
       white-space: nowrap;
-      z-index: 10;
     }
     .status-dot {
       width: 6px; height: 6px;
@@ -1736,6 +1740,290 @@
       .contact-links-row { gap: 1.25rem; }
     }
   </style>
+
+  <style>
+    /* ══ ID Card Embed ════════════════════════════════════════ */
+    .id-card-embed {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    /* ── F-1 visa tag on card face ── */
+    .id-card-embed .f-visa {
+      margin-top: 4px;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.38);
+      font-family: var(--mono);
+    }
+    /* ── Status badges below card ── */
+    .card-meta-badges {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      margin-top: 14px;
+    }
+    .card-meta-badge {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      color: rgba(240,236,228,0.45);
+      font-family: var(--mono);
+      padding: 4px 10px;
+      border: 1px solid rgba(240,236,228,0.12);
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .card-meta-badge--highlight {
+      color: rgba(240,236,228,0.75);
+      border-color: rgba(240,236,228,0.25);
+    }
+    .id-card-embed img { -webkit-user-drag: none; user-select: none; }
+    .id-card-embed .scene {
+      perspective: 1200px;
+      perspective-origin: 50% 50%;
+      position: relative;
+      z-index: 2;
+    }
+    /* drop is JS-driven — no CSS animation */
+    @keyframes card-impact {
+      0%   { transform: scaleY(0.86) scaleX(1.08); }
+      38%  { transform: scaleY(1.07) scaleX(0.95); }
+      65%  { transform: scaleY(0.98) scaleX(1.01); }
+      82%  { transform: scaleY(1.01) scaleX(0.99); }
+      100% { transform: none; }
+    }
+    .id-card-embed.card-landed {
+      animation: card-impact 0.52s cubic-bezier(0.23, 1, 0.32, 1) both;
+    }
+    .id-card-embed .flip-inner {
+      width: 300px;
+      height: 480px;
+      position: relative;
+      transform-style: preserve-3d;
+      -webkit-transform-style: preserve-3d;
+      transition: transform 600ms cubic-bezier(0.23, 1, 0.32, 1);
+      cursor: pointer;
+      user-select: none;
+      touch-action: manipulation;
+    }
+    .id-card-embed .flip-inner:focus-visible {
+      outline: 2px solid rgba(255,255,255,0.45);
+      outline-offset: 6px;
+      border-radius: 16px;
+    }
+    #idEmailCopy:focus-visible {
+      outline: 1px solid rgba(255,255,255,0.35);
+      outline-offset: 3px;
+      border-radius: 3px;
+    }
+    .id-card-embed .flip-inner.flipped { transform: rotateY(180deg); }
+    .id-card-embed .card-face {
+      position: absolute; inset: 0;
+      border-radius: 16px;
+      overflow: hidden;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      background: #131313;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .id-card-embed .card-face::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: #ffffff;
+      z-index: 10;
+      pointer-events: none;
+    }
+    .id-card-embed .card-back-face { transform: rotateY(180deg); }
+    .id-card-embed .ic-lbl {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #5a5a5a;
+      line-height: 1;
+      font-family: var(--mono);
+    }
+    .id-card-embed .ic-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 22px 0;
+      flex-shrink: 0;
+    }
+    .id-card-embed .ic-divider {
+      height: 0.5px;
+      background: rgba(255,255,255,0.10);
+      flex-shrink: 0;
+    }
+    /* Front */
+    .id-card-embed .front-inner {
+      position: absolute; inset: 0;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 18px;
+    }
+    .id-card-embed .f-photo-slot {
+      flex: 0 0 230px;
+      padding: 10px 20px 0;
+      position: relative;
+    }
+    .id-card-embed .f-photo {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      filter: grayscale(1) contrast(1.05);
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.10);
+      display: block;
+      transition: filter 1400ms cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    .id-card-embed .f-photo.colored { filter: grayscale(0) contrast(1); }
+    .id-card-embed .f-photo-slot.photo-missing .f-photo { display: none; }
+    .id-card-embed .f-photo-slot.photo-missing::after {
+      content: 'AG';
+      position: absolute;
+      inset: 10px 20px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 38px;
+      font-weight: 600;
+      color: #5a5a5a;
+      background: #1a1a1a;
+      border-radius: 8px;
+    }
+    .id-card-embed .f-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 12px 22px 0;
+      min-height: 0;
+    }
+    .id-card-embed .f-name {
+      font-size: 22px;
+      font-weight: 500;
+      color: #f5f5f5;
+      line-height: 1.15;
+      letter-spacing: -0.3px;
+      font-family: var(--sans);
+    }
+    .id-card-embed .f-role {
+      font-size: 12px;
+      font-weight: 400;
+      color: #a0a0a0;
+      margin-top: 4px;
+      font-family: var(--sans);
+    }
+    .id-card-embed .f-credential { flex-shrink: 0; }
+    .id-card-embed .f-footer { display: flex; gap: 36px; padding-top: 10px; }
+    .id-card-embed .f-footer-col { display: flex; flex-direction: column; gap: 5px; }
+    .id-card-embed .f-footer-val {
+      font-size: 12px; font-weight: 400; color: #f5f5f5;
+      font-family: var(--sans);
+    }
+    /* Back */
+    .id-card-embed .back-inner {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+    }
+    .id-card-embed .b-body {
+      flex: 1;
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px 28px;
+    }
+    .id-card-embed .b-quote-block { text-align: center; }
+    .id-card-embed .b-quote {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-style: italic;
+      font-size: 20px; line-height: 1.45;
+      color: #f5f5f5; quotes: none;
+    }
+    .id-card-embed .b-cite {
+      display: block; font-size: 11px; font-weight: 400;
+      color: #a0a0a0; margin-top: 16px; font-style: normal;
+      letter-spacing: 0.2px; font-family: var(--sans);
+    }
+    .id-card-embed .b-return {
+      display: flex; flex-direction: column;
+      align-items: center; text-align: center;
+      gap: 6px; padding: 14px 22px 0;
+      border-top: 0.5px solid rgba(255,255,255,0.10);
+      flex-shrink: 0;
+    }
+    .id-card-embed .b-monogram {
+      text-align: center; padding: 12px 0 14px;
+      font-family: Georgia, 'Times New Roman', serif;
+      font-style: italic; font-size: 14px; color: #5a5a5a;
+      flex-shrink: 0;
+    }
+    .id-card-embed .b-return-email {
+      background: none; border: none; padding: 0;
+      font-family: var(--mono); font-size: 11px; font-weight: 400;
+      color: #f5f5f5; cursor: pointer;
+      transition: opacity 200ms;
+      letter-spacing: 0.1px;
+    }
+    .id-card-embed .b-return-email:hover { opacity: 0.65; }
+    /* Lanyard */
+    .lanyard-svg {
+      position: fixed; inset: 0;
+      width: 100%; height: 100%;
+      overflow: visible;
+      pointer-events: none;
+      z-index: 9;
+    }
+    .strap {
+      stroke: #252525; stroke-width: 5;
+      stroke-linecap: butt; fill: none;
+    }
+    #grommOuter { fill: #333333; stroke: #555555; stroke-width: 1; }
+    #grommHole  { fill: #0c0c0c; }
+    #grommHi    { fill: rgba(255,255,255,0.35); }
+    @media (max-width: 480px) { .strap { stroke-width: 3.5; } }
+    /* Flip hint */
+    .id-card-embed .flip-hint {
+      text-align: center; margin-top: 14px;
+      font-size: 10px; font-weight: 500;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: #5a5a5a; font-family: var(--mono);
+      transition: opacity 400ms; pointer-events: none; user-select: none;
+    }
+    .id-card-embed .flip-hint.hide { opacity: 0; }
+    /* Copy toast */
+    #idCopyToast {
+      position: fixed; top: 20px; left: 50%;
+      transform: translateX(-50%) translateY(-10px);
+      background: #1c1c1c;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #f5f5f5; font-family: var(--mono);
+      font-size: 10px; font-weight: 500;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 8px 18px; border-radius: 6px;
+      opacity: 0; pointer-events: none;
+      z-index: 9000;
+      transition: opacity 180ms, transform 180ms;
+      white-space: nowrap;
+    }
+    #idCopyToast.visible {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .id-card-embed .drop-wrapper { animation: none; }
+      .id-card-embed .flip-inner   { transition-duration: 0ms; }
+      .id-card-embed .flip-hint    { transition-duration: 0ms; }
+      #idCopyToast                 { transition-duration: 0ms; }
+      .name-word                   { animation: none; }
+    }
+  </style>
 </head>
 
 <body>
@@ -1792,7 +2080,10 @@
     <section class="hero" id="hero">
       <div class="hero-left">
         <span class="hero-tag" id="heroTag">AI/ML Engineer @ Varosync</span>
-        <h1 class="hero-name" id="heroName" aria-label="Aniket Ghosh">Aniket<br>Ghosh.</h1>
+        <h1 class="hero-name" id="heroName" aria-label="Aniket Ghosh">
+          <span class="name-word">Aniket</span>
+          <span class="name-word">Ghosh.</span>
+        </h1>
         <div class="hero-marquee-wrap" id="heroMarquee" aria-hidden="true">
           <div class="hero-marquee-track">
             <span class="hero-marquee-item">AI/ML Engineer</span><span class="hero-marquee-item hero-marquee-sep">+</span>
@@ -1831,16 +2122,84 @@
       </div>
 
       <div class="hero-right">
-        <div class="hero-photo-wrap">
-          <div class="hero-photo-inner">
-            <img src="profile-black and white.jpg" alt="Aniket Ghosh — AI/ML Engineer at Varosync, MS AI student at Northeastern University Khoury College" class="hero-photo hero-photo-bw" loading="eager">
-            <img src="profile.jpg" alt="Aniket Ghosh — AI/ML Engineer at Varosync, MS AI student at Northeastern University Khoury College" class="hero-photo hero-photo-color" loading="eager">
-          </div>
-          <div class="hero-status">
-            <span class="status-dot"></span>
-            Spring 2027 Opportunities
-          </div>
-          <div class="hero-status-sub">F-1 · STEM OPT eligible</div>
+        <div class="id-card-embed">
+          <div class="scene" id="idScene">
+            <div class="drop-wrapper">
+              <div class="float-wrapper">
+                <div class="tilt-wrapper" id="idTiltWrapper">
+                  <div class="flip-inner" id="idFlipInner" tabindex="0"
+                       role="button" aria-label="ID card — click to flip" aria-pressed="false">
+
+                    <!-- FRONT -->
+                    <div class="card-face card-front-face">
+                      <div class="front-inner">
+                        <div class="ic-header">
+                          <span class="ic-lbl">Researcher · Access</span>
+                          <span class="ic-lbl">2027</span>
+                        </div>
+                        <div class="f-photo-slot" id="idPhotoSlot">
+                          <img class="f-photo"
+                               src="profile.jpg"
+                               alt="Aniket Ghosh — portrait"
+                               loading="eager"
+                               draggable="false"
+                               onerror="this.closest('.f-photo-slot').classList.add('photo-missing')">
+                        </div>
+                        <div class="f-content">
+                          <div>
+                            <div class="f-name">Aniket Ghosh</div>
+                            <div class="f-role">AI / ML Engineer</div>
+                            <div class="f-visa">F-1 &middot; STEM OPT eligible</div>
+                          </div>
+                          <div class="f-credential">
+                            <div class="ic-divider"></div>
+                            <div class="f-footer">
+                              <div class="f-footer-col">
+                                <span class="ic-lbl">ID</span>
+                                <div class="f-footer-val">AG-25.07</div>
+                              </div>
+                              <div class="f-footer-col">
+                                <span class="ic-lbl">Valid</span>
+                                <div class="f-footer-val">Spring 2027</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- BACK -->
+                    <div class="card-face card-back-face">
+                      <div class="back-inner">
+                        <div class="ic-header">
+                          <span class="ic-lbl">Creed</span>
+                          <span class="ic-lbl">A.G.</span>
+                        </div>
+                        <div class="b-body">
+                          <div class="b-quote-block">
+                            <blockquote class="b-quote">&ldquo;What stands in the way becomes the way.&rdquo;</blockquote>
+                            <cite class="b-cite">— Marcus Aurelius</cite>
+                          </div>
+                        </div>
+                        <div class="b-return">
+                          <span class="ic-lbl">If found, return to</span>
+                          <button class="b-return-email" id="idEmailCopy"
+                                  aria-label="Copy email address">ghosh.anik@northeastern.edu</button>
+                        </div>
+                        <div class="b-monogram">AG</div>
+                      </div>
+                    </div>
+
+                  </div><!-- /flip-inner -->
+                </div><!-- /tilt-wrapper -->
+                <div class="flip-hint" id="idFlipHint">tap to flip</div>
+              </div><!-- /float-wrapper -->
+            </div><!-- /drop-wrapper -->
+          </div><!-- /scene -->
+        </div><!-- /id-card-embed -->
+        <div class="card-meta-badges">
+          <span class="card-meta-badge">F-1 &middot; STEM OPT eligible</span>
+          <span class="card-meta-badge card-meta-badge--highlight">Spring 2027 Opportunities</span>
         </div>
       </div>
 
@@ -2911,6 +3270,399 @@
       });
     }
   </script>
+
+
+<!-- ── ID Card: lanyard SVG ──────────────────────── -->
+<svg class="lanyard-svg" id="idLanyardSvg" xmlns="http://www.w3.org/2000/svg"
+     aria-hidden="true" focusable="false">
+  <path id="idRopeStroke" class="strap"/>
+  <circle id="idGrommOuter" r="4.5"/>
+  <circle id="idGrommHole"  r="2"/>
+  <circle id="idGrommHi"    r="1.5"/>
+</svg>
+
+<!-- ── ID Card: copy toast ───────────────────────── -->
+<div id="idCopyToast" role="status" aria-live="polite">Email copied</div>
+
+<script>
+(function () {
+  'use strict';
+
+  // ── DOM ──────────────────────────────────────────────────────
+  const cardEmbed  = document.querySelector('.id-card-embed');
+  const tiltWrap   = document.getElementById('idTiltWrapper');
+  const flipInner  = document.getElementById('idFlipInner');
+  const flipHint   = document.getElementById('idFlipHint');
+  const ropeEl     = document.getElementById('idRopeStroke');
+  const grommOuter = document.getElementById('idGrommOuter');
+  const grommHole  = document.getElementById('idGrommHole');
+  const grommHi    = document.getElementById('idGrommHi');
+
+  const reduceMot = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const NAV_H     = 64;
+
+  // ── Verlet ────────────────────────────────────────────────────
+  const N    = 18;
+  const GRAV = 0.42;
+  const DAMP = 0.974;
+  const ITER = 7;
+
+  const pts = new Array(N);
+  let naturalCX = 0, naturalCY = 0, cardH = 0, segLen = 0;
+
+  // ── Phases: 'pre' → 'falling' → 'swing' → 'physics' ─────────
+  let phase = 'pre';
+
+  // Free-fall state
+  let dropOffY = 0, dropVY = 0;
+  let dropTilt = 0, dropTiltV = 0;
+  const DROP_GRAV  = 2.4;   // px / frame²  — aggressive gravity
+  const DROP_MAX_V = 44;    // terminal velocity cap
+
+  // Swing-in state (frames right after impact)
+  let swingFrames = 0;
+  const SWING_HOLD = 3;     // frames of "freeze" to sell the impact
+
+  // Interactive state
+  let grabbed = false, grabOffX = 0, grabOffY = 0;
+  let curGrabX = 0, curGrabY = 0;
+  let ptrDown = false, startX = 0, startY = 0, dragged = false;
+
+  // Card state
+  let currentRY = 0;
+  let isFlipped = false, lastTouchEnd = 0;
+  let bounceY = 0, bounceVY = 0;
+  let hintDismissed = false, flipCount = 0;
+
+  // ── Hide card immediately — loader covers the ~1.7 s gap ─────
+  if (!reduceMot) tiltWrap.style.transform = 'translateY(-150vh)';
+
+  // ── Rope init (call with natural position in place) ───────────
+  function initRope() {
+    const r = flipInner.getBoundingClientRect();
+    naturalCX = r.left + r.width  * 0.5;
+    naturalCY = r.top  + r.height * 0.5;
+    cardH     = r.height;
+    segLen     = (r.top - NAV_H) / (N - 1);
+    for (let i = 0; i < N; i++) {
+      const y = NAV_H + i * segLen;
+      pts[i] = { x: naturalCX, y, px: naturalCX, py: y };
+    }
+    pts[0].pinned = true;
+  }
+
+  // ── Draw rope as a taut vertical line during fall ─────────────
+  function drawTautRope(cardTopY) {
+    const cx  = naturalCX.toFixed(1);
+    const ty  = Math.max(NAV_H, cardTopY).toFixed(1);
+    ropeEl.setAttribute('d', `M ${cx} ${NAV_H} L ${cx} ${ty}`);
+    grommOuter.setAttribute('cx', cx);  grommOuter.setAttribute('cy', ty);
+    grommHole.setAttribute('cx',  cx);  grommHole.setAttribute('cy', ty);
+    grommHi.setAttribute('cx', (naturalCX - 1.3).toFixed(1));
+    grommHi.setAttribute('cy', (cardTopY  - 1.3).toFixed(1));
+  }
+
+  // ── Kick off drop after loader clears ─────────────────────────
+  setTimeout(function startDrop() {
+    // Measure natural card position with no transform active
+    tiltWrap.style.transform = '';
+    const r   = flipInner.getBoundingClientRect();
+    naturalCX = r.left + r.width  * 0.5;
+    naturalCY = r.top  + r.height * 0.5;
+    cardH     = r.height;
+
+    // Start card above the viewport (card bottom just above top edge)
+    dropOffY  = -(naturalCY + cardH * 0.5 + 30);
+    dropVY    = 0;
+    dropTilt  = (Math.random() - 0.5) * 6;   // subtle random lean
+    dropTiltV = 0;
+
+    tiltWrap.style.transform =
+      `translateY(${dropOffY.toFixed(0)}px) rotateZ(${dropTilt.toFixed(1)}deg)`;
+    phase = 'falling';
+  }, 1700);
+
+  // ── Free-fall step ────────────────────────────────────────────
+  function stepFall() {
+    dropVY    = Math.min(dropVY + DROP_GRAV, DROP_MAX_V);
+    dropOffY += dropVY;
+
+    // Natural wobble — heavier objects sway as they fall
+    dropTiltV += (Math.random() - 0.5) * 0.55;
+    dropTiltV *= 0.86;
+    dropTilt  += dropTiltV;
+    dropTilt   = Math.max(-9, Math.min(9, dropTilt));
+
+    const cardTopY = (naturalCY - cardH * 0.5) + dropOffY;
+    drawTautRope(cardTopY);
+    tiltWrap.style.transform =
+      `translateY(${dropOffY.toFixed(1)}px) rotateZ(${dropTilt.toFixed(2)}deg)`;
+
+    if (dropOffY >= 0) impact();
+  }
+
+  // ── Impact: transition to pendulum physics ─────────────────────
+  function impact() {
+    // Squish animation on the outer embed wrapper
+    cardEmbed.classList.add('card-landed');
+    cardEmbed.addEventListener('animationend',
+      () => cardEmbed.classList.remove('card-landed'), { once: true });
+
+    // Reset card to natural position so initRope measures correctly
+    tiltWrap.style.transform = '';
+    initRope();
+
+    // Switch to position:fixed so the card and rope SVG (also fixed) update
+    // on the same rAF tick — eliminates scroll jitter between the two.
+    const fr = flipInner.getBoundingClientRect();
+
+    // The CSS spec traps position:fixed descendants inside any ancestor that
+    // has a non-none transform, filter, or perspective. Clear perspective from
+    // .scene so tiltWrap is truly fixed to the viewport (not to .scene).
+    // tiltWrap gets its own perspective so the flip animation still works.
+    const sceneEl = document.getElementById('idScene');
+    if (sceneEl) sceneEl.style.perspective = 'none';
+
+    tiltWrap.style.position          = 'fixed';
+    tiltWrap.style.top               = '0';
+    tiltWrap.style.left              = '0';
+    tiltWrap.style.margin            = '0';
+    tiltWrap.style.zIndex            = '90';
+    tiltWrap.style.perspective       = '1200px';
+    tiltWrap.style.perspectiveOrigin = '50% 50%';
+    tiltWrap.style.transform = `translate(${fr.left.toFixed(1)}px,${fr.top.toFixed(1)}px)`;
+
+    // Placeholder keeps hero-right from collapsing now that tiltWrap is out of flow
+    if (!document.getElementById('idCardSpacer')) {
+      const sp = document.createElement('div');
+      sp.id = 'idCardSpacer';
+      sp.style.cssText = `width:${fr.width}px;height:${fr.height}px;flex-shrink:0;pointer-events:none;`;
+      document.querySelector('.hero-right').appendChild(sp);
+    }
+
+    // Transfer fall velocity into Verlet: the lower rope points get the
+    // downward momentum — they'll tension against the anchor and swing
+    const v = dropVY;
+    for (let i = Math.floor(N * 0.55); i < N; i++) {
+      const t = (i - Math.floor(N * 0.55)) / (N - Math.floor(N * 0.55));
+      pts[i].py -= v * (0.7 + t * 1.6);  // tip gets most velocity
+    }
+    // Lateral kick — swing to the right on first arc
+    pts[N - 1].px += 35;
+    pts[N - 2].px += 22;
+    pts[N - 3].px += 12;
+    pts[N - 4].px += 5;
+
+    swingFrames = 0;
+    phase = 'swing';
+
+    // Idle nudge after user has had time to notice the card
+    setTimeout(function () {
+      if (!dragged && phase === 'physics') {
+        pts[N - 1].px -= 12;
+        pts[N - 2].px -= 7;
+        pts[N - 3].px -= 3;
+      }
+    }, 3500);
+  }
+
+  // ── Verlet physics ────────────────────────────────────────────
+  function stepPhysics() {
+    if (document.hidden) return;
+    for (let i = 1; i < N; i++) {
+      const p = pts[i];
+      if (grabbed && i === N - 1) {
+        p.px = p.x; p.py = p.y;
+        p.x = curGrabX; p.y = curGrabY;
+        continue;
+      }
+      let vx = (p.x - p.px) * DAMP;
+      let vy = (p.y - p.py) * DAMP + GRAV;
+      const spd = Math.sqrt(vx * vx + vy * vy);
+      if (spd > 20) { const s = 20 / spd; vx *= s; vy *= s; }
+      p.px = p.x; p.py = p.y;
+      p.x += vx; p.y += vy;
+    }
+    for (let k = 0; k < ITER; k++) {
+      pts[0].x = naturalCX; pts[0].y = NAV_H;
+      for (let i = 0; i < N - 1; i++) {
+        const a = pts[i], b = pts[i + 1];
+        const dx = b.x - a.x, dy = b.y - a.y;
+        const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+        const d    = (dist - segLen) / dist * 0.5;
+        if (!a.pinned)               { a.x += dx * d; a.y += dy * d; }
+        if (!(grabbed && i === N-2)) { b.x -= dx * d; b.y -= dy * d; }
+      }
+    }
+  }
+
+  function applyCard() {
+    const last = pts[N - 1];
+    const sy  = window.scrollY;
+    // tiltWrap is position:fixed at viewport (0,0).
+    // Rope tip (pts[N-1]) = card top-centre in physics space (viewport at scrollY=0).
+    // Subtract scrollY so the card scrolls upward with the page.
+    const x = last.x - 150;         // 150 = half of 300 px card width
+    const y = last.y - sy;          // physics Y → current viewport Y
+    const tRY = Math.max(-20, Math.min(20, (last.x - last.px) * 11));
+    currentRY += (tRY - currentRY) * 0.1;
+    bounceVY = (bounceVY - 0.10 * bounceY) * 0.82;
+    bounceY += bounceVY;
+    if (Math.abs(bounceY) < 0.05 && Math.abs(bounceVY) < 0.05) { bounceY = 0; bounceVY = 0; }
+    tiltWrap.style.transform =
+      `translate(${x.toFixed(1)}px,${(y + bounceY).toFixed(1)}px) rotateY(${currentRY.toFixed(2)}deg)`;
+  }
+
+  function drawRope() {
+    const sy = window.scrollY;
+    const vy = i => pts[i].y - sy;   // viewport y for point i
+    let d = `M ${pts[0].x.toFixed(1)} ${vy(0).toFixed(1)}`;
+    for (let i = 0; i < N - 1; i++) {
+      const p0 = pts[Math.max(0, i-1)], p1 = pts[i];
+      const p2 = pts[i+1],              p3 = pts[Math.min(N-1, i+2)];
+      const c1x = p1.x + (p2.x - p0.x) / 6, c1y = (p1.y - sy) + (p2.y - p0.y) / 6;
+      const c2x = p2.x - (p3.x - p1.x) / 6, c2y = (p2.y - sy) - (p3.y - p1.y) / 6;
+      d += ` C ${c1x.toFixed(1)} ${c1y.toFixed(1)},${c2x.toFixed(1)} ${c2y.toFixed(1)},${p2.x.toFixed(1)} ${vy(i+1).toFixed(1)}`;
+    }
+    ropeEl.setAttribute('d', d);
+    const gx = pts[N-1].x, gy = vy(N-1);
+    grommOuter.setAttribute('cx', gx.toFixed(1)); grommOuter.setAttribute('cy', gy.toFixed(1));
+    grommHole.setAttribute('cx',  gx.toFixed(1)); grommHole.setAttribute('cy',  gy.toFixed(1));
+    grommHi.setAttribute('cx', (gx - 1.3).toFixed(1)); grommHi.setAttribute('cy', (gy - 1.3).toFixed(1));
+  }
+
+  // ── Main rAF loop ─────────────────────────────────────────────
+  function tick() {
+    if (phase === 'falling') {
+      stepFall();
+    } else if (phase === 'swing') {
+      // Hold a few frames so the squish is visible, then enter full physics
+      swingFrames++;
+      stepPhysics(); applyCard(); drawRope();
+      if (swingFrames >= SWING_HOLD) phase = 'physics';
+    } else if (phase === 'physics') {
+      stepPhysics(); applyCard(); drawRope();
+    }
+    requestAnimationFrame(tick);
+  }
+
+  // ── Interaction ───────────────────────────────────────────────
+  function onDown(e) {
+    if (phase === 'pre' || phase === 'falling') return;
+    if (e.type === 'mousedown' && Date.now() - lastTouchEnd < 500) return;
+    const t  = e.touches ? e.touches[0] : e;
+    ptrDown  = true; dragged = false; grabbed = false;
+    startX   = t.clientX; startY = t.clientY;
+    grabOffX = pts[N-1].x - t.clientX;
+    grabOffY = pts[N-1].y - t.clientY;
+  }
+
+  function onMove(e) {
+    const t = e.touches ? e.touches[0] : e;
+    if (ptrDown && !dragged) {
+      const dx = t.clientX - startX, dy = t.clientY - startY;
+      if (dx * dx + dy * dy > 36) {
+        dragged = grabbed = true;
+        grabOffX = pts[N-1].x - t.clientX;
+        grabOffY = pts[N-1].y - t.clientY;
+      }
+    }
+    if (grabbed) { curGrabX = t.clientX + grabOffX; curGrabY = t.clientY + grabOffY; }
+  }
+
+  function onUp(e) {
+    if (!ptrDown) return;
+    ptrDown = false;
+    if (dragged) { grabbed = dragged = false; bounceVY = -26; return; }
+    if (e.type === 'touchend') { e.preventDefault(); lastTouchEnd = Date.now(); }
+    doFlip(false);
+  }
+
+  function cancelGrab() { ptrDown = false; grabbed = dragged = false; }
+
+  flipInner.addEventListener('mousedown',  onDown);
+  window.addEventListener('mousemove',     onMove);
+  window.addEventListener('mouseup',       onUp);
+  window.addEventListener('blur',          cancelGrab);
+  window.addEventListener('pointercancel', cancelGrab);
+  flipInner.addEventListener('touchstart', onDown, { passive: true });
+  window.addEventListener('touchmove',     onMove, { passive: true });
+  window.addEventListener('touchend',      onUp,   { passive: false });
+
+  // ── Flip ──────────────────────────────────────────────────────
+  function doFlip(instant) {
+    if (instant) {
+      flipInner.style.transitionDuration = '150ms';
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() => { flipInner.style.transitionDuration = ''; }));
+    }
+    isFlipped = !isFlipped;
+    flipInner.classList.toggle('flipped', isFlipped);
+    flipInner.setAttribute('aria-label',
+      isFlipped ? 'ID card back — click to flip' : 'ID card — click to flip');
+    flipInner.setAttribute('aria-pressed', String(isFlipped));
+    if (!hintDismissed && flipHint) { hintDismissed = true; flipHint.classList.add('hide'); }
+    if (!isFlipped && flipCount >= 1) {
+      const photo = document.querySelector('#idFlipInner .f-photo');
+      if (photo) photo.classList.toggle('colored');
+    }
+    flipCount++;
+  }
+
+  flipInner.addEventListener('keydown', e => {
+    if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); doFlip(true); }
+  });
+
+  // ── Email copy ────────────────────────────────────────────────
+  (function () {
+    const btn   = document.getElementById('idEmailCopy');
+    const toast = document.getElementById('idCopyToast');
+    const EMAIL = 'ghosh.anik@northeastern.edu';
+    let   timer = null;
+    function showToast() {
+      clearTimeout(timer);
+      toast.classList.add('visible');
+      timer = setTimeout(() => toast.classList.remove('visible'), 2000);
+    }
+    btn.addEventListener('mousedown',  e => e.stopPropagation());
+    btn.addEventListener('touchstart', e => e.stopPropagation(), { passive: true });
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(EMAIL).then(showToast).catch(fallback);
+      } else { fallback(); }
+    });
+    function fallback() {
+      const ta = document.createElement('textarea');
+      ta.value = EMAIL; ta.setAttribute('readonly', '');
+      ta.style.cssText = 'position:fixed;opacity:0;pointer-events:none';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); } catch (_) {}
+      document.body.removeChild(ta); showToast();
+    }
+  }());
+
+  // ── Reduced-motion: static rope, no drop ─────────────────────
+  if (reduceMot) {
+    tiltWrap.style.transform = '';
+    const r  = flipInner.getBoundingClientRect();
+    const cx = (r.left + r.width * 0.5).toFixed(1);
+    const gy = r.top.toFixed(1);
+    ropeEl.setAttribute('d', `M ${cx} ${NAV_H} L ${cx} ${gy}`);
+    grommOuter.setAttribute('cx', cx); grommOuter.setAttribute('cy', gy);
+    grommHole.setAttribute('cx',  cx); grommHole.setAttribute('cy', gy);
+    grommHi.setAttribute('cx', (parseFloat(cx) - 1.3).toFixed(1));
+    grommHi.setAttribute('cy', (parseFloat(gy) - 1.3).toFixed(1));
+    flipInner.addEventListener('click',    () => { if (Date.now() - lastTouchEnd > 500) doFlip(false); });
+    flipInner.addEventListener('touchend', e  => { lastTouchEnd = Date.now(); e.preventDefault(); doFlip(false); });
+    return;
+  }
+
+  tiltWrap.style.willChange = 'transform';
+  requestAnimationFrame(tick);
+
+}());
+</script>
 
 </body>
 </html>
