@@ -1894,18 +1894,29 @@
       padding: 10px 20px 0;
       position: relative;
     }
+    .id-card-embed .f-photo-stack {
+      position: relative;
+      width: 100%; height: 100%;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.10);
+      overflow: hidden;
+    }
     .id-card-embed .f-photo {
+      position: absolute;
+      inset: 0;
       width: 100%; height: 100%;
       object-fit: cover;
       object-position: top center;
-      filter: grayscale(1) contrast(1.05);
-      border-radius: 8px;
-      border: 1px solid rgba(255,255,255,0.10);
       display: block;
-      transition: filter 1400ms cubic-bezier(0.23, 1, 0.32, 1);
     }
-    .id-card-embed .f-photo.colored { filter: grayscale(0) contrast(1); }
-    .id-card-embed .f-photo-slot.photo-missing .f-photo { display: none; }
+    .id-card-embed .f-photo-bw  { z-index: 1; }
+    .id-card-embed .f-photo-color {
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 1400ms cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    .id-card-embed .f-photo-slot.colored .f-photo-color { opacity: 1; }
+    .id-card-embed .f-photo-slot.photo-missing .f-photo-stack { display: none; }
     .id-card-embed .f-photo-slot.photo-missing::after {
       content: 'AG';
       position: absolute;
@@ -2159,12 +2170,20 @@
                           <span class="ic-lbl">2027</span>
                         </div>
                         <div class="f-photo-slot" id="idPhotoSlot">
-                          <img class="f-photo"
-                               src="profile.jpg"
-                               alt="Aniket Ghosh — portrait"
-                               loading="eager"
-                               draggable="false"
-                               onerror="this.closest('.f-photo-slot').classList.add('photo-missing')">
+                          <div class="f-photo-stack">
+                            <img class="f-photo f-photo-bw"
+                                 src="profile-black and white.jpg"
+                                 alt="Aniket Ghosh — portrait"
+                                 loading="eager"
+                                 draggable="false"
+                                 onerror="this.closest('.f-photo-slot').classList.add('photo-missing')">
+                            <img class="f-photo f-photo-color"
+                                 src="profile.jpg"
+                                 alt=""
+                                 loading="eager"
+                                 draggable="false"
+                                 aria-hidden="true">
+                          </div>
                         </div>
                         <div class="f-content">
                           <div>
@@ -3648,8 +3667,8 @@
     flipInner.setAttribute('aria-pressed', String(isFlipped));
     if (!hintDismissed && flipHint) { hintDismissed = true; flipHint.classList.add('hide'); }
     if (!isFlipped && flipCount >= 1) {
-      const photo = document.querySelector('#idFlipInner .f-photo');
-      if (photo) photo.classList.toggle('colored');
+      const slot = document.querySelector('#idFlipInner .f-photo-slot');
+      if (slot) slot.classList.toggle('colored');
     }
     flipCount++;
   }
