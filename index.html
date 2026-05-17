@@ -1706,7 +1706,7 @@
         padding-top: 80px;
       }
       .hero-left { width: 100%; gap: 1.25rem; }
-      .hero-right { width: 100%; align-items: flex-start; order: -1; }
+      .hero-right { width: 100%; align-items: center; order: -1; }
       .hero-photo-wrap { max-width: 280px; }
       .hero-name { font-size: clamp(2.8rem, 14vw, 4.5rem); }
       .hero-scroll { display: none; }
@@ -1816,7 +1816,7 @@
       transition: transform 600ms cubic-bezier(0.23, 1, 0.32, 1);
       cursor: pointer;
       user-select: none;
-      touch-action: manipulation;
+      touch-action: none;
     }
     .id-card-embed .flip-inner:focus-visible {
       outline: 2px solid rgba(255,255,255,0.45);
@@ -3618,7 +3618,11 @@
         grabOffY = pts[N-1].y - t.clientY;
       }
     }
-    if (grabbed) { curGrabX = t.clientX + grabOffX; curGrabY = t.clientY + grabOffY; }
+    if (grabbed) {
+      if (e.cancelable) e.preventDefault();
+      curGrabX = t.clientX + grabOffX;
+      curGrabY = t.clientY + grabOffY;
+    }
   }
 
   function onUp(e) {
@@ -3637,7 +3641,7 @@
   window.addEventListener('blur',          cancelGrab);
   window.addEventListener('pointercancel', cancelGrab);
   flipInner.addEventListener('touchstart', onDown, { passive: true });
-  window.addEventListener('touchmove',     onMove, { passive: true });
+  window.addEventListener('touchmove',     onMove, { passive: false });
   window.addEventListener('touchend',      onUp,   { passive: false });
 
   // ── Flip ──────────────────────────────────────────────────────
