@@ -1803,7 +1803,7 @@
       82%  { transform: scaleY(1.01) scaleX(0.99); }
       100% { transform: none; }
     }
-    .id-card-embed.card-landed {
+    .id-card-embed .flip-inner.card-landed {
       animation: card-impact 0.52s cubic-bezier(0.23, 1, 0.32, 1) both;
     }
     .id-card-embed .flip-inner {
@@ -3408,10 +3408,11 @@
 
   // ── Impact: transition to pendulum physics ─────────────────────
   function impact() {
-    // Squish animation on the outer embed wrapper
-    cardEmbed.classList.add('card-landed');
-    cardEmbed.addEventListener('animationend',
-      () => cardEmbed.classList.remove('card-landed'), { once: true });
+    // Squish animation on flipInner (child of tiltWrap, NOT an ancestor).
+    // Ancestor transforms trap position:fixed descendants — animating a child avoids that.
+    flipInner.classList.add('card-landed');
+    flipInner.addEventListener('animationend',
+      () => flipInner.classList.remove('card-landed'), { once: true });
 
     // Reset card to natural position so initRope measures correctly
     tiltWrap.style.transform = '';
