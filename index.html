@@ -1765,6 +1765,8 @@
       align-items: center;
       gap: 6px;
       margin-top: 14px;
+      position: relative;
+      z-index: 95;
     }
     .card-meta-badge {
       font-size: 10px;
@@ -1989,14 +1991,15 @@
     #grommHi    { fill: rgba(255,255,255,0.35); }
     @media (max-width: 480px) { .strap { stroke-width: 3.5; } }
     /* Flip hint */
-    .id-card-embed .flip-hint {
+    .flip-hint {
       text-align: center; margin-top: 14px;
       font-size: 10px; font-weight: 500;
       letter-spacing: 1.5px; text-transform: uppercase;
       color: #5a5a5a; font-family: var(--mono);
       transition: opacity 400ms; pointer-events: none; user-select: none;
+      position: relative; z-index: 95;
     }
-    .id-card-embed .flip-hint.hide { opacity: 0; }
+    .flip-hint.hide { opacity: 0; }
     /* Copy toast */
     #idCopyToast {
       position: fixed; top: 20px; left: 50%;
@@ -2019,7 +2022,7 @@
     @media (prefers-reduced-motion: reduce) {
       .id-card-embed .drop-wrapper { animation: none; }
       .id-card-embed .flip-inner   { transition-duration: 0ms; }
-      .id-card-embed .flip-hint    { transition-duration: 0ms; }
+      .flip-hint                   { transition-duration: 0ms; }
       #idCopyToast                 { transition-duration: 0ms; }
       .name-word                   { animation: none; }
     }
@@ -2192,11 +2195,11 @@
 
                   </div><!-- /flip-inner -->
                 </div><!-- /tilt-wrapper -->
-                <div class="flip-hint" id="idFlipHint">tap to flip</div>
               </div><!-- /float-wrapper -->
             </div><!-- /drop-wrapper -->
           </div><!-- /scene -->
         </div><!-- /id-card-embed -->
+        <div class="flip-hint" id="idFlipHint">tap to flip</div>
         <div class="card-meta-badges">
           <span class="card-meta-badge">F-1 &middot; STEM OPT eligible</span>
           <span class="card-meta-badge card-meta-badge--highlight">Spring 2027 Opportunities</span>
@@ -3432,12 +3435,17 @@
     tiltWrap.style.perspectiveOrigin = '50% 50%';
     tiltWrap.style.transform = `translate(${fr.left.toFixed(1)}px,${fr.top.toFixed(1)}px)`;
 
-    // Placeholder keeps hero-right from collapsing now that tiltWrap is out of flow
+    // Insert a spacer that holds the card's vertical footprint in the layout.
+    // Inserting it before the flip-hint (now a direct sibling of .card-meta-badges)
+    // pushes both the hint and badges below the card's visual area.
     if (!document.getElementById('idCardSpacer')) {
       const sp = document.createElement('div');
       sp.id = 'idCardSpacer';
       sp.style.cssText = `width:${fr.width}px;height:${fr.height}px;flex-shrink:0;pointer-events:none;`;
-      document.querySelector('.hero-right').appendChild(sp);
+      const hintEl = document.getElementById('idFlipHint');
+      const heroRight = document.querySelector('.hero-right');
+      if (hintEl) heroRight.insertBefore(sp, hintEl);
+      else heroRight.appendChild(sp);
     }
 
     // Transfer fall velocity into Verlet: the lower rope points get the
