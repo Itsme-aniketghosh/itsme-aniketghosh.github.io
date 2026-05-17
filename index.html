@@ -1767,7 +1767,9 @@
       margin-top: 14px;
       position: relative;
       z-index: 95;
+      transition: opacity 600ms;
     }
+    .card-meta-badges.hide { opacity: 0; }
     .card-meta-badge {
       font-size: 10px;
       font-weight: 500;
@@ -1992,7 +1994,7 @@
     @media (max-width: 480px) { .strap { stroke-width: 3.5; } }
     /* Flip hint */
     .flip-hint {
-      text-align: center; margin-top: 36px;
+      text-align: center; margin-top: 60px;
       font-size: 10px; font-weight: 500;
       letter-spacing: 1.5px; text-transform: uppercase;
       color: #5a5a5a; font-family: var(--mono);
@@ -2159,7 +2161,7 @@
                             <div class="f-footer">
                               <div class="f-footer-col">
                                 <span class="ic-lbl">ID</span>
-                                <div class="f-footer-val">AG-25.07</div>
+                                <div class="f-footer-val">AG-27.02</div>
                               </div>
                               <div class="f-footer-col">
                                 <span class="ic-lbl">Valid</span>
@@ -3442,10 +3444,19 @@
       const sp = document.createElement('div');
       sp.id = 'idCardSpacer';
       sp.style.cssText = `width:${fr.width}px;height:${fr.height}px;flex-shrink:0;pointer-events:none;`;
-      const hintEl = document.getElementById('idFlipHint');
+      const hintEl   = document.getElementById('idFlipHint');
+      const badgesEl = document.querySelector('.card-meta-badges');
       const heroRight = document.querySelector('.hero-right');
       if (hintEl) heroRight.insertBefore(sp, hintEl);
       else heroRight.appendChild(sp);
+
+      // Hide both until the bounce/swing settles, then fade in.
+      if (hintEl)   hintEl.classList.add('hide');
+      if (badgesEl) badgesEl.classList.add('hide');
+      setTimeout(() => {
+        if (hintEl)   hintEl.classList.remove('hide');
+        if (badgesEl) badgesEl.classList.remove('hide');
+      }, 2200);
     }
 
     // Transfer fall velocity into Verlet: the lower rope points get the
