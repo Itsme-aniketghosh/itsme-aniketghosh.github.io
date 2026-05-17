@@ -505,16 +505,30 @@
     }
     .name-word {
       display: block;
-      animation: name-impact 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+      animation: name-impact 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
     }
     .name-word:nth-child(1) { animation-delay: 1.55s; }
     .name-word:nth-child(2) { animation-delay: 1.75s; }
     @keyframes name-impact {
-      0%   { transform: translateY(-100%) scaleY(1.1); opacity: 0; filter: blur(6px); }
-      60%  { opacity: 1; filter: blur(0); }
-      78%  { transform: translateY(5px) scaleY(0.97); }
-      90%  { transform: translateY(-2px) scaleY(1.01); }
-      100% { transform: translateY(0) scaleY(1); opacity: 1; }
+      0%   { transform: translateY(-120%) scaleY(1.2); opacity: 0; filter: blur(10px); }
+      52%  { opacity: 1; filter: blur(0); }
+      70%  { transform: translateY(12px) scaleY(0.72) scaleX(1.18); }
+      82%  { transform: translateY(-5px) scaleY(1.08) scaleX(0.96); }
+      91%  { transform: translateY(2px) scaleY(0.97) scaleX(1.01); }
+      100% { transform: none; opacity: 1; }
+    }
+    @keyframes hero-impact-shake {
+      0%   { transform: none; }
+      14%  { transform: translate(-7px, 4px) rotate(-0.4deg); }
+      28%  { transform: translate(6px, -3px) rotate(0.3deg); }
+      42%  { transform: translate(-5px, 2px) rotate(-0.2deg); }
+      57%  { transform: translate(3px, -1px) rotate(0.1deg); }
+      72%  { transform: translate(-2px, 1px); }
+      86%  { transform: translate(1px, 0); }
+      100% { transform: none; }
+    }
+    .hero {
+      animation: hero-impact-shake 0.48s ease-out 2.38s;
     }
 
     .hero-marquee-wrap {
@@ -1808,7 +1822,7 @@
     }
     .id-card-embed .flip-inner {
       width: 300px;
-      height: 480px;
+      height: 420px;
       position: relative;
       transform-style: preserve-3d;
       -webkit-transform-style: preserve-3d;
@@ -1860,7 +1874,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 14px 22px 0;
+      padding: 10px 22px 0;
       flex-shrink: 0;
     }
     .id-card-embed .ic-divider {
@@ -1873,7 +1887,7 @@
       position: absolute; inset: 0;
       display: flex;
       flex-direction: column;
-      padding-bottom: 18px;
+      padding-bottom: 12px;
     }
     .id-card-embed .f-photo-slot {
       flex: 0 0 230px;
@@ -1910,7 +1924,7 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 12px 22px 0;
+      padding: 8px 22px 0;
       min-height: 0;
     }
     .id-card-embed .f-name {
@@ -1960,12 +1974,12 @@
     .id-card-embed .b-return {
       display: flex; flex-direction: column;
       align-items: center; text-align: center;
-      gap: 6px; padding: 14px 22px 0;
+      gap: 6px; padding: 10px 22px 0;
       border-top: 0.5px solid rgba(255,255,255,0.10);
       flex-shrink: 0;
     }
     .id-card-embed .b-monogram {
-      text-align: center; padding: 12px 0 14px;
+      text-align: center; padding: 8px 0 10px;
       font-family: Georgia, 'Times New Roman', serif;
       font-style: italic; font-size: 14px; color: #5a5a5a;
       flex-shrink: 0;
@@ -3484,14 +3498,17 @@
     swingFrames = 0;
     phase = 'swing';
 
-    // Invite wiggle ~5–6s after page load: gentle kick to hint the card is draggable
-    setTimeout(function () {
-      if (!dragged && phase === 'physics') {
-        pts[N - 1].px += 14;
-        pts[N - 2].px += 9;
-        pts[N - 3].px += 4;
-      }
-    }, 2500);
+    // Invite wiggle: fires 2.5s after landing, then repeats every 8s while idle
+    (function scheduleWiggle(delay) {
+      setTimeout(function () {
+        if (!dragged && phase === 'physics') {
+          pts[N - 1].px += 16;
+          pts[N - 2].px += 10;
+          pts[N - 3].px += 4;
+        }
+        scheduleWiggle(8000);
+      }, delay);
+    }(2500));
   }
 
   // ── Verlet physics ────────────────────────────────────────────
