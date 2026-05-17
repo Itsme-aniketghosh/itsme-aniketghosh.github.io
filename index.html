@@ -1762,29 +1762,31 @@
     .card-meta-badges {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: 6px;
+      align-items: flex-end;
+      gap: 9px;
       margin-top: 14px;
       position: relative;
       z-index: 95;
-      transition: opacity 600ms;
+      transition: opacity 700ms;
     }
     .card-meta-badges.hide { opacity: 0; }
     .card-meta-badge {
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 1.4px;
+      font-size: 8.5px;
+      font-weight: 700;
+      letter-spacing: 1.9px;
       text-transform: uppercase;
-      color: rgba(240,236,228,0.45);
+      color: rgba(240,236,228,0.38);
       font-family: var(--mono);
-      padding: 4px 10px;
-      border: 1px solid rgba(240,236,228,0.12);
-      border-radius: 4px;
+      padding: 5px 12px;
+      border: 1px solid rgba(240,236,228,0.13);
+      border-radius: 2px;
       white-space: nowrap;
+      background: rgba(6,6,6,0.55);
     }
     .card-meta-badge--highlight {
-      color: rgba(240,236,228,0.75);
-      border-color: rgba(240,236,228,0.25);
+      color: rgba(240,236,228,0.72);
+      border-color: rgba(240,236,228,0.28);
+      background: rgba(240,236,228,0.03);
     }
     .id-card-embed img { -webkit-user-drag: none; user-select: none; }
     .id-card-embed .scene {
@@ -3437,9 +3439,8 @@
     tiltWrap.style.perspectiveOrigin = '50% 50%';
     tiltWrap.style.transform = `translate(${fr.left.toFixed(1)}px,${fr.top.toFixed(1)}px)`;
 
-    // Insert a spacer that holds the card's vertical footprint in the layout.
-    // Inserting it before the flip-hint (now a direct sibling of .card-meta-badges)
-    // pushes both the hint and badges below the card's visual area.
+    // Insert a spacer that holds the card's vertical footprint in the layout,
+    // pushing the flip-hint below the card.
     if (!document.getElementById('idCardSpacer')) {
       const sp = document.createElement('div');
       sp.id = 'idCardSpacer';
@@ -3450,7 +3451,16 @@
       if (hintEl) heroRight.insertBefore(sp, hintEl);
       else heroRight.appendChild(sp);
 
-      // Hide both until the bounce/swing settles, then fade in.
+      // Reposition badges as fixed to the LEFT of the card.
+      if (badgesEl) {
+        badgesEl.style.position  = 'fixed';
+        badgesEl.style.top       = (fr.top + fr.height * 0.38) + 'px';
+        badgesEl.style.right     = (window.innerWidth - fr.left + 20) + 'px';
+        badgesEl.style.marginTop = '0';
+        badgesEl.style.left      = 'auto';
+      }
+
+      // Hide both until the bounce settles, then fade in.
       if (hintEl)   hintEl.classList.add('hide');
       if (badgesEl) badgesEl.classList.add('hide');
       setTimeout(() => {
@@ -3475,14 +3485,14 @@
     swingFrames = 0;
     phase = 'swing';
 
-    // Idle nudge after user has had time to notice the card
+    // Invite wiggle ~5–6s after page load: gentle kick to hint the card is draggable
     setTimeout(function () {
       if (!dragged && phase === 'physics') {
-        pts[N - 1].px -= 12;
-        pts[N - 2].px -= 7;
-        pts[N - 3].px -= 3;
+        pts[N - 1].px += 14;
+        pts[N - 2].px += 9;
+        pts[N - 3].px += 4;
       }
-    }, 3500);
+    }, 2500);
   }
 
   // ── Verlet physics ────────────────────────────────────────────
