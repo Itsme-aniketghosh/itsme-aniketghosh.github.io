@@ -1967,7 +1967,9 @@
     .id-card-embed .card-face {
       position: absolute; inset: 0;
       border-radius: 16px;
-      overflow: hidden;
+      /* overflow:hidden breaks backface-visibility in Safari — use clip-path instead */
+      -webkit-clip-path: inset(0 round 16px);
+      clip-path: inset(0 round 16px);
       backface-visibility: hidden;
       -webkit-backface-visibility: hidden;
       background: #131313;
