@@ -640,6 +640,127 @@
       animation: dot-pulse 2.5s ease-in-out infinite;
     }
 
+    /* ════════════════════════════════════
+       CURRENTLY SECTION
+    ════════════════════════════════════ */
+    .section.currently-section {
+      padding: 2rem 3rem 3rem;
+    }
+
+    /* Meta row: eyebrow label + live clock */
+    .curr-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 0;
+    }
+    .curr-clock {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Line rows */
+    .curr-lines { }
+    .curr-line {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      padding: 0.85rem 0;
+      border-bottom: 1px solid var(--border);
+      cursor: default;
+      position: relative;
+      will-change: transform;
+      transition:
+        background   0.2s ease,
+        transform    0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .cl-dash {
+      font-family: var(--display);
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--border);
+      flex-shrink: 0;
+      line-height: 1;
+      transition: color 0.25s ease;
+      user-select: none;
+    }
+    .curr-line:hover .cl-dash { color: var(--muted); }
+
+    .cl-text {
+      font-family: var(--mono);
+      font-size: 0.875rem;
+      letter-spacing: 0.02em;
+      color: var(--text);
+      line-height: 1.5;
+      flex: 1;
+      min-width: 0;
+      transition: text-shadow 0.4s ease;
+      text-shadow: none;
+    }
+
+    /* Flip chars — inline so word-wrap works naturally */
+    .fc {
+      display: inline;
+      transition: color 0.08s ease;
+    }
+    .fc.scrambling { color: var(--muted); }
+
+    /* Tag pills (right side, slide in on hover) */
+    .cl-tags {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      flex-shrink: 0;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(8px);
+      transition: opacity 0.25s ease, transform 0.3s cubic-bezier(0.23,1,0.32,1);
+    }
+    .curr-line:hover .cl-tags {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(0);
+    }
+    .cl-tag {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 0.15rem 0.55rem;
+      border-radius: 2px;
+      white-space: nowrap;
+      opacity: 0;
+      transform: translateX(10px);
+      transition:
+        opacity 0.2s ease,
+        transform 0.25s cubic-bezier(0.23,1,0.32,1),
+        color 0.2s ease,
+        border-color 0.2s ease;
+    }
+    .curr-line:hover .cl-tag {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .cl-tag:hover {
+      color: var(--text);
+      border-color: rgba(240,236,228,0.35);
+    }
+
+    /* Glitch text-shadow state (added/removed by JS) */
+    .curr-line.glitching .cl-text {
+      text-shadow:
+        -3px 0 rgba(255, 0, 80, 0.5),
+         3px 0 rgba(0, 180, 255, 0.5);
+    }
+
     .hero-right {
       min-width: 0;
       display: flex;
@@ -1911,6 +2032,10 @@
       .contact-heading { font-size: clamp(2.5rem, 12vw, 4rem); }
       .contact-email { font-size: 0.75rem; }
 
+      .currently-section { padding: 1.5rem 1.5rem 2rem; }
+      .curr-line { padding: 0.7rem 0; gap: 0.75rem; }
+      .cl-tags { display: none; }  /* hide tags on mobile — no hover state */
+
       footer { flex-direction: column; gap: 0.75rem; text-align: center; }
 
       .cursor-dot, .cursor-ring { display: none; }
@@ -2275,6 +2400,7 @@
     <a href="#hero" class="nav-logo">AG</a>
 
     <ul class="nav-links">
+      <li><a href="#currently">Now</a></li>
       <li><a href="#about">About</a></li>
       <li><a href="#skills">Skills</a></li>
       <li><a href="#experience">Experience</a></li>
@@ -2295,6 +2421,7 @@
 
   <!-- Mobile Menu -->
   <div class="mobile-menu" id="mobileMenu">
+    <a href="#currently" class="mobile-link">Now</a>
     <a href="#about" class="mobile-link">About</a>
     <a href="#skills" class="mobile-link">Skills</a>
     <a href="#experience" class="mobile-link">Experience</a>
@@ -2467,14 +2594,43 @@
     </div>
 
     <!-- ─── CURRENTLY ─── -->
-    <div class="currently-block reveal">
-      <span class="currently-label">Currently</span>
-      <div class="currently-lines">
-        <span>— Building the ML stack at Varosync (AWS / Nebius / Mithril)</span>
-        <span>— Teaching the ML lab for AIDE '26 at Northeastern's Ethics Institute (Sloan-funded)</span>
-        <span>— Looking for Spring 2027 ML/AI roles</span>
+    <section class="section currently-section" id="currently">
+
+      <!-- Label + live clock -->
+      <div class="curr-meta">
+        <span class="eyebrow">Currently</span>
+        <span class="curr-clock" id="currClock" aria-live="off"></span>
       </div>
-    </div>
+
+      <!-- Status lines -->
+      <div class="curr-lines">
+
+        <div class="curr-line"
+             data-full="Building the ML stack at Varosync (AWS / Nebius / Mithril)"
+             data-tags="AWS,Nebius,Mithril,RunPod,GCP">
+          <span class="cl-dash" aria-hidden="true">—</span>
+          <span class="cl-text" aria-label="Building the ML stack at Varosync (AWS / Nebius / Mithril)"></span>
+          <div class="cl-tags" aria-hidden="true"></div>
+        </div>
+
+        <div class="curr-line"
+             data-full="Teaching the ML lab for AIDE '26 at Northeastern's Ethics Institute"
+             data-tags="Sloan-funded,Ethics Institute,ML Lab,Khoury">
+          <span class="cl-dash" aria-hidden="true">—</span>
+          <span class="cl-text" aria-label="Teaching the ML lab for AIDE '26 at Northeastern's Ethics Institute"></span>
+          <div class="cl-tags" aria-hidden="true"></div>
+        </div>
+
+        <div class="curr-line"
+             data-full="Looking for Spring 2027 ML/AI roles"
+             data-tags="Open to work,Spring 2027,Full-time,Co-op">
+          <span class="cl-dash" aria-hidden="true">—</span>
+          <span class="cl-text" aria-label="Looking for Spring 2027 ML/AI roles"></span>
+          <div class="cl-tags" aria-hidden="true"></div>
+        </div>
+
+      </div>
+    </section>
 
     <!-- ─── ABOUT ─── -->
     <section class="section section-alt" id="about">
@@ -3539,7 +3695,119 @@
       });
     })();
 
-    /* ═══════ 10. COPY EMAIL ═══════ */
+    /* ═══════ 10. CURRENTLY SECTION ═══════ */
+    ;(function initCurrently() {
+      const POOL         = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#%—·∙▪≡≥≤';
+      const FLIP_MS      = 40;   // ms per glyph frame
+      const CHAR_STAGGER = 18;   // ms delay between chars starting
+      const RESOLVE_AT   = 8;    // frames before a char snaps to its real value
+      const isTouchDev   = window.matchMedia('(pointer: coarse)').matches;
+
+      /* Live clock */
+      const clockEl = document.getElementById('currClock');
+      (function tickClock() {
+        if (clockEl) clockEl.textContent = new Date().toLocaleTimeString('en-US', { hour12: false });
+        setTimeout(tickClock, 1000);
+      }());
+
+      function buildScrambler(line) {
+        const full   = line.dataset.full || '';
+        const textEl = line.querySelector('.cl-text');
+        const tagsEl = line.querySelector('.cl-tags');
+
+        /* --- build char spans ------------------------------------------ */
+        textEl.innerHTML = [...full].map((ch, i) => {
+          const safe = ch === "'" ? '&#39;' : ch === '&' ? '&amp;' : ch === '<' ? '&lt;' : ch;
+          return `<span class="fc" data-ch="${safe}">${ch === ' ' ? ' ' : ch}</span>`;
+        }).join('');
+
+        /* --- build tag pills ------------------------------------------- */
+        (line.dataset.tags || '').split(',').forEach((tag, i) => {
+          const pill = document.createElement('span');
+          pill.className = 'cl-tag';
+          pill.textContent = tag.trim();
+          pill.style.transitionDelay = (i * 55) + 'ms';
+          tagsEl.appendChild(pill);
+        });
+
+        /* --- scramble function ----------------------------------------- */
+        function scramble() {
+          const chars = textEl.querySelectorAll('.fc');
+          chars.forEach((el, i) => {
+            clearTimeout(el._to);
+            if (el._iv) { clearInterval(el._iv); el._iv = null; }
+            const target = el.dataset.ch;
+            el._to = setTimeout(() => {
+              let f = 0;
+              el.classList.add('scrambling');
+              el._iv = setInterval(() => {
+                if (f < RESOLVE_AT) {
+                  el.textContent = target === ' ' ? ' '
+                    : POOL[Math.floor(Math.random() * POOL.length)];
+                } else {
+                  el.textContent = target === ' ' ? ' ' : target;
+                  el.classList.remove('scrambling');
+                  clearInterval(el._iv);
+                  el._iv = null;
+                }
+                f++;
+              }, FLIP_MS);
+            }, i * CHAR_STAGGER);
+          });
+        }
+
+        /* --- trigger on scroll-enter ----------------------------------- */
+        const io = new IntersectionObserver(entries => {
+          entries.forEach(e => {
+            if (!e.isIntersecting) return;
+            scramble();
+            io.unobserve(line);
+          });
+        }, { threshold: 0.4 });
+        io.observe(line);
+
+        /* --- hover: glitch in, re-scramble out ------------------------- */
+        line.addEventListener('mouseenter', () => {
+          line.classList.add('glitching');
+          setTimeout(() => line.classList.remove('glitching'), 440);
+        });
+        line.addEventListener('mouseleave', () => {
+          scramble();
+        });
+      }
+
+      document.querySelectorAll('.curr-line').forEach(buildScrambler);
+
+      /* --- Magnetic repulsion / attraction (desktop only) -------------- */
+      if (isTouchDev) return;
+      const section = document.getElementById('currently');
+      if (!section) return;
+
+      section.addEventListener('mousemove', e => {
+        document.querySelectorAll('.curr-line').forEach(line => {
+          const r        = line.getBoundingClientRect();
+          const cy       = r.top + r.height / 2;
+          const dy       = e.clientY - cy;
+          const absDy    = Math.abs(dy);
+          const RADIUS   = 160;
+          const MAX_PUSH = 10;
+
+          if (absDy > RADIUS) { line.style.transform = ''; return; }
+
+          const strength  = (1 - absDy / RADIUS) * MAX_PUSH;
+          const isHovered = line.matches(':hover');
+          /* attraction when cursor is ON the line, repulsion when nearby */
+          const dir = isHovered ? (dy > 0 ? -0.4 : 0.4) : (dy > 0 ? -1 : 1);
+          line.style.transform = `translateY(${dir * strength}px)`;
+        });
+      });
+
+      section.addEventListener('mouseleave', () => {
+        document.querySelectorAll('.curr-line').forEach(l => { l.style.transform = ''; });
+      });
+    }());
+
+    /* ═══════ 11. COPY EMAIL ═══════ */
     function copyEmail() {
       const EMAIL = 'ghosh.anik@northeastern.edu';
       function flash() {
