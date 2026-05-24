@@ -615,31 +615,6 @@
     }
     .hero-socials a:hover { color: var(--text); transform: translateY(-2px); }
 
-    .avail-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-top: 0.9rem;
-      margin-bottom: 0.2rem;
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      letter-spacing: 0.04em;
-      color: var(--bg);
-      background: var(--text);
-      padding: 0.3rem 0.75rem;
-      border-radius: 2px;
-      width: fit-content;
-    }
-    .avail-dot {
-      display: inline-block;
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--bg);
-      flex-shrink: 0;
-      animation: dot-pulse 2.5s ease-in-out infinite;
-    }
-
     /* ════════════════════════════════════
        CURRENTLY SECTION
     ════════════════════════════════════ */
@@ -654,8 +629,8 @@
       justify-content: space-between;
       padding-bottom: 1rem;
       border-bottom: 1px solid var(--border);
-      margin-bottom: 0;
     }
+    .curr-meta .eyebrow { margin-bottom: 0; }
     .curr-clock {
       font-family: var(--mono);
       font-size: 0.65rem;
@@ -665,7 +640,6 @@
     }
 
     /* Line rows */
-    .curr-lines { }
     .curr-line {
       display: flex;
       align-items: center;
@@ -927,36 +901,6 @@
       transform: rotate(180deg);
     }
 
-    /* ── Currently block ── */
-    .currently-block {
-      padding: 1.5rem 3rem;
-      display: flex;
-      align-items: baseline;
-      gap: 2.5rem;
-      border-bottom: 1px solid var(--border);
-    }
-    .currently-label {
-      font-family: var(--mono);
-      font-size: 0.62rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-    .currently-lines {
-      display: flex;
-      flex-direction: column;
-      gap: 0.3rem;
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      color: var(--text);
-      letter-spacing: 0.02em;
-    }
-    @media (max-width: 600px) {
-      .currently-block { flex-direction: column; gap: 0.75rem; padding: 1.5rem; }
-    }
-
     .hero-scroll {
       position: absolute;
       bottom: 2rem;
@@ -1112,7 +1056,6 @@
       transform: scale(1.12);
       transition: opacity 1.2s cubic-bezier(0.22,1,0.36,1),
                   transform 1.2s cubic-bezier(0.22,1,0.36,1);
-      user-select: none;
     }
 
     .section-head {
@@ -2032,7 +1975,7 @@
       .contact-heading { font-size: clamp(2.5rem, 12vw, 4rem); }
       .contact-email { font-size: 0.75rem; }
 
-      .currently-section { padding: 1.5rem 1.5rem 2rem; }
+      .section.currently-section { padding: 1.5rem 1.5rem 2rem; }
       .curr-line { padding: 0.7rem 0; gap: 0.75rem; }
       .cl-tags { display: none; }  /* hide tags on mobile — no hover state */
 
@@ -2377,6 +2320,11 @@
       .bento-cell                  { transition-duration: 0ms !important; }
       .skill-category              { transition-duration: 0ms !important; }
       .skill-category::after       { animation: none; }
+      /* Currently section — flip-board & glitch are JS-driven; disable CSS transitions */
+      .curr-line                   { transition: none !important; }
+      .cl-text                     { transition: none !important; }
+      .cl-tags, .cl-tag            { transition: none !important; }
+      .fc                          { transition: none !important; }
     }
   </style>
 </head>
