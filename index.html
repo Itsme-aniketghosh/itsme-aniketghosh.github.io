@@ -1,10 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-JMWH20J348"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-JMWH20J348');
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="google-site-verification" content="GVuhYMlGv-AJyz32BlkPGRO2qJkWjWT4QDz5Tuo4-YA">
-  <meta name="description" content="Aniket Ghosh — AI/ML Engineer at Varosync. MS AI at Khoury (4.0 GPA). Teaching Co-Lead, AI &amp; Data Ethics Program (AIDE), Northeastern Ethics Institute.">
+  <meta name="msvalidate.01" content="99F7296692E2514759733C77F790B1FA">
+  <meta name="description" content="Aniket Ghosh — AI/ML Engineer at Varosync. MS AI, Northeastern University Khoury (GPA 4.0). NLP, computer vision, mechanistic interpretability.">
   <meta name="keywords" content="Aniket Ghosh, AI Engineer, ML Engineer, Machine Learning Engineer, NLP Engineer, Computer Vision, Northeastern University, Khoury College of Computer Sciences, MS Artificial Intelligence, NEU AI student, Khoury MS AI, MS AI Northeastern, Northeastern MS artificial intelligence, Medical AI, Healthcare AI, Mechanistic Interpretability, Multi-agent Systems, MLOps, Drug Development AI, Clinical Trial AI, Pharmacological Simulation, Varosync, Biomedical AI, Large Language Models, LLM, Deep Learning, PyTorch, Python, AI Research, IEM Kolkata, CMATER Lab, Hope Foundation, AIDE Program, AI and Data Ethics Summer Program, AI Data Ethics NEU, ML instructor AIDE, AIDE Northeastern, Sloan Foundation AI ethics, Alfred P. Sloan Foundation, Northeastern Ethics Institute, Teaching Co-Lead Machine Learning, Interpretable Machine Learning, Transformer Models, Agentic AI, Differential Privacy, Fairness Machine Learning, Philosophy of AI">
   <meta name="author" content="Aniket Ghosh">
   <meta name="robots" content="index, follow">
@@ -14,13 +23,13 @@
   <meta property="og:site_name" content="Aniket Ghosh">
   <meta property="og:title" content="Aniket Ghosh | AI/ML Engineer">
   <meta property="og:description" content="AI/ML Engineer at Varosync. MS AI student, Khoury College of Computer Sciences, Northeastern University (GPA 4.0, May 2027). Teaching Co-Lead for the AI and Data Ethics Summer Program (AIDE) at Northeastern's Ethics Institute, funded by the Alfred P. Sloan Foundation.">
-  <meta property="og:image" content="https://itsme-aniketghosh.github.io/profile.jpg">
+  <meta property="og:image" content="https://itsme-aniketghosh.github.io/aniket-ghosh-ai-ml-engineer-northeastern-university.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Aniket Ghosh | AI/ML Engineer">
   <meta name="twitter:description" content="AI/ML Engineer at Varosync. MS AI student, Khoury College of Computer Sciences, Northeastern University (GPA 4.0, May 2027). Teaching Co-Lead for the AI and Data Ethics Summer Program (AIDE) at Northeastern's Ethics Institute, funded by the Alfred P. Sloan Foundation.">
-  <meta name="twitter:image" content="https://itsme-aniketghosh.github.io/profile.jpg">
+  <meta name="twitter:image" content="https://itsme-aniketghosh.github.io/aniket-ghosh-ai-ml-engineer-northeastern-university.jpg">
   <meta property="og:locale" content="en_US">
   <meta property="og:image:alt" content="Aniket Ghosh — AI/ML Engineer and MS AI student at Northeastern University">
   <meta name="theme-color" content="#0c0c0c">
@@ -50,7 +59,11 @@
         "url": "https://itsme-aniketghosh.github.io/",
         "image": {
           "@type": "ImageObject",
-          "url": "https://itsme-aniketghosh.github.io/profile.jpg",
+          "url": "https://itsme-aniketghosh.github.io/aniket-ghosh-ai-ml-engineer-northeastern-university.jpg",
+          "contentUrl": "https://itsme-aniketghosh.github.io/aniket-ghosh-ai-ml-engineer-northeastern-university.jpg",
+          "name": "Aniket Ghosh — AI/ML Engineer",
+          "description": "Portrait of Aniket Ghosh, AI/ML Engineer at Varosync Inc. and MS Artificial Intelligence student at Northeastern University Khoury College of Computer Sciences.",
+          "caption": "Aniket Ghosh — AI/ML Engineer at Varosync and MS AI student at Northeastern University",
           "width": 800,
           "height": 800
         },
@@ -353,12 +366,14 @@
       content: '';
       position: absolute;
       bottom: -2px; left: 0;
-      width: 0; height: 1px;
+      width: 100%; height: 1px;
       background: var(--text);
-      transition: width 0.3s ease;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 220ms cubic-bezier(0.23, 1, 0.32, 1);
     }
     .nav-links a:hover { color: var(--text); }
-    .nav-links a:hover::after { width: 100%; }
+    .nav-links a:hover::after { transform: scaleX(1); }
 
     .nav-right {
       display: flex;
@@ -414,6 +429,7 @@
       z-index: -1;
     }
     .btn-filled:hover::before { transform: translateX(0); }
+    .btn:active { transform: scale(0.97); }
 
     .btn-ghost {
       color: var(--muted);
@@ -444,7 +460,7 @@
       display: block;
       width: 22px; height: 1.5px;
       background: var(--text);
-      transition: all 0.3s ease;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
     }
     .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
     .hamburger.open span:nth-child(2) { opacity: 0; }
@@ -574,7 +590,7 @@
 
     .hero-desc {
       font-size: 1rem;
-      color: var(--muted);
+      color: var(--text);
       max-width: 480px;
       line-height: 1.75;
     }
@@ -824,6 +840,123 @@
       50% { opacity: 0.3; }
     }
 
+    /* ── Availability pill ── */
+    .avail-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.9rem;
+      margin-bottom: 0.2rem;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+      color: var(--bg);
+      background: var(--text);
+      padding: 0.3rem 0.75rem;
+      border-radius: 2px;
+      width: fit-content;
+    }
+    .avail-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--bg);
+      flex-shrink: 0;
+      animation: dot-pulse 2.5s ease-in-out infinite;
+    }
+
+    /* ── About content swap ── */
+    .about-brief,
+    .about-long {
+      transition: opacity 200ms cubic-bezier(0.23, 1, 0.32, 1),
+                  transform 200ms cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    .about-brief.content-entering,
+    .about-long.content-entering {
+      animation: content-enter 220ms cubic-bezier(0.23, 1, 0.32, 1) both;
+    }
+    @keyframes content-enter {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .about-swap-btn {
+      margin-top: 1.2rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: none;
+      border: none;
+      border-bottom: 1px solid rgba(240,236,228,0.2);
+      padding: 0.2rem 0;
+      cursor: pointer;
+      transition: color 200ms ease-out, border-color 200ms ease-out;
+      user-select: none;
+    }
+    .about-swap-btn:hover {
+      color: var(--text);
+      border-color: rgba(240,236,228,0.5);
+    }
+    .about-swap-btn:active { transform: scale(0.97); opacity: 0.8; }
+    .about-swap-btn:focus-visible {
+      outline: 1px solid var(--text);
+      outline-offset: 3px;
+    }
+    .btn:focus-visible,
+    .dt-btn:focus-visible,
+    .copy-btn:focus-visible,
+    .back-to-top:focus-visible,
+    .contact-ai-row a:focus-visible {
+      outline: 1px solid var(--text);
+      outline-offset: 3px;
+    }
+    .nav-links a:focus-visible {
+      outline: 1px solid var(--text);
+      outline-offset: 4px;
+    }
+    .about-swap-arrow {
+      display: inline-block;
+      transition: transform 220ms cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    .about-swap-btn[aria-expanded="true"] .about-swap-arrow {
+      transform: rotate(180deg);
+    }
+
+    /* ── Currently block ── */
+    .currently-block {
+      padding: 1.5rem 3rem;
+      display: flex;
+      align-items: baseline;
+      gap: 2.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .currently-label {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .currently-lines {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--text);
+      letter-spacing: 0.02em;
+    }
+    @media (max-width: 600px) {
+      .currently-block { flex-direction: column; gap: 0.75rem; padding: 1.5rem; }
+    }
+
     .hero-scroll {
       position: absolute;
       bottom: 2rem;
@@ -931,6 +1064,7 @@
       z-index: -1;
     }
     .dt-btn:hover::before { transform: translateX(0); }
+    .dt-btn:active { transform: scale(0.97); }
     @media (max-width: 768px) {
       .dt-strip { flex-direction: column; align-items: flex-start; padding: 1.5rem; gap: 1rem; }
       .dt-name { display: none; }
@@ -1308,10 +1442,10 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 1px;
-      background: var(--border);
+      background: var(--bg);
     }
     .bento-cell {
-      background: var(--bg);
+      background: var(--surface);
       padding: 2rem;
       display: flex;
       flex-direction: column;
@@ -1325,6 +1459,7 @@
     .bento-cell.span-2 { grid-column: span 2; min-height: 300px; }
     .bento-cell.span-3 { grid-column: span 3; min-height: 220px; }
     .bento-cell:hover { background: var(--text); transform: translateY(-3px); }
+    .bento-cell:hover:active { transform: translateY(-1px) scale(0.99); }
     .bento-cell:hover .proj-num,
     .bento-cell:hover .proj-name,
     .bento-cell:hover .proj-ctx,
@@ -1372,7 +1507,8 @@
       margin-bottom: 0.5rem;
       transition: color 0.25s ease;
     }
-    .bento-cell.span-2 .proj-name { font-size: 1.5rem; }
+    .bento-cell.span-2 .proj-name,
+    .bento-cell.span-3 .proj-name { font-size: 1.5rem; }
     .proj-ctx {
       font-family: var(--mono);
       font-size: 0.65rem;
@@ -1439,6 +1575,7 @@
       transition: background 0.2s ease;
     }
     .research-card:hover { background: var(--bg); }
+    .research-grid .research-card:last-child:nth-child(odd) { grid-column: span 2; }
 
     .research-status {
       display: inline-block;
@@ -1585,6 +1722,7 @@
       transition: color 0.2s ease, border-color 0.2s ease;
     }
     .copy-btn:hover { color: var(--text); border-color: var(--text); }
+    .copy-btn:active { transform: scale(0.96); }
     .contact-ai-row {
       display: flex;
       justify-content: center;
@@ -1604,6 +1742,7 @@
       background: var(--text);
       color: var(--bg);
     }
+    .contact-ai-row a:active { transform: scale(0.97); }
     .contact-links-row {
       display: flex;
       align-items: center;
@@ -1674,7 +1813,7 @@
     .reveal-stagger.in-view > * { opacity: 1; transform: translateY(0); }
 
     /* ── Section number entrance ── */
-    .section-num.in-view { opacity: 0.03; transform: scale(1); }
+    .section-num.in-view { opacity: 0.055; transform: scale(1); }
 
     /* ── Timeline: slide from left ── */
     .timeline-entry.reveal { transform: translateX(-24px) translateY(16px); }
@@ -1710,7 +1849,7 @@
     .certs-grid.reveal-stagger.in-view > * { opacity: 1; transform: none; }
 
     /* ── Hero photo gentle float ── */
-    .hero-photo-wrap { animation: photo-float 9s ease-in-out infinite; }
+    .hero-photo-wrap { animation: photo-float 9s ease-in-out infinite; will-change: transform; }
     @keyframes photo-float {
       0%, 100% { transform: translateY(0); }
       50%       { transform: translateY(-7px); }
@@ -1750,6 +1889,7 @@
     }
     .back-to-top.visible { opacity: 1; transform: translateY(0); }
     .back-to-top:hover { color: var(--bg); border-color: var(--text); background: var(--text); }
+    .back-to-top:active { transform: scale(0.93); }
 
     /* ════════════════════════════════════
        17. LOADER
@@ -2004,7 +2144,9 @@
     .id-card-embed .card-face {
       position: absolute; inset: 0;
       border-radius: 16px;
-      overflow: hidden;
+      /* overflow:hidden breaks backface-visibility in Safari — use clip-path instead */
+      -webkit-clip-path: inset(0 round 16px);
+      clip-path: inset(0 round 16px);
       backface-visibility: hidden;
       -webkit-backface-visibility: hidden;
       background: #131313;
@@ -2208,11 +2350,33 @@
       transform: translateX(-50%) translateY(0);
     }
     @media (prefers-reduced-motion: reduce) {
+      /* ID card */
       .id-card-embed .drop-wrapper { animation: none; }
       .id-card-embed .flip-inner   { transition-duration: 0ms; }
       .flip-hint                   { transition-duration: 0ms; }
       #idCopyToast                 { transition-duration: 0ms; }
+      /* Hero */
       .name-word                   { animation: none; }
+      .hero                        { animation: none; }
+      .hero-marquee-track          { animation-play-state: paused; }
+      .hero-photo-wrap             { animation: none; will-change: auto; }
+      .hero-scroll-line            { animation: none; }
+      /* Decorative pulses */
+      .status-dot, .avail-dot      { animation: none; opacity: 1; }
+      .now-badge, .stat-pill       { animation: none; }
+      .live-badge                  { animation: none; opacity: 1; border-color: var(--text); }
+      /* Content swap */
+      .about-brief, .about-long    { transition-duration: 0ms; }
+      /* Scroll reveals — still reveal, just instantly */
+      .reveal                      { transition-duration: 0ms !important; }
+      .reveal-stagger > *          { transition-duration: 0ms !important; }
+      .section-num                 { transition-duration: 0ms !important; }
+      .skill-pill                  { transition-duration: 0ms !important; animation: none; }
+      .split-text .char            { transition-duration: 0ms !important; }
+      .timeline-entry .tags .tag   { transition-duration: 0ms !important; animation: none; }
+      .bento-cell                  { transition-duration: 0ms !important; }
+      .skill-category              { transition-duration: 0ms !important; }
+      .skill-category::after       { animation: none; }
     }
   </style>
 </head>
@@ -2249,7 +2413,7 @@
     <div class="nav-right">
       <a href="resume.pdf" target="_blank" class="btn btn-outline">Resume</a>
       <a href="https://ag-hosh-my-digital-twin.hf.space/" target="_blank" class="btn btn-filled">Talk to AI</a>
-      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
     </div>
@@ -2296,9 +2460,9 @@
           </div>
         </div>
         <p class="hero-desc" id="heroDesc">
-          MS AI at Northeastern's Khoury College. Building AI models that predict
-          drug trial outcomes at <strong>Varosync</strong>. GSG Senator, ex-NLP TA,
-          and deep into multi-agent systems.
+          AI/ML Engineer at Varosync, building the ML stack for drug-development AI: hybrid pipelines,
+          KG reasoning, and conditioning embeddings for generative models. MS AI at Northeastern Khoury (4.0).
+          I ship interpretable ML for problems where being wrong has consequences.
         </p>
         <div class="avail-pill">
           <span class="avail-dot"></span>
@@ -2337,14 +2501,14 @@
                         <div class="f-photo-slot" id="idPhotoSlot">
                           <div class="f-photo-stack">
                             <img class="f-photo f-photo-bw"
-                                 src="profile-black and white.jpg"
-                                 alt="Aniket Ghosh — portrait"
+                                 src="aniket-ghosh-ai-ml-engineer-northeastern-university-bw.jpg"
+                                 alt="Aniket Ghosh — AI/ML Engineer at Varosync, MS AI student at Northeastern University"
                                  loading="eager"
                                  draggable="false"
                                  onerror="this.closest('.f-photo-slot').classList.add('photo-missing')">
                             <img class="f-photo f-photo-color"
-                                 src="profile.jpg"
-                                 alt=""
+                                 src="aniket-ghosh-ai-ml-engineer-northeastern-university.jpg"
+                                 alt="Aniket Ghosh — AI/ML Engineer at Varosync, MS AI student at Northeastern University"
                                  loading="eager"
                                  draggable="false"
                                  aria-hidden="true">
@@ -2476,36 +2640,62 @@
         <h2 class="section-heading split-text">About Me</h2>
       </div>
       <div class="about-grid">
-        <div class="about-text reveal-stagger">
-          <p>
-            My path into AI started with contrasts. I grew up traveling with my father, an SAP consultant at IBM,
-            through cities like Chicago, Bonn, and Zurich, while spending seven years teaching mathematics and
-            computer science to underprivileged students through
-            <a href="https://www.hope-foundation.in/" target="_blank">The Hope Foundation</a> in Kolkata.
-            The gap between what technology could do and who it actually reached became the question I have kept
-            returning to. Over time, that question became more specific. If AI is going to keep deciding who gets
-            hired, who gets treated, and on what evidence, who is checking its reasoning, and on whose behalf?
-          </p>
-          <p>
-            My undergraduate years at IEM Kolkata went mostly into research. I worked on medical imaging at CMATER
-            Lab, helped build an Indian Sign Language dataset at NEHU, and published in computer vision (Springer
-            AISC, first author) and network intrusion detection (IEEE, with a patent filed by SRM). Each project
-            was in a domain where being wrong has real consequences. At Northeastern's Khoury College, where I am
-            completing my MS in AI, I took a PhD-level seminar on mechanistic interpretability alongside doctoral
-            researchers. This summer, I will be teaching the CS lab for the
-            <a href="https://cssh.northeastern.edu/ethics/aide-summer/" target="_blank">AIDE program</a> at
-            Northeastern's Ethics Institute, bringing Python, ML, and interpretability to a residential cohort of
-            PhD philosophers and AI ethicists. I also work as an AI/ML Engineer at <a href="https://varosync.com/" target="_blank"><strong>Varosync, Inc.</strong></a>,
-            a New York startup simulating a drug's 24-hour pharmacological performance to predict safety and efficacy
-            in clinical trials.
-          </p>
-          <p>
-            I want to spend my career on problems where technical difficulty and real-world stakes are both high.
-            For me, that means medical AI built to be interpretable by design: drug-development pipelines and
-            clinical decision tools where the model's reasoning is inspectable to a clinician, a regulator, and the
-            patient. Effectiveness and interpretability are too often treated as a trade-off. For medicine, I do not
-            think either is optional.
-          </p>
+        <div class="about-text reveal">
+          <div class="about-brief">
+            <p>
+              I build ML systems for problems where being wrong has consequences. Right now that means
+              <a href="https://varosync.com/" target="_blank"><strong>Varosync</strong></a>, a computational
+              drug development startup where I'm building the ML stack to predict clinical trial safety and
+              efficacy, from hybrid pipelines and knowledge-graph reasoning to production infrastructure on
+              AWS, Nebius, and Mithril.
+            </p>
+            <p>
+              Before this: medical imaging research at CMATER Lab (Jadavpur), a published Springer paper on
+              traffic sign detection, an IEEE paper with a patent filed on lightweight intrusion detection, and
+              a PhD-level mechanistic interpretability seminar at Khoury. 4.0 GPA across both my BS and MS.
+              This summer I'm teaching the ML lab for Northeastern's AIDE program, a Sloan-funded residency
+              bringing philosophy PhDs into hands-on ML, fairness, and interpretability.
+            </p>
+            <p>
+              The throughline: effectiveness and interpretability aren't a trade-off. For medicine, I don't
+              think either is optional.
+            </p>
+          </div>
+          <div class="about-long" style="display:none;">
+            <p>
+              My path into AI started with contrasts. I grew up traveling with my father, an SAP consultant at IBM,
+              through cities like Chicago, Bonn, and Zurich, while spending seven years teaching mathematics and
+              computer science to underprivileged students through
+              <a href="https://www.hope-foundation.in/" target="_blank">The Hope Foundation</a> in Kolkata.
+              The gap between what technology could do and who it actually reached became the question I have kept
+              returning to. Over time, that question became more specific. If AI is going to keep deciding who gets
+              hired, who gets treated, and on what evidence, who is checking its reasoning, and on whose behalf?
+            </p>
+            <p>
+              My undergraduate years at IEM Kolkata went mostly into research. I worked on medical imaging at CMATER
+              Lab, helped build an Indian Sign Language dataset at NEHU, and published in computer vision (Springer
+              AISC, first author) and network intrusion detection (IEEE, with a patent filed by SRM). Each project
+              was in a domain where being wrong has real consequences. At Northeastern's Khoury College, where I am
+              completing my MS in AI, I took a PhD-level seminar on mechanistic interpretability alongside doctoral
+              researchers. This summer, I will be teaching the CS lab for the
+              <a href="https://cssh.northeastern.edu/ethics/aide-summer/" target="_blank">AIDE program</a> at
+              Northeastern's Ethics Institute, bringing Python, ML, and interpretability to a residential cohort of
+              PhD philosophers and AI ethicists. I also work as an AI/ML Engineer at <a href="https://varosync.com/" target="_blank"><strong>Varosync, Inc.</strong></a>,
+              a New York startup simulating a drug's 24-hour pharmacological performance to predict safety and efficacy
+              in clinical trials.
+            </p>
+            <p>
+              I want to spend my career on problems where technical difficulty and real-world stakes are both high.
+              For me, that means medical AI built to be interpretable by design: drug-development pipelines and
+              clinical decision tools where the model's reasoning is inspectable to a clinician, a regulator, and the
+              patient. Effectiveness and interpretability are too often treated as a trade-off. For medicine, I do not
+              think either is optional.
+            </p>
+          </div>
+          <button class="about-swap-btn" aria-expanded="false">
+            <span class="about-swap-label">Full story</span>
+            <span class="about-swap-arrow">→</span>
+          </button>
         </div>
         <div class="about-stats reveal-stagger">
           <div class="stat-block">
@@ -2643,25 +2833,25 @@
               </div>
             </div>
             <p class="timeline-desc">
-              Working at Varosync, a computational drug development startup building an AI engine that
-              simulates a drug's 24-hour pharmacological performance to predict safety and efficacy
-              in clinical trials. Building and deploying ML models on high-performance GPU clusters via
-              <strong>RunPod</strong> and shipping to production on <strong>GCP</strong>, while using
-              <strong>Claude Code</strong> and <strong>Cursor</strong> as daily agentic coding tools.
+              Varosync is a computational drug development startup building the AI engine that simulates
+              a drug's 24-hour pharmacological behavior to predict clinical trial safety and efficacy.
+              I work across the ML stack, from representation learning and knowledge-graph reasoning
+              to production infrastructure.
             </p>
             <ul class="timeline-points">
-              <li>Building ML models to predict drug trial safety and efficacy outcomes</li>
-              <li>Developing 24-hour pharmacological simulation pipelines</li>
-              <li>Training and deploying models on RunPod GPU clusters and GCP</li>
-              <li>Shipping faster with Claude Code and Cursor as agentic coding tools</li>
+              <li>Building hybrid ML pipelines (classical + deep) for drug candidate screening, with reproducible runs and leave-one-group-out evaluation</li>
+              <li>Designing knowledge-graph + embedding systems that produce conditioning embeddings for generative models</li>
+              <li>Owning ML infrastructure across a hybrid cloud stack: AWS, Nebius (GPU training), and Mithril (inference/batch)</li>
+              <li>Claude Code and Cursor wired into the daily agentic loop</li>
             </ul>
             <div class="tags">
-              <span class="tag">Drug Trial Prediction</span>
-              <span class="tag">Pharmacological AI</span>
-              <span class="tag">RunPod</span>
-              <span class="tag">GCP</span>
-              <span class="tag">Claude Code</span>
-              <span class="tag">Python</span>
+              <span class="tag">Drug Discovery AI</span>
+              <span class="tag">Hybrid ML Pipelines</span>
+              <span class="tag">Knowledge Graphs</span>
+              <span class="tag">Generative Conditioning</span>
+              <span class="tag">AWS</span>
+              <span class="tag">Nebius</span>
+              <span class="tag">Mithril</span>
             </div>
           </div>
         </div>
@@ -2865,10 +3055,35 @@
       </div>
       <div class="bento-grid">
 
+        <!-- SCD - span 3 (lead card) -->
+        <div class="bento-cell span-3 reveal">
+          <div class="proj-top">
+            <span class="proj-num">01</span>
+            <div class="proj-links">
+              <a href="https://github.com/Itsme-aniketghosh/Sufficient-Cause-Disambiguation" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+            </div>
+          </div>
+          <div class="proj-body">
+            <h3 class="proj-name">Sufficient Cause Disambiguation</h3>
+            <p class="proj-ctx">CS 7180 · Byron Wallace · Khoury College</p>
+            <p class="proj-desc">Falsified a standard assumption in mechanistic interpretability: separator tokens score 1.000 LDA accuracy across all 32 layers of Llama-3-8B but cause 0% prediction flips under causal patching, proving probing accuracy and causal relevance are independent properties. Built a three-part pipeline (LDA + gradient attribution + causal patching), applied to LLM resume screening where name-swapped resumes flip at 95.8%.</p>
+          </div>
+          <div class="proj-footer">
+            <div class="proj-tags">
+              <span class="proj-tag">Mechanistic Interpretability</span>
+              <span class="proj-tag">LDA</span>
+              <span class="proj-tag">Causal Patching</span>
+              <span class="proj-tag">Llama-3-8B</span>
+              <span class="proj-tag">Bias Detection</span>
+            </div>
+            <span class="proj-arrow"><i class="fas fa-arrow-up-right"></i></span>
+          </div>
+        </div>
+
         <!-- RAG Digital Twin - span 2 -->
         <div class="bento-cell span-2 reveal">
           <div class="proj-top">
-            <span class="proj-num">01</span>
+            <span class="proj-num">02</span>
             <div class="proj-links">
               <span class="live-badge">Live</span>
               <a href="https://github.com/Itsme-aniketghosh/LLM-my-digital-twin" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
@@ -2895,7 +3110,7 @@
         <!-- Autonomous Traders - span 1 -->
         <div class="bento-cell reveal">
           <div class="proj-top">
-            <span class="proj-num">02</span>
+            <span class="proj-num">03</span>
             <div class="proj-links">
               <a href="https://github.com/Itsme-aniketghosh/autonomous-traders-mcp" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
             </div>
@@ -2918,7 +3133,7 @@
         <!-- Biomedical KG - span 1 -->
         <div class="bento-cell reveal">
           <div class="proj-top">
-            <span class="proj-num">03</span>
+            <span class="proj-num">04</span>
             <div class="proj-links">
               <a href="https://github.com/Itsme-aniketghosh/biomedical-link-prediction" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
             </div>
@@ -2941,7 +3156,7 @@
         <!-- Grokking - span 2 -->
         <div class="bento-cell span-2 reveal">
           <div class="proj-top">
-            <span class="proj-num">04</span>
+            <span class="proj-num">05</span>
             <div class="proj-links">
               <a href="https://github.com/Itsme-aniketghosh/grokking-fourier-circuits" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
             </div>
@@ -2965,7 +3180,7 @@
         <!-- CrewAI -->
         <div class="bento-cell reveal">
           <div class="proj-top">
-            <span class="proj-num">05</span>
+            <span class="proj-num">06</span>
             <div class="proj-links">
               <a href="https://github.com/Itsme-aniketghosh/crewai" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
             </div>
@@ -2988,7 +3203,7 @@
         <!-- Cybersecurity -->
         <div class="bento-cell reveal">
           <div class="proj-top">
-            <span class="proj-num">06</span>
+            <span class="proj-num">07</span>
             <div class="proj-links">
               <a href="https://github.com/Itsme-aniketghosh/LLM-Cybersecurity-Analyzer" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
             </div>
@@ -3010,7 +3225,7 @@
         <!-- Deep Research -->
         <div class="bento-cell reveal">
           <div class="proj-top">
-            <span class="proj-num">07</span>
+            <span class="proj-num">08</span>
             <div class="proj-links">
               <span class="live-badge">Live</span>
               <a href="https://github.com/Itsme-aniketghosh/LLM-Deep-Research" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
@@ -3034,7 +3249,7 @@
         <!-- Latency Engine - full width -->
         <div class="bento-cell span-3 reveal">
           <div class="proj-top">
-            <span class="proj-num">08</span>
+            <span class="proj-num">09</span>
             <div class="proj-links">
               <a href="https://github.com/Itsme-aniketghosh/latency-execution-engine" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
             </div>
@@ -3112,27 +3327,8 @@
             <span class="tag">Adaptive Fusion</span>
             <span class="tag">Edge Deployment</span>
           </div>
-        </div>
-
-        <div class="research-card reveal">
-          <span class="research-status other">CS 7180 · Spring 2026</span>
-          <h3 class="research-title">Sufficient Cause Disambiguation</h3>
-          <p class="research-desc">
-            Which reason did the model actually rely on? Built a three-part pipeline combining LDA on hidden states, input-gradient attribution, and causal activation patching to identify which features the model's computation truly hinged on -- not just which tokens correlate with the output. Key finding: representational and causal subspaces are fully independent. Applied to Llama-3-8B on 47K research abstracts and resume screening tasks.
-          </p>
-          <p class="research-meta">
-            Advisor: <a href="https://www.ccs.neu.edu/home/byron/" target="_blank">Byron Wallace</a> &nbsp;·&nbsp;
-            <a href="https://www.ccs.neu.edu/home/byron/cs7180/" target="_blank">CS 7180 Actionable Interpretability</a> &nbsp;·&nbsp; Khoury College
-          </p>
-          <div class="tags">
-            <span class="tag">Mechanistic Interpretability</span>
-            <span class="tag">LDA</span>
-            <span class="tag">Causal Patching</span>
-            <span class="tag">Llama-3-8B</span>
-            <span class="tag">Bias Detection</span>
-          </div>
-          <a href="https://github.com/Itsme-aniketghosh/Sufficient-Cause-Disambiguation" target="_blank" class="research-link">
-            <i class="fab fa-github"></i> View on GitHub
+          <a class="research-link" href="https://ieeexplore.ieee.org/document/11518522/" target="_blank" rel="noopener noreferrer">
+            <i class="fas fa-arrow-up-right-from-square"></i> View on IEEE Xplore
           </a>
         </div>
 
@@ -3405,16 +3601,13 @@
     /* ═══════ 6. UTILITIES ═══════ */
     ;(function initUtils() {
 
-      /* Nav scroll state */
+      /* Nav scroll state + back to top (single listener) */
       const nav = document.getElementById('nav');
-      window.addEventListener('scroll', () => {
-        nav.classList.toggle('scrolled', window.scrollY > 40);
-      }, { passive: true });
-
-      /* Back to top */
       const btt = document.getElementById('backToTop');
       window.addEventListener('scroll', () => {
-        btt.classList.toggle('visible', window.scrollY > 500);
+        const y = window.scrollY;
+        nav.classList.toggle('scrolled', y > 40);
+        btt.classList.toggle('visible', y > 500);
       }, { passive: true });
 
       /* Hamburger / mobile menu */
@@ -3423,6 +3616,7 @@
       hamburger.addEventListener('click', () => {
         const open = hamburger.classList.toggle('open');
         mobileMenu.classList.toggle('open', open);
+        hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
         document.body.style.overflow = open ? 'hidden' : '';
       });
       mobileMenu.querySelectorAll('a').forEach(a => {
@@ -3615,14 +3809,72 @@
 
     /* ═══════ 11. COPY EMAIL ═══════ */
     function copyEmail() {
-      navigator.clipboard.writeText('ghosh.anik@northeastern.edu').then(() => {
-        const btns = document.querySelectorAll('.copy-btn');
-        btns.forEach(btn => {
+      const EMAIL = 'ghosh.anik@northeastern.edu';
+      function flash() {
+        document.querySelectorAll('.copy-btn').forEach(btn => {
           btn.innerHTML = '<i class="fas fa-check"></i>';
           setTimeout(() => { btn.innerHTML = '<i class="fas fa-copy"></i>'; }, 2000);
         });
-      });
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(EMAIL).then(flash).catch(() => {
+          const ta = document.createElement('textarea');
+          ta.value = EMAIL; ta.setAttribute('readonly', '');
+          ta.style.cssText = 'position:fixed;opacity:0;pointer-events:none';
+          document.body.appendChild(ta); ta.select();
+          try { document.execCommand('copy'); } catch (_) {}
+          document.body.removeChild(ta); flash();
+        });
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = EMAIL; ta.setAttribute('readonly', '');
+        ta.style.cssText = 'position:fixed;opacity:0;pointer-events:none';
+        document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); } catch (_) {}
+        document.body.removeChild(ta); flash();
+      }
     }
+
+    /* ═══════ ABOUT CONTENT SWAP ═══════ */
+    (function() {
+      var btn   = document.querySelector('.about-swap-btn');
+      var brief = document.querySelector('.about-brief');
+      var long  = document.querySelector('.about-long');
+      if (!btn) return;
+      var label    = btn.querySelector('.about-swap-label');
+      var reduceMot = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      btn.addEventListener('click', function() {
+        var expanded = btn.getAttribute('aria-expanded') === 'true';
+        var outgoing = expanded ? long  : brief;
+        var incoming = expanded ? brief : long;
+
+        if (reduceMot) {
+          outgoing.style.display = 'none';
+          incoming.style.display = 'block';
+          btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+          label.textContent = expanded ? 'Full story' : 'Brief';
+          return;
+        }
+
+        outgoing.style.opacity   = '0';
+        outgoing.style.transform = 'translateY(6px)';
+
+        setTimeout(function() {
+          outgoing.style.display   = 'none';
+          outgoing.style.opacity   = '';
+          outgoing.style.transform = '';
+          incoming.style.display   = 'block';
+          incoming.classList.add('content-entering');
+          incoming.addEventListener('animationend', function onEnd() {
+            incoming.classList.remove('content-entering');
+            incoming.removeEventListener('animationend', onEnd);
+          });
+          btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+          label.textContent = expanded ? 'Full story' : 'Brief';
+        }, 220);
+      });
+    })();
   </script>
 
 
