@@ -1403,7 +1403,6 @@
     .bento-cell:hover .proj-metric,
     .bento-cell:hover .proj-arrow { color: var(--bg); }
     .bento-cell:hover .proj-tag { border-color: rgba(12,12,12,0.2); }
-    .bento-cell:hover .proj-links a { color: var(--bg); }
     /* ── Stretch link: makes full card keyboard-navigable without nested <a> ── */
     .bento-main-link {
       position: absolute;
@@ -1432,9 +1431,9 @@
     .bento-cell:hover .bento-main-link::after {
       opacity: 1;
       transform: translateY(0);
-      color: var(--bg);
-      background: rgba(12,12,12,0.55);
-      border-color: rgba(12,12,12,0.2);
+      color: var(--text);
+      background: var(--bg);
+      border-color: rgba(240,236,228,0.12);
     }
     .bento-main-link:focus-visible {
       outline: 1px solid var(--text);
@@ -1471,12 +1470,14 @@
       z-index: 1;
     }
     .proj-links a {
-      font-size: 0.85rem;
-      color: var(--muted);
-      transition: color 0.25s ease;
+      font-size: 1rem;
+      color: var(--text);
+      opacity: 0.55;
+      transition: opacity 0.2s ease, color 0.2s ease;
     }
-    .proj-links a:hover { color: var(--text); }
-    .bento-cell:hover .proj-links a:hover { color: rgba(12,12,12,0.6); }
+    .proj-links a:hover { opacity: 1; }
+    .bento-cell:hover .proj-links a { color: var(--bg); opacity: 0.6; }
+    .bento-cell:hover .proj-links a:hover { opacity: 1; color: var(--bg); }
 
     .proj-body {
       margin-top: 1.5rem;
