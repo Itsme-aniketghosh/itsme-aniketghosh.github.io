@@ -1405,7 +1405,7 @@
       z-index: 2;
       pointer-events: none;
     }
-    .bento-cell:hover::before { clip-path: inset(0 0% 0 0); }
+    .bento-cell:hover::before { clip-path: inset(0 0 0 0); background: var(--bg); }
     /* ── Corner tick: subtle L-bracket slides in from top-left corner ── */
     .bento-cell::after {
       content: '';
@@ -1421,7 +1421,7 @@
       z-index: 2;
       pointer-events: none;
     }
-    .bento-cell:hover::after { opacity: 0.28; transform: translate(0, 0); }
+    .bento-cell:hover::after { opacity: 0.45; transform: translate(0, 0); border-top-color: var(--bg); border-left-color: var(--bg); }
     .bento-cell:hover { background: var(--text); transform: translateY(-3px); }
     .bento-cell:hover:active { transform: translateY(-1px) scale(0.99); }
     .bento-cell:hover .proj-num,
@@ -1501,12 +1501,12 @@
     .proj-links a {
       font-size: 1rem;
       color: var(--text);
-      opacity: 0.55;
-      transition: opacity 0.2s ease, color 0.2s ease;
+      transition: color 0.2s ease, opacity 0.2s ease;
     }
-    .proj-links a:hover { opacity: 1; }
-    .bento-cell:hover .proj-links a { color: var(--bg); opacity: 0.6; }
-    .bento-cell:hover .proj-links a:hover { opacity: 1; color: var(--bg); }
+    .proj-links a:hover { opacity: 0.7; }
+    /* card inverted — icons must flip to dark */
+    .bento-cell:hover .proj-links a { color: var(--bg); opacity: 1; }
+    .bento-cell:hover .proj-links a:hover { color: var(--bg); opacity: 0.65; }
 
     .proj-body {
       margin-top: 1.5rem;
