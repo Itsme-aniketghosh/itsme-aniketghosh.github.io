@@ -221,7 +221,7 @@
       --bg:      #0c0c0c;
       --surface: #141414;
       --text:    #f0ece4;
-      --muted:   #555;
+      --muted:   #888;
       --border:  #1e1e1e;
       --sans:    'DM Sans', sans-serif;
       --display: 'Syne', sans-serif;
@@ -726,6 +726,7 @@
     .cl-tag:hover {
       color: var(--text);
       border-color: rgba(240,236,228,0.35);
+      transform: translateY(-1px) scale(1.03);
     }
 
     /* Glitch text-shadow state (added/removed by JS) */
@@ -1094,16 +1095,11 @@
       gap: 2.5rem 3rem;
       padding-top: 0.5rem;
     }
-    .stat-block { border-top: 1px solid transparent; }
+    .stat-block { border-top: 1px solid transparent; transition: transform 200ms ease, border-top-color 200ms ease; }
     .about-stats.reveal-stagger > * {
       transform: translateY(30px) scale(0.94);
     }
     .about-stats.reveal-stagger.in-view > * { transform: none; }
-    .about-stats.in-view .stat-block:hover {
-      transform: translateY(-4px);
-      border-top-color: var(--text);
-      transition: transform 0.2s ease, border-top-color 0.2s ease;
-    }
     .stat-val {
       display: block;
       font-family: var(--display);
@@ -1213,13 +1209,10 @@
                   color 0.2s ease,
                   background 0.2s ease;
     }
-    .skill-pill:hover {
-      border-color: var(--text);
-      color: var(--bg);
-      background: var(--text);
+    .skill-pill:focus-visible {
+      outline: 1px solid var(--text);
+      outline-offset: 3px;
     }
-    .skill-category.in-view .skill-pills .skill-pill:hover { transition-delay: 0ms; }
-
     /* reveal + stagger when parent enters view */
     .skill-category.in-view .skill-pill {
       opacity: 1;
@@ -1358,9 +1351,7 @@
       color: var(--bg);
       background: var(--text);
       border-color: var(--text);
-      transform: translateY(-2px) scale(1.04);
     }
-    .timeline-entry.in-view .tags .tag:hover { transform: translateY(-2px) scale(1.04); }
     /* Tags inside timeline entries slide in from the right after the card settles */
     .timeline-entry .tags .tag {
       opacity: 0;
@@ -1397,7 +1388,7 @@
       position: relative;
       overflow: hidden;
       cursor: pointer;
-      transition: background 0.25s ease, transform 0.25s ease, opacity 0.65s cubic-bezier(0.4,0,0.2,1);
+      transition: background 250ms ease, transform 250ms cubic-bezier(0.23,1,0.32,1), opacity 650ms cubic-bezier(0.4,0,0.2,1);
     }
     .bento-cell.span-2 { grid-column: span 2; min-height: 300px; }
     .bento-cell.span-3 { grid-column: span 3; min-height: 220px; }
@@ -1665,7 +1656,7 @@
       transition: color 0.2s ease, border-color 0.2s ease;
     }
     .copy-btn:hover { color: var(--text); border-color: var(--text); }
-    .copy-btn:active { transform: scale(0.96); }
+    .copy-btn:active { transform: scale(0.97); }
     .contact-ai-row {
       display: flex;
       justify-content: center;
@@ -1832,7 +1823,7 @@
     }
     .back-to-top.visible { opacity: 1; transform: translateY(0); }
     .back-to-top:hover { color: var(--bg); border-color: var(--text); background: var(--text); }
-    .back-to-top:active { transform: scale(0.93); }
+    .back-to-top:active { transform: scale(0.97); }
 
     /* ════════════════════════════════════
        17. LOADER
@@ -2157,7 +2148,7 @@
     .id-card-embed .f-photo-color {
       z-index: 2;
       opacity: 0;
-      transition: opacity 1400ms cubic-bezier(0.23, 1, 0.32, 1);
+      transition: opacity 600ms cubic-bezier(0.23, 1, 0.32, 1);
     }
     .id-card-embed .f-photo-slot.colored .f-photo-color { opacity: 1; }
     .id-card-embed .f-photo-slot.photo-missing .f-photo-stack { display: none; }
@@ -2292,6 +2283,29 @@
       opacity: 1;
       transform: translateX(-50%) translateY(0);
     }
+    /* ════════════════════════════════════
+       POINTER-AWARE HOVERS
+       Non-link elements with transforms gated here so
+       touch devices don't get stuck in hover state.
+    ════════════════════════════════════ */
+    @media (hover: hover) and (pointer: fine) {
+      .tag:hover {
+        transform: translateY(-2px) scale(1.04);
+      }
+      /* Override for tags inside timeline entries after stagger animation settles */
+      .timeline-entry.in-view .tags .tag:hover { transform: translateY(-2px) scale(1.04); }
+      .skill-pill:hover {
+        border-color: var(--text);
+        color: var(--bg);
+        background: var(--text);
+      }
+      .skill-category.in-view .skill-pills .skill-pill:hover { transition-delay: 0ms; }
+      .about-stats.in-view .stat-block:hover {
+        transform: translateY(-4px);
+        border-top-color: var(--text);
+      }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       /* ID card */
       .id-card-embed .drop-wrapper { animation: none; }
@@ -2603,8 +2617,7 @@
               bringing philosophy PhDs into hands-on ML, fairness, and interpretability.
             </p>
             <p>
-              The throughline: effectiveness and interpretability aren't a trade-off. For medicine, I don't
-              think either is optional.
+              I haven't found the problem yet that made me want to slow down.
             </p>
           </div>
           <div class="about-long" style="display:none;">
@@ -2634,8 +2647,7 @@
               I want to spend my career on problems where technical difficulty and real-world stakes are both high.
               For me, that means medical AI built to be interpretable by design: drug-development pipelines and
               clinical decision tools where the model's reasoning is inspectable to a clinician, a regulator, and the
-              patient. Effectiveness and interpretability are too often treated as a trade-off. For medicine, I do not
-              think either is optional.
+              patient. I haven't found the problem yet that made me want to slow down.
             </p>
           </div>
           <button class="about-swap-btn" aria-expanded="false">
