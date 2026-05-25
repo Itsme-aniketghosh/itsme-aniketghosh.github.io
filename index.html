@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <!-- Google tag (gtag.js) -->
@@ -46,7 +46,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <script type="application/ld+json">
   {
@@ -223,8 +223,8 @@
       --text:    #f0ece4;
       --muted:   #888;
       --border:  #1e1e1e;
-      --sans:    'DM Sans', sans-serif;
-      --display: 'Syne', sans-serif;
+      --sans:    'Onest', sans-serif;
+      --display: 'Playfair Display', Georgia, serif;
       --mono:    'JetBrains Mono', monospace;
     }
 
@@ -267,7 +267,7 @@
     /* ════════════════════════════════════
        2. TYPOGRAPHY
     ════════════════════════════════════ */
-    h1, h2, h3 { font-family: var(--display); font-weight: 700; line-height: 1.1; }
+    h1, h2, h3 { font-family: var(--display); font-weight: 900; line-height: 1.08; letter-spacing: -0.02em; }
     a { color: inherit; text-decoration: none; }
 
     .eyebrow {
@@ -282,8 +282,9 @@
 
     .section-heading {
       font-family: var(--display);
-      font-weight: 800;
+      font-weight: 900;
       font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+      letter-spacing: -0.025em;
       color: var(--text);
     }
 
@@ -522,9 +523,9 @@
     .hero-name {
       font-family: var(--display);
       font-size: clamp(3.5rem, 10vw, 9rem);
-      font-weight: 800;
-      line-height: 0.95;
-      letter-spacing: -0.03em;
+      font-weight: 900;
+      line-height: 0.92;
+      letter-spacing: -0.04em;
       color: var(--text);
       overflow: hidden;
     }
@@ -1392,6 +1393,35 @@
     }
     .bento-cell.span-2 { grid-column: span 2; min-height: 300px; }
     .bento-cell.span-3 { grid-column: span 3; min-height: 220px; }
+    /* ── Reveal underline: sweeps left→right on hover ── */
+    .bento-cell::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--bg);
+      clip-path: inset(0 100% 0 0);
+      transition: clip-path 260ms cubic-bezier(0.23, 1, 0.32, 1);
+      z-index: 2;
+      pointer-events: none;
+    }
+    .bento-cell:hover::before { clip-path: inset(0 0% 0 0); }
+    /* ── Corner tick: subtle L-bracket slides in from top-left corner ── */
+    .bento-cell::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 14px; height: 14px;
+      border-top: 1px solid var(--bg);
+      border-left: 1px solid var(--bg);
+      opacity: 0;
+      transform: translate(-4px, -4px);
+      transition: opacity 220ms ease, transform 220ms cubic-bezier(0.23, 1, 0.32, 1);
+      transition-delay: 80ms;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .bento-cell:hover::after { opacity: 0.28; transform: translate(0, 0); }
     .bento-cell:hover { background: var(--text); transform: translateY(-3px); }
     .bento-cell:hover:active { transform: translateY(-1px) scale(0.99); }
     .bento-cell:hover .proj-num,
@@ -1402,7 +1432,52 @@
     .bento-cell:hover .proj-metric,
     .bento-cell:hover .proj-arrow { color: var(--bg); }
     .bento-cell:hover .proj-tag { border-color: rgba(12,12,12,0.2); }
-    .bento-cell:hover .proj-links a { color: var(--bg); }
+    /* ── Stretch link: makes full card keyboard-navigable without nested <a> ── */
+    .bento-main-link {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    /* Destination label — fades in on hover at bottom-right of card */
+    .bento-main-link::after {
+      content: attr(data-dest);
+      position: absolute;
+      bottom: 1rem;
+      right: 1rem;
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: var(--bg);
+      color: var(--muted);
+      padding: 0.2rem 0.55rem;
+      border: 1px solid var(--border);
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 180ms ease, transform 180ms ease;
+    }
+    .bento-cell:hover .bento-main-link::after {
+      opacity: 1;
+      transform: translateY(0);
+      color: var(--text);
+      background: var(--bg);
+      border-color: rgba(240,236,228,0.12);
+    }
+    .bento-main-link:focus-visible {
+      outline: 1px solid var(--text);
+      outline-offset: -3px;
+    }
+    .bento-cell:has(.bento-main-link:focus-visible) { background: var(--text); transform: translateY(-3px); }
+    .bento-cell:has(.bento-main-link:focus-visible) .proj-num,
+    .bento-cell:has(.bento-main-link:focus-visible) .proj-name,
+    .bento-cell:has(.bento-main-link:focus-visible) .proj-ctx,
+    .bento-cell:has(.bento-main-link:focus-visible) .proj-desc,
+    .bento-cell:has(.bento-main-link:focus-visible) .proj-tag,
+    .bento-cell:has(.bento-main-link:focus-visible) .proj-metric,
+    .bento-cell:has(.bento-main-link:focus-visible) .proj-arrow { color: var(--bg); }
+    .bento-cell:has(.bento-main-link:focus-visible) .proj-tag { border-color: rgba(12,12,12,0.2); }
+    .bento-cell:has(.bento-main-link:focus-visible) .proj-links a { color: var(--bg); }
 
     .proj-top {
       display: flex;
@@ -1420,14 +1495,18 @@
     .proj-links {
       display: flex;
       gap: 0.75rem;
+      position: relative;
+      z-index: 1;
     }
     .proj-links a {
-      font-size: 0.85rem;
-      color: var(--muted);
-      transition: color 0.25s ease;
+      font-size: 1rem;
+      color: var(--text);
+      opacity: 0.55;
+      transition: opacity 0.2s ease, color 0.2s ease;
     }
-    .proj-links a:hover { color: var(--text); }
-    .bento-cell:hover .proj-links a:hover { color: rgba(12,12,12,0.6); }
+    .proj-links a:hover { opacity: 1; }
+    .bento-cell:hover .proj-links a { color: var(--bg); opacity: 0.6; }
+    .bento-cell:hover .proj-links a:hover { opacity: 1; color: var(--bg); }
 
     .proj-body {
       margin-top: 1.5rem;
@@ -2596,7 +2675,6 @@
     <section class="section section-alt" id="about">
       <span class="section-num" aria-hidden="true">01</span>
       <div class="section-head reveal-stagger in-view">
-        <span class="eyebrow">Introduction</span>
         <h2 class="section-heading split-text">About Me</h2>
       </div>
       <div class="about-grid">
@@ -2689,7 +2767,6 @@
     <section class="section" id="skills">
       <span class="section-num" aria-hidden="true">02</span>
       <div class="section-head reveal-stagger">
-        <span class="eyebrow">Expertise</span>
         <h2 class="section-heading split-text">Skills</h2>
       </div>
       <div class="skills-table">
@@ -2771,7 +2848,6 @@
     <section class="section section-alt" id="experience">
       <span class="section-num" aria-hidden="true">03</span>
       <div class="section-head reveal-stagger">
-        <span class="eyebrow">Career</span>
         <h2 class="section-heading split-text">Experience</h2>
       </div>
       <div class="timeline">
@@ -3008,13 +3084,13 @@
     <section class="section" id="projects">
       <span class="section-num" aria-hidden="true">04</span>
       <div class="section-head reveal-stagger">
-        <span class="eyebrow">Portfolio</span>
         <h2 class="section-heading split-text">Projects</h2>
       </div>
       <div class="bento-grid">
 
         <!-- SCD - span 3 (lead card) -->
         <div class="bento-cell span-3 reveal">
+          <a class="bento-main-link" href="https://github.com/Itsme-aniketghosh/Sufficient-Cause-Disambiguation" target="_blank" rel="noopener noreferrer" aria-label="Sufficient Cause Disambiguation — open on GitHub" data-dest="GitHub ↗"></a>
           <div class="proj-top">
             <span class="proj-num">01</span>
             <div class="proj-links">
@@ -3040,6 +3116,7 @@
 
         <!-- RAG Digital Twin - span 2 -->
         <div class="bento-cell span-2 reveal">
+          <a class="bento-main-link" href="https://ag-hosh-my-digital-twin.hf.space/" target="_blank" rel="noopener noreferrer" aria-label="RAG-based Digital Twin — open live demo" data-dest="Live Demo ↗"></a>
           <div class="proj-top">
             <span class="proj-num">02</span>
             <div class="proj-links">
@@ -3067,6 +3144,7 @@
 
         <!-- Autonomous Traders - span 1 -->
         <div class="bento-cell reveal">
+          <a class="bento-main-link" href="https://github.com/Itsme-aniketghosh/autonomous-traders-mcp" target="_blank" rel="noopener noreferrer" aria-label="Autonomous Multi-Agent Trading Simulation — open on GitHub" data-dest="GitHub ↗"></a>
           <div class="proj-top">
             <span class="proj-num">03</span>
             <div class="proj-links">
@@ -3090,6 +3168,7 @@
 
         <!-- Biomedical KG - span 1 -->
         <div class="bento-cell reveal">
+          <a class="bento-main-link" href="https://github.com/Itsme-aniketghosh/biomedical-link-prediction" target="_blank" rel="noopener noreferrer" aria-label="Biomedical KG Link Prediction — open on GitHub" data-dest="GitHub ↗"></a>
           <div class="proj-top">
             <span class="proj-num">04</span>
             <div class="proj-links">
@@ -3113,6 +3192,7 @@
 
         <!-- Grokking - span 2 -->
         <div class="bento-cell span-2 reveal">
+          <a class="bento-main-link" href="https://github.com/Itsme-aniketghosh/grokking-fourier-circuits" target="_blank" rel="noopener noreferrer" aria-label="Grokking and Fourier Features — open on GitHub" data-dest="GitHub ↗"></a>
           <div class="proj-top">
             <span class="proj-num">05</span>
             <div class="proj-links">
@@ -3137,6 +3217,7 @@
 
         <!-- CrewAI -->
         <div class="bento-cell reveal">
+          <a class="bento-main-link" href="https://github.com/Itsme-aniketghosh/crewai" target="_blank" rel="noopener noreferrer" aria-label="CrewAI Multi-Agent Collection — open on GitHub" data-dest="GitHub ↗"></a>
           <div class="proj-top">
             <span class="proj-num">06</span>
             <div class="proj-links">
@@ -3160,6 +3241,7 @@
 
         <!-- Cybersecurity -->
         <div class="bento-cell reveal">
+          <a class="bento-main-link" href="https://github.com/Itsme-aniketghosh/LLM-Cybersecurity-Analyzer" target="_blank" rel="noopener noreferrer" aria-label="AI-Powered Code Security Analyzer — open on GitHub" data-dest="GitHub ↗"></a>
           <div class="proj-top">
             <span class="proj-num">07</span>
             <div class="proj-links">
@@ -3182,6 +3264,7 @@
 
         <!-- Deep Research -->
         <div class="bento-cell reveal">
+          <a class="bento-main-link" href="https://ag-hosh-deepresearch.hf.space/" target="_blank" rel="noopener noreferrer" aria-label="AI Research Assistant — open live demo" data-dest="Live Demo ↗"></a>
           <div class="proj-top">
             <span class="proj-num">08</span>
             <div class="proj-links">
@@ -3206,6 +3289,7 @@
 
         <!-- Latency Engine - full width -->
         <div class="bento-cell span-3 reveal">
+          <a class="bento-main-link" href="https://github.com/Itsme-aniketghosh/latency-execution-engine" target="_blank" rel="noopener noreferrer" aria-label="Latency-Aware Execution Engine — open on GitHub" data-dest="GitHub ↗"></a>
           <div class="proj-top">
             <span class="proj-num">09</span>
             <div class="proj-links">
@@ -3236,7 +3320,6 @@
     <section class="section section-alt" id="research">
       <span class="section-num" aria-hidden="true">05</span>
       <div class="section-head reveal-stagger">
-        <span class="eyebrow">Academic</span>
         <h2 class="section-heading split-text">Research</h2>
       </div>
       <div class="research-grid">
@@ -3297,7 +3380,6 @@
     <section class="section" id="certifications">
       <span class="section-num" aria-hidden="true">06</span>
       <div class="section-head reveal-stagger">
-        <span class="eyebrow">Credentials</span>
         <h2 class="section-heading split-text">Certifications</h2>
       </div>
       <div class="certs-grid reveal-stagger">
@@ -3380,7 +3462,7 @@
     <!-- ─── CONTACT ─── -->
     <section class="section section-alt" id="contact" style="padding-top:3rem;">
       <div class="contact-inner">
-        <h2 class="contact-heading reveal split-text">Get In Touch</h2>
+        <h2 class="contact-heading reveal split-text">Reach Out</h2>
         <p class="contact-sub reveal">
           Pursuing MS in AI at Northeastern University (graduating May 2027) and currently
           working at <strong>Varosync, Inc.</strong> on AI-driven drug trial prediction.
@@ -3394,7 +3476,7 @@
           </button>
         </div>
         <div class="contact-ai-row reveal">
-          <a href="https://ag-hosh-my-digital-twin.hf.space/" target="_blank">Talk to AI Twin</a>
+          <a href="https://ag-hosh-my-digital-twin.hf.space/" target="_blank">Talk to My AI Twin</a>
         </div>
         <div class="contact-links-row reveal-stagger">
           <a href="https://github.com/Itsme-aniketghosh" target="_blank">GitHub</a>
@@ -3620,17 +3702,9 @@
       update();
     })();
 
-    /* ═══════ 8. BENTO 3D TILT ═══════ */
-    ;(function initBentoTilt() {
-      document.querySelectorAll('.bento-cell').forEach(card => {
-        card.addEventListener('mousemove', e => {
-          const r  = card.getBoundingClientRect();
-          const dx = (e.clientX - r.left  - r.width  / 2) / (r.width  / 2);
-          const dy = (e.clientY - r.top   - r.height / 2) / (r.height / 2);
-          card.style.transform = `perspective(700px) rotateY(${dx * 5}deg) rotateX(${-dy * 3}deg) translateZ(8px)`;
-        });
-        card.addEventListener('mouseleave', () => { card.style.transform = ''; });
-      });
+    /* ═══════ 8. BENTO HOVER DESTINATION ═══════ */
+    ;(function initBentoDest() {
+      /* Reveal destination label on card hover */
     })();
 
     /* ═══════ 9. NAV SCRAMBLE ═══════ */
@@ -3940,8 +4014,35 @@
     tiltWrap.style.transform = '';
     const r   = flipInner.getBoundingClientRect();
     naturalCX = r.left + r.width  * 0.5;
-    naturalCY = r.top  + r.height * 0.5;
     cardH     = r.height;
+
+    // If user scrolled away from hero before the drop fires (e.g. page loaded
+    // with a URL hash), skip the falling animation entirely — the card would
+    // otherwise visually appear in the wrong section mid-page.
+    // Instead, go straight to physics with correct absolute-page coordinates.
+    if (window.scrollY > 50) {
+      const sy = window.scrollY;
+      naturalCY = r.top + r.height * 0.5 + sy;   // convert to absolute page Y
+      segLen    = Math.max(8, (naturalCY - cardH * 0.5 - NAV_H) / (N - 1));
+      for (let i = 0; i < N; i++) {
+        const y = NAV_H + i * segLen;
+        pts[i] = { x: naturalCX, y, px: naturalCX, py: y };
+      }
+      pts[0].pinned = true;
+      const sceneEl = document.getElementById('idScene');
+      if (sceneEl) sceneEl.style.perspective = 'none';
+      tiltWrap.style.position          = 'fixed';
+      tiltWrap.style.top               = '0';
+      tiltWrap.style.left              = '0';
+      tiltWrap.style.margin            = '0';
+      tiltWrap.style.zIndex            = '90';
+      tiltWrap.style.perspective       = '1200px';
+      tiltWrap.style.perspectiveOrigin = '50% 50%';
+      phase = 'physics';
+      return;
+    }
+
+    naturalCY = r.top  + r.height * 0.5;
 
     // Start card above the viewport (card bottom just above top edge)
     dropOffY  = -(naturalCY + cardH * 0.5 + 30);
