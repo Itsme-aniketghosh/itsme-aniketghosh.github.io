@@ -334,6 +334,11 @@
       background: transparent;
       border-bottom: 1px solid transparent;
       transition: background 0.3s ease, border-color 0.3s ease;
+      animation: nav-drop 0.55s cubic-bezier(0.16, 1, 0.3, 1) 1.05s both;
+    }
+    @keyframes nav-drop {
+      from { transform: translateY(-100%); opacity: 0; }
+      to   { transform: translateY(0);     opacity: 1; }
     }
     .nav.scrolled {
       background: rgba(12, 12, 12, 0.92);
@@ -503,6 +508,23 @@
       padding: 0 3rem;
       padding-top: 64px;
       column-gap: 4rem;
+      position: relative;
+    }
+    /* Impact shake — triggered by JS class after name lands */
+    .hero.impact-shake { animation: hero-impact 0.55s cubic-bezier(0.25, 0, 0, 1) both; }
+    @keyframes hero-impact {
+      0%   { transform: translate(  0,    0  ); }
+      6%   { transform: translate(-11px, -4px) rotate(-0.5deg); }
+      13%  { transform: translate( 10px,  4px) rotate( 0.5deg); }
+      21%  { transform: translate( -8px, -3px); }
+      30%  { transform: translate(  8px,  3px); }
+      40%  { transform: translate( -5px, -2px); }
+      50%  { transform: translate(  5px,  2px); }
+      62%  { transform: translate( -3px, -1px); }
+      72%  { transform: translate(  3px,  1px); }
+      82%  { transform: translate( -1px,  0  ); }
+      91%  { transform: translate(  1px,  0  ); }
+      100% { transform: none; }
     }
 
     .hero-left {
@@ -524,37 +546,31 @@
       font-family: var(--display);
       font-size: clamp(3.5rem, 10vw, 9rem);
       font-weight: 900;
-      line-height: 0.92;
+      line-height: 0.95;
       letter-spacing: -0.04em;
       color: var(--text);
-      overflow: hidden;
     }
+    /* Each word is its own overflow mask */
     .name-word {
       display: block;
-      animation: name-impact 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+      overflow: hidden;
+      padding-bottom: 0.12em;
     }
-    .name-word:nth-child(1) { animation-delay: 1.55s; }
-    .name-word:nth-child(2) { animation-delay: 1.75s; }
-    @keyframes name-impact {
-      0%   { transform: translateY(-120%) scaleY(1.2); opacity: 0; filter: blur(10px); }
-      52%  { opacity: 1; filter: blur(0); }
-      70%  { transform: translateY(12px) scaleY(0.72) scaleX(1.18); }
-      82%  { transform: translateY(-5px) scaleY(1.08) scaleX(0.96); }
-      91%  { transform: translateY(2px) scaleY(0.97) scaleX(1.01); }
-      100% { transform: none; opacity: 1; }
+    /* Words stay hidden below the mask until JS adds .name-revealed */
+    .nw-inner {
+      display: block;
+      transform: translateY(110%);
     }
-    @keyframes hero-impact-shake {
-      0%   { transform: none; }
-      14%  { transform: translate(-7px, 4px) rotate(-0.4deg); }
-      28%  { transform: translate(6px, -3px) rotate(0.3deg); }
-      42%  { transform: translate(-5px, 2px) rotate(-0.2deg); }
-      57%  { transform: translate(3px, -1px) rotate(0.1deg); }
-      72%  { transform: translate(-2px, 1px); }
-      86%  { transform: translate(1px, 0); }
-      100% { transform: none; }
+    .hero-name.name-revealed .name-word:nth-child(1) .nw-inner {
+      animation: word-rise 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0ms both;
     }
-    .hero {
-      animation: hero-impact-shake 0.48s ease-out 2.38s;
+    .hero-name.name-revealed .name-word:nth-child(2) .nw-inner {
+      animation: word-rise 0.65s cubic-bezier(0.22, 1, 0.36, 1) 200ms both;
+    }
+    @keyframes word-rise {
+      from { transform: translateY(110%); opacity: 0; }
+      10%  { opacity: 1; }
+      to   { transform: translateY(0); }
     }
 
     .hero-marquee-wrap {
@@ -615,6 +631,30 @@
       transition: color 0.2s ease, transform 0.2s ease;
     }
     .hero-socials a:hover { color: var(--text); transform: translateY(-2px); }
+
+    /* ── AOE blast — hero entrance sequence (post-loader) ─────────────────
+       Name is ground zero. Elements above rise from above (blast-up).
+       Elements below push down from below (blast-down).
+       Delay = distance from name epicenter.
+    ──────────────────────────────────────────────────────────────────────── */
+    .hero-tag          { animation: blast-up   0.65s cubic-bezier(0.16, 1, 0.3, 1) 1.10s both; }
+    .hero-marquee-wrap { animation: blast-down 0.65s cubic-bezier(0.16, 1, 0.3, 1) 1.25s both; }
+    /* Hidden until JS adds .hero-blast-below after name settles — delays are
+       relative to impact(), not page-load, so timing is device-independent */
+    .hero-desc, .hero-ctas, .hero-socials, .hero-scroll { opacity: 0; transform: translateY(22px); }
+    .hero-blast-below .hero-desc    { animation: blast-down 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0ms   both; }
+    .hero-blast-below .hero-ctas    { animation: blast-down 0.65s cubic-bezier(0.16, 1, 0.3, 1) 120ms both; }
+    .hero-blast-below .hero-socials { animation: blast-down 0.65s cubic-bezier(0.16, 1, 0.3, 1) 240ms both; }
+    .hero-blast-below .hero-scroll  { animation: blast-down 0.65s cubic-bezier(0.16, 1, 0.3, 1) 360ms both; }
+
+    @keyframes blast-up {
+      from { opacity: 0; transform: translateY(-18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes blast-down {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
 
     /* ════════════════════════════════════
        CURRENTLY SECTION
@@ -1393,35 +1433,36 @@
     }
     .bento-cell.span-2 { grid-column: span 2; min-height: 300px; }
     .bento-cell.span-3 { grid-column: span 3; min-height: 220px; }
-    /* ── Reveal underline: sweeps left→right on hover ── */
+    /* ── Reveal underline: sweeps left→right on hover (scaleX avoids clip-path/transform conflict) ── */
     .bento-cell::before {
       content: '';
       position: absolute;
       bottom: 0; left: 0; right: 0;
       height: 2px;
-      background: var(--bg);
-      clip-path: inset(0 100% 0 0);
-      transition: clip-path 260ms cubic-bezier(0.23, 1, 0.32, 1);
+      background: #0c0c0c;
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 260ms cubic-bezier(0.23, 1, 0.32, 1);
       z-index: 2;
       pointer-events: none;
     }
-    .bento-cell:hover::before { clip-path: inset(0 0 0 0); background: var(--bg); }
-    /* ── Corner tick: subtle L-bracket slides in from top-left corner ── */
+    .bento-cell:hover::before { transform: scaleX(1); }
+    /* ── Corner bracket: L-shape inside card padding, scales in on hover ── */
     .bento-cell::after {
       content: '';
       position: absolute;
-      top: 0; left: 0;
-      width: 14px; height: 14px;
-      border-top: 1px solid var(--bg);
-      border-left: 1px solid var(--bg);
+      top: 0.75rem; left: 0.75rem;
+      width: 16px; height: 16px;
+      border-top: 2px solid #0c0c0c;
+      border-left: 2px solid #0c0c0c;
       opacity: 0;
-      transform: translate(-4px, -4px);
-      transition: opacity 220ms ease, transform 220ms cubic-bezier(0.23, 1, 0.32, 1);
+      transform: scale(0.5);
+      transition: opacity 200ms ease, transform 200ms cubic-bezier(0.23, 1, 0.32, 1);
       transition-delay: 80ms;
       z-index: 2;
       pointer-events: none;
     }
-    .bento-cell:hover::after { opacity: 0.45; transform: translate(0, 0); border-top-color: var(--bg); border-left-color: var(--bg); }
+    .bento-cell:hover::after { opacity: 0.6; transform: scale(1); }
     .bento-cell:hover { background: var(--text); transform: translateY(-3px); }
     .bento-cell:hover:active { transform: translateY(-1px) scale(0.99); }
     .bento-cell:hover .proj-num,
@@ -1805,24 +1846,24 @@
     ════════════════════════════════════ */
     .reveal {
       opacity: 0;
-      transform: translateY(40px);
-      transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-                  transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      transform: translateY(24px);
+      transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .reveal.in-view { opacity: 1; transform: translateY(0); }
 
     .reveal-stagger > * {
       opacity: 0;
       transform: translateY(30px);
-      transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-                  transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .reveal-stagger.in-view > *:nth-child(1) { transition-delay: 0ms; }
     .reveal-stagger.in-view > *:nth-child(2) { transition-delay: 80ms; }
     .reveal-stagger.in-view > *:nth-child(3) { transition-delay: 160ms; }
-    .reveal-stagger.in-view > *:nth-child(4) { transition-delay: 240ms; }
-    .reveal-stagger.in-view > *:nth-child(5) { transition-delay: 320ms; }
-    .reveal-stagger.in-view > *:nth-child(6) { transition-delay: 400ms; }
+    .reveal-stagger.in-view > *:nth-child(4) { transition-delay: 200ms; }
+    .reveal-stagger.in-view > *:nth-child(5) { transition-delay: 200ms; }
+    .reveal-stagger.in-view > *:nth-child(6) { transition-delay: 200ms; }
     .reveal-stagger.in-view > * { opacity: 1; transform: translateY(0); }
 
     /* ── Section number entrance ── */
@@ -1836,11 +1877,11 @@
     .bento-cell.reveal { opacity: 0; transform: translateY(28px) scale(0.96); }
     .bento-cell.reveal.in-view {
       opacity: 1; transform: none;
-      transition: background 0.25s ease, transform 0.65s cubic-bezier(0.4,0,0.2,1), opacity 0.65s cubic-bezier(0.4,0,0.2,1);
+      transition: background 0.25s ease, transform 0.65s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .bento-cell.in-view:hover {
       transform: translateY(-3px);
-      transition: background 0.25s ease, transform 0.25s ease;
+      transition: background 0.25s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     /* ── Research cards: slight scale ── */
@@ -1873,8 +1914,8 @@
       display: inline-block;
       opacity: 0;
       transform: translateY(0.8em);
-      transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-                  transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+      transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .section-head.in-view .split-text .char,
     .reveal.in-view .split-text .char { opacity: 1; transform: translateY(0); }
@@ -2011,6 +2052,7 @@
       .about-grid { grid-template-columns: 1fr; gap: 3rem; }
       .about-stats { grid-template-columns: repeat(3, 1fr); }
       .research-grid { grid-template-columns: 1fr; }
+      .research-grid .research-card:last-child:nth-child(odd) { grid-column: auto; }
     }
 
     @media (max-width: 768px) {
@@ -2392,8 +2434,14 @@
       .flip-hint                   { transition-duration: 0ms; }
       #idCopyToast                 { transition-duration: 0ms; }
       /* Hero */
-      .name-word                   { animation: none; }
-      .hero                        { animation: none; }
+      /* Name: show both words instantly, no animation */
+      .nw-inner                    { transform: none !important; animation: none !important; }
+      .hero                        { animation: none !important; }
+      .nav,
+      .hero-tag, .hero-marquee-wrap,
+      .hero-desc, .hero-ctas, .hero-socials, .hero-scroll,
+      .hero-blast-below .hero-desc, .hero-blast-below .hero-ctas,
+      .hero-blast-below .hero-socials, .hero-blast-below .hero-scroll { animation: none; opacity: 1; transform: none; }
       .hero-marquee-track          { animation-play-state: paused; }
       .hero-photo-wrap             { animation: none; will-change: auto; }
       .hero-scroll-line            { animation: none; }
@@ -2477,8 +2525,8 @@
       <div class="hero-left">
         <span class="hero-tag" id="heroTag">AI/ML Engineer @ Varosync</span>
         <h1 class="hero-name" id="heroName" aria-label="Aniket Ghosh">
-          <span class="name-word">Aniket</span>
-          <span class="name-word">Ghosh.</span>
+          <span class="name-word"><span class="nw-inner">Aniket</span></span>
+          <span class="name-word"><span class="nw-inner">Ghosh.</span></span>
         </h1>
         <div class="hero-marquee-wrap" id="heroMarquee" aria-hidden="true">
           <div class="hero-marquee-track">
@@ -4039,6 +4087,11 @@
       tiltWrap.style.perspective       = '1200px';
       tiltWrap.style.perspectiveOrigin = '50% 50%';
       phase = 'physics';
+      // Page loaded scrolled — skip drop, reveal name + below elements immediately
+      const nEl = document.getElementById('heroName');
+      if (nEl) nEl.classList.add('name-revealed');
+      const heroElBail = document.querySelector('.hero');
+      if (heroElBail) heroElBail.classList.add('hero-blast-below');
       return;
     }
 
@@ -4151,6 +4204,28 @@
 
     swingFrames = 0;
     phase = 'swing';
+
+    // ── Reveal name (2 words) then shake the hero on the second landing ──
+    const heroNameEl = document.getElementById('heroName');
+    if (heroNameEl) heroNameEl.classList.add('name-revealed');
+    // Fan in desc/ctas/socials/scroll after name settles — relative delay keeps
+    // timing correct regardless of when the physics simulation fires impact()
+    setTimeout(function() {
+      const heroEl = document.querySelector('.hero');
+      if (heroEl) heroEl.classList.add('hero-blast-below');
+    }, 900);
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      // word-2 delay (200ms) + rise duration (650ms) + 280ms buffer
+      setTimeout(function() {
+        const heroEl = document.querySelector('.hero');
+        if (heroEl) {
+          heroEl.classList.add('impact-shake');
+          heroEl.addEventListener('animationend', function() {
+            heroEl.classList.remove('impact-shake');
+          }, { once: true });
+        }
+      }, 1130);
+    }
 
     // Invite wiggle: fires 2.5s after landing, then repeats every 8s while idle
     (function scheduleWiggle(delay) {
