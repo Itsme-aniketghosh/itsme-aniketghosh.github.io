@@ -513,27 +513,9 @@
       animation: glitch-hero-body 0.7s steps(1, end) 2.0s both;
     }
     /* ── Hero glitch — fires when name lands ──────────────────────────────
-       Body jitter on .hero. Two RGB channel overlays (::before red,
-       ::after blue) sweep across the full section as lateral bands.
+       Body jitter on .hero. RGB text-shadow split on .hero-left text
+       (text-shadow is inherited → hits every char in the left column).
     ─────────────────────────────────────────────────────────────────────── */
-    .hero::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: rgba(255, 20, 60, 0.08);
-      pointer-events: none;
-      z-index: 2;
-      animation: glitch-r 0.7s steps(1, end) 2.0s both;
-    }
-    .hero::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 185, 255, 0.08);
-      pointer-events: none;
-      z-index: 2;
-      animation: glitch-b 0.7s steps(1, end) 2.0s both;
-    }
     @keyframes glitch-hero-body {
       0%,  100% { transform: none; }
       12%       { transform: translate(-2px,  0px); }
@@ -544,25 +526,18 @@
       72%       { transform: translate(-2px,  1px); }
       84%       { transform: translate( 1px,  0px); }
     }
-    @keyframes glitch-r {
-      0%   { clip-path: inset(0 0 100% 0); transform: none; }
-      10%  { clip-path: inset(13% 0 70% 0); transform: translateX(-8px); }
-      20%  { clip-path: inset(56% 0 22% 0); transform: translateX( 6px); }
-      30%  { clip-path: inset(30% 0 46% 0); transform: translateX(-5px); }
-      42%  { clip-path: inset(76% 0  7% 0); transform: translateX( 7px); }
-      54%  { clip-path: inset( 5% 0 81% 0); transform: translateX(-4px); }
-      66%  { clip-path: inset(0 0 100% 0);  transform: none; }
-      100% { clip-path: inset(0 0 100% 0);  transform: none; }
-    }
-    @keyframes glitch-b {
-      0%   { clip-path: inset(0 0 100% 0); transform: none; }
-      15%  { clip-path: inset(43% 0 41% 0); transform: translateX( 8px); }
-      26%  { clip-path: inset( 8% 0 79% 0); transform: translateX(-6px); }
-      37%  { clip-path: inset(65% 0 15% 0); transform: translateX( 5px); }
-      48%  { clip-path: inset(25% 0 58% 0); transform: translateX(-7px); }
-      59%  { clip-path: inset( 1% 0 91% 0); transform: translateX( 4px); }
-      70%  { clip-path: inset(0 0 100% 0);  transform: none; }
-      100% { clip-path: inset(0 0 100% 0);  transform: none; }
+    @keyframes text-glitch {
+      0%   { text-shadow: none; }
+      10%  { text-shadow: -4px 0 rgba(255,20,60,0.9),  4px 0 rgba(0,185,255,0.9); }
+      20%  { text-shadow:  4px 0 rgba(255,20,60,0.9), -4px 0 rgba(0,185,255,0.9); }
+      30%  { text-shadow: -3px 1px rgba(255,20,60,0.9), 3px -1px rgba(0,185,255,0.9); }
+      42%  { text-shadow: none; }
+      52%  { text-shadow: -5px 0 rgba(255,20,60,0.8),  5px 0 rgba(0,185,255,0.8); }
+      62%  { text-shadow:  3px 1px rgba(255,20,60,0.9), -3px -1px rgba(0,185,255,0.9); }
+      72%  { text-shadow: none; }
+      84%  { text-shadow: -3px -1px rgba(255,20,60,0.7), 3px 1px rgba(0,185,255,0.7); }
+      94%  { text-shadow: none; }
+      100% { text-shadow: none; }
     }
 
     .hero-left {
@@ -570,6 +545,7 @@
       display: flex;
       flex-direction: column;
       gap: 1.75rem;
+      animation: text-glitch 0.7s steps(1, end) 2.0s both;
     }
 
     .hero-tag {
@@ -2477,8 +2453,7 @@
       #idCopyToast                 { transition-duration: 0ms; }
       /* Hero */
       .nc                          { animation: none; }
-      .hero::before,
-      .hero::after                 { animation: none; opacity: 0; }
+      .hero-left                   { animation: none; text-shadow: none; }
       .nav,
       .hero-tag, .hero-marquee-wrap, .hero-desc,
       .hero-ctas, .hero-socials, .hero-scroll { animation: none; opacity: 1; transform: none; }
