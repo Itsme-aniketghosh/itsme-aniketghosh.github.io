@@ -510,27 +510,59 @@
       column-gap: 4rem;
       position: relative;
       overflow: hidden;
+      animation: glitch-hero-body 0.7s steps(1, end) 2.0s both;
     }
-    /* AOE blast wave — radial glow expands from name epicenter across full hero */
+    /* ── Hero glitch — fires when name lands ──────────────────────────────
+       Body jitter on .hero. Two RGB channel overlays (::before red,
+       ::after blue) sweep across the full section as lateral bands.
+    ─────────────────────────────────────────────────────────────────────── */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 20, 60, 0.08);
+      pointer-events: none;
+      z-index: 2;
+      animation: glitch-r 0.7s steps(1, end) 2.0s both;
+    }
     .hero::after {
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(
-        ellipse at center,
-        rgba(240, 236, 228, 0.07) 0%,
-        rgba(240, 236, 228, 0.025) 38%,
-        transparent 68%
-      );
-      transform-origin: 27% 52%;
+      background: rgba(0, 185, 255, 0.08);
       pointer-events: none;
-      z-index: 0;
-      animation: hero-blast-wave 2.4s cubic-bezier(0.16, 1, 0.3, 1) 2.05s both;
+      z-index: 2;
+      animation: glitch-b 0.7s steps(1, end) 2.0s both;
     }
-    @keyframes hero-blast-wave {
-      0%   { transform: scale(0.15); opacity: 0; }
-      12%  { opacity: 1; }
-      100% { transform: scale(3.8);  opacity: 0; }
+    @keyframes glitch-hero-body {
+      0%,  100% { transform: none; }
+      12%       { transform: translate(-2px,  0px); }
+      24%       { transform: translate( 3px,  1px); }
+      36%       { transform: translate(-1px, -1px); }
+      48%       { transform: translate( 2px,  0px); }
+      60%       { transform: none; }
+      72%       { transform: translate(-2px,  1px); }
+      84%       { transform: translate( 1px,  0px); }
+    }
+    @keyframes glitch-r {
+      0%   { clip-path: inset(0 0 100% 0); transform: none; }
+      10%  { clip-path: inset(13% 0 70% 0); transform: translateX(-8px); }
+      20%  { clip-path: inset(56% 0 22% 0); transform: translateX( 6px); }
+      30%  { clip-path: inset(30% 0 46% 0); transform: translateX(-5px); }
+      42%  { clip-path: inset(76% 0  7% 0); transform: translateX( 7px); }
+      54%  { clip-path: inset( 5% 0 81% 0); transform: translateX(-4px); }
+      66%  { clip-path: inset(0 0 100% 0);  transform: none; }
+      100% { clip-path: inset(0 0 100% 0);  transform: none; }
+    }
+    @keyframes glitch-b {
+      0%   { clip-path: inset(0 0 100% 0); transform: none; }
+      15%  { clip-path: inset(43% 0 41% 0); transform: translateX( 8px); }
+      26%  { clip-path: inset( 8% 0 79% 0); transform: translateX(-6px); }
+      37%  { clip-path: inset(65% 0 15% 0); transform: translateX( 5px); }
+      48%  { clip-path: inset(25% 0 58% 0); transform: translateX(-7px); }
+      59%  { clip-path: inset( 1% 0 91% 0); transform: translateX( 4px); }
+      70%  { clip-path: inset(0 0 100% 0);  transform: none; }
+      100% { clip-path: inset(0 0 100% 0);  transform: none; }
     }
 
     .hero-left {
@@ -2445,7 +2477,8 @@
       #idCopyToast                 { transition-duration: 0ms; }
       /* Hero */
       .nc                          { animation: none; }
-      .hero::after                 { animation: none; }
+      .hero::before,
+      .hero::after                 { animation: none; opacity: 0; }
       .nav,
       .hero-tag, .hero-marquee-wrap, .hero-desc,
       .hero-ctas, .hero-socials, .hero-scroll { animation: none; opacity: 1; transform: none; }
