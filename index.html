@@ -509,35 +509,6 @@
       padding-top: 64px;
       column-gap: 4rem;
       position: relative;
-      overflow: hidden;
-      animation: glitch-hero-body 0.7s steps(1, end) 2.0s both;
-    }
-    /* ── Hero glitch — fires when name lands ──────────────────────────────
-       Body jitter on .hero. RGB text-shadow split on .hero-left text
-       (text-shadow is inherited → hits every char in the left column).
-    ─────────────────────────────────────────────────────────────────────── */
-    @keyframes glitch-hero-body {
-      0%,  100% { transform: none; }
-      12%       { transform: translate(-2px,  0px); }
-      24%       { transform: translate( 3px,  1px); }
-      36%       { transform: translate(-1px, -1px); }
-      48%       { transform: translate( 2px,  0px); }
-      60%       { transform: none; }
-      72%       { transform: translate(-2px,  1px); }
-      84%       { transform: translate( 1px,  0px); }
-    }
-    @keyframes text-glitch {
-      0%   { text-shadow: none; }
-      10%  { text-shadow: -4px 0 rgba(255,20,60,0.9),  4px 0 rgba(0,185,255,0.9); }
-      20%  { text-shadow:  4px 0 rgba(255,20,60,0.9), -4px 0 rgba(0,185,255,0.9); }
-      30%  { text-shadow: -3px 1px rgba(255,20,60,0.9), 3px -1px rgba(0,185,255,0.9); }
-      42%  { text-shadow: none; }
-      52%  { text-shadow: -5px 0 rgba(255,20,60,0.8),  5px 0 rgba(0,185,255,0.8); }
-      62%  { text-shadow:  3px 1px rgba(255,20,60,0.9), -3px -1px rgba(0,185,255,0.9); }
-      72%  { text-shadow: none; }
-      84%  { text-shadow: -3px -1px rgba(255,20,60,0.7), 3px 1px rgba(0,185,255,0.7); }
-      94%  { text-shadow: none; }
-      100% { text-shadow: none; }
     }
 
     .hero-left {
@@ -545,7 +516,6 @@
       display: flex;
       flex-direction: column;
       gap: 1.75rem;
-      animation: text-glitch 0.7s steps(1, end) 2.0s both;
     }
 
     .hero-tag {
@@ -2453,7 +2423,7 @@
       #idCopyToast                 { transition-duration: 0ms; }
       /* Hero */
       .nc                          { animation: none; }
-      .hero-left                   { animation: none; text-shadow: none; }
+      .hero-name .nc               { text-shadow: none !important; }
       .nav,
       .hero-tag, .hero-marquee-wrap, .hero-desc,
       .hero-ctas, .hero-socials, .hero-scroll { animation: none; opacity: 1; transform: none; }
@@ -3903,7 +3873,52 @@
       });
     }());
 
-    /* ═══════ 11. COPY EMAIL ═══════ */
+    /* ═══════ 11. HERO NAME GLITCH ═══════ */
+    /* Same scramble engine as the currently section (POOL / FLIP_MS / RESOLVE_AT)
+       but radiates from the centre character outward — circular AOE. */
+    ;(function initHeroGlitch() {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      const POOL       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#%—·∙▪≡≥≤';
+      const FLIP_MS    = 40;   // ms per glyph frame
+      const RESOLVE_AT = 8;    // frames before char snaps to real value
+      const RING_MS    = 55;   // delay added per ring outward from centre
+
+      const els = Array.from(document.querySelectorAll('.hero-name .nc'));
+      if (!els.length) return;
+
+      const centre = (els.length - 1) / 2; // 5.5 for 12 chars
+
+      function glitch() {
+        els.forEach(function(el, i) {
+          var dist = Math.abs(i - centre);
+          var orig = el.dataset.orig || el.textContent;
+          el.dataset.orig = orig;
+
+          clearTimeout(el._hto);
+          if (el._hiv) { clearInterval(el._hiv); el._hiv = null; }
+
+          el._hto = setTimeout(function() {
+            var f = 0;
+            el._hiv = setInterval(function() {
+              if (f < RESOLVE_AT) {
+                el.textContent = POOL[Math.floor(Math.random() * POOL.length)];
+              } else {
+                el.textContent = orig;
+                clearInterval(el._hiv);
+                el._hiv = null;
+              }
+              f++;
+            }, FLIP_MS);
+          }, Math.round(dist * RING_MS));
+        });
+      }
+
+      /* Fire once, ~42 ms after the period lands */
+      setTimeout(glitch, 2050);
+    }());
+
+    /* ═══════ 12. COPY EMAIL ═══════ */
     function copyEmail() {
       const EMAIL = 'ghosh.anik@northeastern.edu';
       function flash() {
