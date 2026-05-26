@@ -4086,6 +4086,24 @@
       tiltWrap.style.zIndex            = '90';
       tiltWrap.style.perspective       = '1200px';
       tiltWrap.style.perspectiveOrigin = '50% 50%';
+
+      // Insert spacer so .hero-right keeps the card's layout footprint.
+      // Without this the column collapses on mobile and the fixed card
+      // floats over all other content with no reserved space.
+      if (!document.getElementById('idCardSpacer')) {
+        const sp = document.createElement('div');
+        sp.id = 'idCardSpacer';
+        sp.style.cssText =
+          `width:${r.width || 300}px;height:${r.height || 420}px;` +
+          `flex-shrink:0;pointer-events:none;`;
+        const hintEl    = document.getElementById('idFlipHint');
+        const heroRight = document.querySelector('.hero-right');
+        if (heroRight) {
+          if (hintEl) heroRight.insertBefore(sp, hintEl);
+          else        heroRight.appendChild(sp);
+        }
+      }
+
       phase = 'physics';
       // Page loaded scrolled — skip drop, reveal name + below elements immediately
       const nEl = document.getElementById('heroName');
