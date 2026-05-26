@@ -509,19 +509,22 @@
       padding-top: 64px;
       column-gap: 4rem;
       position: relative;
-      animation: hero-shake 0.45s linear 2.0s both;
     }
-    @keyframes hero-shake {
-      0%    { transform: none; }
-      10%   { transform: translateX(-7px); }
-      20%   { transform: translateX( 7px); }
-      30%   { transform: translateX(-5px); }
-      40%   { transform: translateX( 5px); }
-      55%   { transform: translateX(-3px); }
-      65%   { transform: translateX( 3px); }
-      80%   { transform: translateX(-1px); }
-      90%   { transform: translateX( 1px); }
-      100%  { transform: none; }
+    /* Impact shake — triggered by JS class after name lands */
+    .hero.impact-shake { animation: hero-impact 0.55s linear both; }
+    @keyframes hero-impact {
+      0%   { transform: translate(  0,    0  ); }
+      6%   { transform: translate(-11px, -4px) rotate(-0.5deg); }
+      13%  { transform: translate( 10px,  4px) rotate( 0.5deg); }
+      21%  { transform: translate( -8px, -3px); }
+      30%  { transform: translate(  8px,  3px); }
+      40%  { transform: translate( -5px, -2px); }
+      50%  { transform: translate(  5px,  2px); }
+      62%  { transform: translate( -3px, -1px); }
+      72%  { transform: translate(  3px,  1px); }
+      82%  { transform: translate( -1px,  0  ); }
+      91%  { transform: translate(  1px,  0  ); }
+      100% { transform: none; }
     }
 
     .hero-left {
@@ -547,35 +550,27 @@
       letter-spacing: -0.04em;
       color: var(--text);
     }
-    /* Each word is its own overflow mask — text rises from below into the line */
+    /* Each word is its own overflow mask */
     .name-word {
       display: block;
       overflow: hidden;
-      padding-bottom: 0.12em; /* room for Playfair descenders */
+      padding-bottom: 0.12em;
     }
-    /* Per-character masked rise — name is the AOE epicenter */
-    .nc {
-      display: inline-block;
-      animation: char-rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+    /* Words stay hidden below the mask until JS adds .name-revealed */
+    .nw-inner {
+      display: block;
+      transform: translateY(110%);
     }
-    @keyframes char-rise {
-      from { transform: translateY(105%); }
+    .hero-name.name-revealed .name-word:nth-child(1) .nw-inner {
+      animation: word-rise 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0ms both;
+    }
+    .hero-name.name-revealed .name-word:nth-child(2) .nw-inner {
+      animation: word-rise 0.65s cubic-bezier(0.22, 1, 0.36, 1) 400ms both;
+    }
+    @keyframes word-rise {
+      from { transform: translateY(110%); }
       to   { transform: translateY(0); }
     }
-    /* "Aniket" — 42ms stagger */
-    .name-word:nth-child(1) .nc:nth-child(1) { animation-delay: 1.35s; }
-    .name-word:nth-child(1) .nc:nth-child(2) { animation-delay: 1.392s; }
-    .name-word:nth-child(1) .nc:nth-child(3) { animation-delay: 1.434s; }
-    .name-word:nth-child(1) .nc:nth-child(4) { animation-delay: 1.476s; }
-    .name-word:nth-child(1) .nc:nth-child(5) { animation-delay: 1.518s; }
-    .name-word:nth-child(1) .nc:nth-child(6) { animation-delay: 1.56s; }
-    /* "Ghosh." — 160ms word gap; period gets +80ms signature beat */
-    .name-word:nth-child(2) .nc:nth-child(1) { animation-delay: 1.76s; }
-    .name-word:nth-child(2) .nc:nth-child(2) { animation-delay: 1.802s; }
-    .name-word:nth-child(2) .nc:nth-child(3) { animation-delay: 1.844s; }
-    .name-word:nth-child(2) .nc:nth-child(4) { animation-delay: 1.886s; }
-    .name-word:nth-child(2) .nc:nth-child(5) { animation-delay: 1.928s; }
-    .name-word:nth-child(2) .nc:nth-child(6) { animation-delay: 2.008s; }
 
     .hero-marquee-wrap {
       overflow: hidden;
@@ -2435,7 +2430,8 @@
       .flip-hint                   { transition-duration: 0ms; }
       #idCopyToast                 { transition-duration: 0ms; }
       /* Hero */
-      .nc                          { animation: none; }
+      /* Name: show both words instantly, no animation */
+      .nw-inner                    { transform: none !important; animation: none !important; }
       .hero                        { animation: none !important; }
       .nav,
       .hero-tag, .hero-marquee-wrap, .hero-desc,
@@ -2523,8 +2519,8 @@
       <div class="hero-left">
         <span class="hero-tag" id="heroTag">AI/ML Engineer @ Varosync</span>
         <h1 class="hero-name" id="heroName" aria-label="Aniket Ghosh">
-          <span class="name-word"><span class="nc">A</span><span class="nc">n</span><span class="nc">i</span><span class="nc">k</span><span class="nc">e</span><span class="nc">t</span></span>
-          <span class="name-word"><span class="nc">G</span><span class="nc">h</span><span class="nc">o</span><span class="nc">s</span><span class="nc">h</span><span class="nc">.</span></span>
+          <span class="name-word"><span class="nw-inner">Aniket</span></span>
+          <span class="name-word"><span class="nw-inner">Ghosh.</span></span>
         </h1>
         <div class="hero-marquee-wrap" id="heroMarquee" aria-hidden="true">
           <div class="hero-marquee-track">
@@ -4085,6 +4081,9 @@
       tiltWrap.style.perspective       = '1200px';
       tiltWrap.style.perspectiveOrigin = '50% 50%';
       phase = 'physics';
+      // Page loaded scrolled — skip drop, reveal name immediately
+      const nEl = document.getElementById('heroName');
+      if (nEl) nEl.classList.add('name-revealed');
       return;
     }
 
@@ -4197,6 +4196,22 @@
 
     swingFrames = 0;
     phase = 'swing';
+
+    // ── Reveal name (2 words) then shake the hero on the second landing ──
+    const heroNameEl = document.getElementById('heroName');
+    if (heroNameEl) heroNameEl.classList.add('name-revealed');
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      // word-2 delay (400ms) + rise duration (650ms) + 80ms buffer
+      setTimeout(function() {
+        const heroEl = document.querySelector('.hero');
+        if (heroEl) {
+          heroEl.classList.add('impact-shake');
+          heroEl.addEventListener('animationend', function() {
+            heroEl.classList.remove('impact-shake');
+          }, { once: true });
+        }
+      }, 1130);
+    }
 
     // Invite wiggle: fires 2.5s after landing, then repeats every 8s while idle
     (function scheduleWiggle(delay) {
