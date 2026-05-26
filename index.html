@@ -511,7 +511,7 @@
       position: relative;
     }
     /* Impact shake — triggered by JS class after name lands */
-    .hero.impact-shake { animation: hero-impact 0.55s linear both; }
+    .hero.impact-shake { animation: hero-impact 0.55s cubic-bezier(0.25, 0, 0, 1) both; }
     @keyframes hero-impact {
       0%   { transform: translate(  0,    0  ); }
       6%   { transform: translate(-11px, -4px) rotate(-0.5deg); }
@@ -565,10 +565,11 @@
       animation: word-rise 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0ms both;
     }
     .hero-name.name-revealed .name-word:nth-child(2) .nw-inner {
-      animation: word-rise 0.65s cubic-bezier(0.22, 1, 0.36, 1) 400ms both;
+      animation: word-rise 0.65s cubic-bezier(0.22, 1, 0.36, 1) 200ms both;
     }
     @keyframes word-rise {
-      from { transform: translateY(110%); }
+      from { transform: translateY(110%); opacity: 0; }
+      10%  { opacity: 1; }
       to   { transform: translateY(0); }
     }
 
@@ -638,10 +639,13 @@
     ──────────────────────────────────────────────────────────────────────── */
     .hero-tag          { animation: blast-up   0.65s cubic-bezier(0.16, 1, 0.3, 1) 1.10s both; }
     .hero-marquee-wrap { animation: blast-down 0.65s cubic-bezier(0.16, 1, 0.3, 1) 1.25s both; }
-    .hero-desc         { animation: blast-down 0.65s cubic-bezier(0.16, 1, 0.3, 1) 2.10s both; }
-    .hero-ctas         { animation: blast-down 0.65s cubic-bezier(0.16, 1, 0.3, 1) 2.25s both; }
-    .hero-socials      { animation: blast-down 0.65s cubic-bezier(0.16, 1, 0.3, 1) 2.40s both; }
-    .hero-scroll       { animation: blast-down 0.65s cubic-bezier(0.16, 1, 0.3, 1) 2.58s both; }
+    /* Hidden until JS adds .hero-blast-below after name settles — delays are
+       relative to impact(), not page-load, so timing is device-independent */
+    .hero-desc, .hero-ctas, .hero-socials, .hero-scroll { opacity: 0; transform: translateY(22px); }
+    .hero-blast-below .hero-desc    { animation: blast-down 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0ms   both; }
+    .hero-blast-below .hero-ctas    { animation: blast-down 0.65s cubic-bezier(0.16, 1, 0.3, 1) 120ms both; }
+    .hero-blast-below .hero-socials { animation: blast-down 0.65s cubic-bezier(0.16, 1, 0.3, 1) 240ms both; }
+    .hero-blast-below .hero-scroll  { animation: blast-down 0.65s cubic-bezier(0.16, 1, 0.3, 1) 360ms both; }
 
     @keyframes blast-up {
       from { opacity: 0; transform: translateY(-18px); }
@@ -1842,9 +1846,9 @@
     ════════════════════════════════════ */
     .reveal {
       opacity: 0;
-      transform: translateY(40px);
-      transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
-                  transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translateY(24px);
+      transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .reveal.in-view { opacity: 1; transform: translateY(0); }
 
@@ -1857,9 +1861,9 @@
     .reveal-stagger.in-view > *:nth-child(1) { transition-delay: 0ms; }
     .reveal-stagger.in-view > *:nth-child(2) { transition-delay: 80ms; }
     .reveal-stagger.in-view > *:nth-child(3) { transition-delay: 160ms; }
-    .reveal-stagger.in-view > *:nth-child(4) { transition-delay: 240ms; }
-    .reveal-stagger.in-view > *:nth-child(5) { transition-delay: 320ms; }
-    .reveal-stagger.in-view > *:nth-child(6) { transition-delay: 400ms; }
+    .reveal-stagger.in-view > *:nth-child(4) { transition-delay: 200ms; }
+    .reveal-stagger.in-view > *:nth-child(5) { transition-delay: 200ms; }
+    .reveal-stagger.in-view > *:nth-child(6) { transition-delay: 200ms; }
     .reveal-stagger.in-view > * { opacity: 1; transform: translateY(0); }
 
     /* ── Section number entrance ── */
@@ -1877,7 +1881,7 @@
     }
     .bento-cell.in-view:hover {
       transform: translateY(-3px);
-      transition: background 0.25s ease, transform 0.25s ease;
+      transition: background 0.25s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     /* ── Research cards: slight scale ── */
@@ -2434,8 +2438,10 @@
       .nw-inner                    { transform: none !important; animation: none !important; }
       .hero                        { animation: none !important; }
       .nav,
-      .hero-tag, .hero-marquee-wrap, .hero-desc,
-      .hero-ctas, .hero-socials, .hero-scroll { animation: none; opacity: 1; transform: none; }
+      .hero-tag, .hero-marquee-wrap,
+      .hero-desc, .hero-ctas, .hero-socials, .hero-scroll,
+      .hero-blast-below .hero-desc, .hero-blast-below .hero-ctas,
+      .hero-blast-below .hero-socials, .hero-blast-below .hero-scroll { animation: none; opacity: 1; transform: none; }
       .hero-marquee-track          { animation-play-state: paused; }
       .hero-photo-wrap             { animation: none; will-change: auto; }
       .hero-scroll-line            { animation: none; }
@@ -4081,9 +4087,11 @@
       tiltWrap.style.perspective       = '1200px';
       tiltWrap.style.perspectiveOrigin = '50% 50%';
       phase = 'physics';
-      // Page loaded scrolled — skip drop, reveal name immediately
+      // Page loaded scrolled — skip drop, reveal name + below elements immediately
       const nEl = document.getElementById('heroName');
       if (nEl) nEl.classList.add('name-revealed');
+      const heroElBail = document.querySelector('.hero');
+      if (heroElBail) heroElBail.classList.add('hero-blast-below');
       return;
     }
 
@@ -4200,8 +4208,14 @@
     // ── Reveal name (2 words) then shake the hero on the second landing ──
     const heroNameEl = document.getElementById('heroName');
     if (heroNameEl) heroNameEl.classList.add('name-revealed');
+    // Fan in desc/ctas/socials/scroll after name settles — relative delay keeps
+    // timing correct regardless of when the physics simulation fires impact()
+    setTimeout(function() {
+      const heroEl = document.querySelector('.hero');
+      if (heroEl) heroEl.classList.add('hero-blast-below');
+    }, 900);
     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      // word-2 delay (400ms) + rise duration (650ms) + 80ms buffer
+      // word-2 delay (200ms) + rise duration (650ms) + 280ms buffer
       setTimeout(function() {
         const heroEl = document.querySelector('.hero');
         if (heroEl) {
