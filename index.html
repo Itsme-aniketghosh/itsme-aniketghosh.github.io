@@ -509,6 +509,19 @@
       padding-top: 64px;
       column-gap: 4rem;
       position: relative;
+      animation: hero-shake 0.45s linear 2.0s both;
+    }
+    @keyframes hero-shake {
+      0%    { transform: none; }
+      10%   { transform: translateX(-7px); }
+      20%   { transform: translateX( 7px); }
+      30%   { transform: translateX(-5px); }
+      40%   { transform: translateX( 5px); }
+      55%   { transform: translateX(-3px); }
+      65%   { transform: translateX( 3px); }
+      80%   { transform: translateX(-1px); }
+      90%   { transform: translateX( 1px); }
+      100%  { transform: none; }
     }
 
     .hero-left {
@@ -2423,11 +2436,10 @@
       #idCopyToast                 { transition-duration: 0ms; }
       /* Hero */
       .nc                          { animation: none; }
-      .hero-name .nc               { text-shadow: none !important; }
+      .hero                        { animation: none !important; }
       .nav,
       .hero-tag, .hero-marquee-wrap, .hero-desc,
       .hero-ctas, .hero-socials, .hero-scroll { animation: none; opacity: 1; transform: none; }
-      .hero                        { animation: none; }
       .hero-marquee-track          { animation-play-state: paused; }
       .hero-photo-wrap             { animation: none; will-change: auto; }
       .hero-scroll-line            { animation: none; }
@@ -3873,52 +3885,7 @@
       });
     }());
 
-    /* ═══════ 11. HERO NAME GLITCH ═══════ */
-    /* Same scramble engine as the currently section (POOL / FLIP_MS / RESOLVE_AT)
-       but radiates from the centre character outward — circular AOE. */
-    ;(function initHeroGlitch() {
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-      const POOL       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#%—·∙▪≡≥≤';
-      const FLIP_MS    = 40;   // ms per glyph frame
-      const RESOLVE_AT = 8;    // frames before char snaps to real value
-      const RING_MS    = 55;   // delay added per ring outward from centre
-
-      const els = Array.from(document.querySelectorAll('.hero-name .nc'));
-      if (!els.length) return;
-
-      const centre = (els.length - 1) / 2; // 5.5 for 12 chars
-
-      function glitch() {
-        els.forEach(function(el, i) {
-          var dist = Math.abs(i - centre);
-          var orig = el.dataset.orig || el.textContent;
-          el.dataset.orig = orig;
-
-          clearTimeout(el._hto);
-          if (el._hiv) { clearInterval(el._hiv); el._hiv = null; }
-
-          el._hto = setTimeout(function() {
-            var f = 0;
-            el._hiv = setInterval(function() {
-              if (f < RESOLVE_AT) {
-                el.textContent = POOL[Math.floor(Math.random() * POOL.length)];
-              } else {
-                el.textContent = orig;
-                clearInterval(el._hiv);
-                el._hiv = null;
-              }
-              f++;
-            }, FLIP_MS);
-          }, Math.round(dist * RING_MS));
-        });
-      }
-
-      /* Fire once, ~42 ms after the period lands */
-      setTimeout(glitch, 2050);
-    }());
-
-    /* ═══════ 12. COPY EMAIL ═══════ */
+    /* ═══════ 11. COPY EMAIL ═══════ */
     function copyEmail() {
       const EMAIL = 'ghosh.anik@northeastern.edu';
       function flash() {
