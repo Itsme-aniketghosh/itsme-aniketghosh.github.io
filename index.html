@@ -1726,6 +1726,100 @@
     .cert-item:hover { color: var(--text); }
     .cert-item i { font-size: 0.7rem; margin-top: 0.15rem; flex-shrink: 0; }
 
+    /* ── Featured certification spotlight ── */
+    .cert-featured {
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      grid-template-areas: "meta arrow" "body arrow";
+      column-gap: 1.5rem;
+      row-gap: 0.9rem;
+      align-items: center;
+      padding: 1.75rem 2rem;
+      margin-bottom: 1px;
+      background: var(--surface);
+      border-left: 2px solid var(--text);
+      text-decoration: none;
+      color: var(--text);
+      transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+    .cert-featured:hover {
+      background: var(--text);
+      color: var(--bg);
+      border-left-color: var(--bg);
+    }
+    .cf-meta {
+      grid-area: meta;
+      display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;
+    }
+    .cf-pill {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: var(--text); color: var(--bg);
+      font-family: var(--mono);
+      font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase;
+      font-weight: 600;
+      padding: 0.3rem 0.6rem; border-radius: 2px;
+    }
+    .cert-featured:hover .cf-pill { background: var(--bg); color: var(--text); }
+    .cf-dot {
+      width: 5px; height: 5px; background: currentColor; border-radius: 50%;
+      flex-shrink: 0;
+      animation: dot-pulse 1.5s ease-in-out infinite;
+    }
+    .cf-eyebrow {
+      font-family: var(--mono);
+      font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .cert-featured:hover .cf-eyebrow { color: var(--bg); opacity: 0.6; }
+    .cf-body { grid-area: body; }
+    .cf-title {
+      font-family: var(--display);
+      font-size: clamp(1.5rem, 3vw, 2.1rem);
+      font-weight: 700; line-height: 1.1;
+      margin: 0 0 0.4rem 0;
+    }
+    .cf-provider {
+      font-family: var(--sans); font-weight: 400;
+      font-size: 0.72em; color: var(--muted);
+    }
+    .cert-featured:hover .cf-provider { color: var(--bg); opacity: 0.55; }
+    .cf-desc {
+      font-family: var(--sans);
+      font-size: 0.95rem; line-height: 1.5;
+      color: var(--muted);
+      margin: 0; max-width: 62ch;
+    }
+    .cert-featured:hover .cf-desc { color: var(--bg); opacity: 0.7; }
+    .cf-arrow {
+      grid-area: arrow;
+      font-size: 1.1rem; color: var(--muted);
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+    .cert-featured:hover .cf-arrow {
+      color: var(--bg);
+      transform: translate(2px, -2px);
+    }
+    .cf-sweep {
+      position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(90deg,
+                  transparent 0%,
+                  rgba(240, 236, 228, 0.07) 50%,
+                  transparent 100%);
+      transform: translateX(-110%);
+      transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .cert-featured.in-view .cf-sweep { transform: translateX(110%); }
+    @media (max-width: 768px) {
+      .cert-featured {
+        grid-template-columns: 1fr;
+        grid-template-areas: "meta" "body" "arrow";
+        padding: 1.5rem;
+      }
+      .cf-arrow { justify-self: end; }
+    }
+
     /* ════════════════════════════════════
        13. CONTACT
     ════════════════════════════════════ */
@@ -2716,6 +2810,14 @@
           <div class="cl-tags" aria-hidden="true"></div>
         </div>
 
+        <div class="curr-line"
+             data-full="Accepted into BlueDot Impact's selective Technical AI Safety cohort"
+             data-tags="AI Safety,Selective Cohort,BlueDot Impact,Alignment,Interpretability">
+          <span class="cl-dash" aria-hidden="true">—</span>
+          <span class="cl-text" aria-label="Accepted into BlueDot Impact's selective Technical AI Safety cohort"></span>
+          <div class="cl-tags" aria-hidden="true"></div>
+        </div>
+
       </div>
     </section>
 
@@ -3430,6 +3532,30 @@
       <div class="section-head reveal-stagger">
         <h2 class="section-heading split-text">Certifications</h2>
       </div>
+
+      <a href="https://bluedot.org/courses/technical-ai-safety" target="_blank"
+         class="cert-featured reveal" aria-label="BlueDot Impact — Technical AI Safety selective cohort">
+        <span class="cf-sweep" aria-hidden="true"></span>
+        <div class="cf-meta">
+          <span class="cf-pill"><span class="cf-dot"></span>NEW · IN PROGRESS</span>
+          <span class="cf-eyebrow">AI Safety · Selective Cohort</span>
+        </div>
+        <div class="cf-body">
+          <h3 class="cf-title">
+            Technical AI Safety
+            <span class="cf-provider">— BlueDot Impact</span>
+          </h3>
+          <p class="cf-desc">
+            Accepted into BlueDot's competitive technical AI safety cohort — a
+            selective program covering interpretability, alignment research, and
+            frontier safety methods.
+          </p>
+        </div>
+        <span class="cf-arrow" aria-hidden="true">
+          <i class="fas fa-arrow-up-right-from-square"></i>
+        </span>
+      </a>
+
       <div class="certs-grid reveal-stagger">
 
         <div class="cert-card">
