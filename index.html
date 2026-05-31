@@ -3753,30 +3753,7 @@
       });
     })();
 
-    /* ═══════ 2. HERO LOAD ANIMATION ═══════ */
-    ;(function initHeroAnims() {
-      const items = [
-        { id: 'heroTag',    delay: 0   },
-        { id: 'heroName',   delay: 150 },
-        { id: 'heroMarquee',delay: 300 },
-        { id: 'heroDesc',   delay: 450 },
-        { id: 'heroCtas',   delay: 600 },
-        { id: 'heroSocials',delay: 750 },
-      ];
-      items.forEach(({ id, delay }) => {
-        const el = document.getElementById(id);
-        if (!el) return;
-        el.style.opacity   = '0';
-        el.style.transform = 'translateY(40px)';
-        setTimeout(() => {
-          el.style.transition = 'opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.8s cubic-bezier(0.22,1,0.36,1)';
-          el.style.opacity    = '1';
-          el.style.transform  = 'translateY(0)';
-        }, delay);
-      });
-    })();
-
-    /* ═══════ 3. CHAR SPLIT ═══════ */
+    /* ═══════ 2. CHAR SPLIT ═══════ */
     ;(function initCharSplit() {
       document.querySelectorAll('.split-text').forEach(el => {
         const label = el.textContent;
@@ -3793,7 +3770,7 @@
       });
     })();
 
-    /* ═══════ 4. SCROLL REVEALS ═══════ */
+    /* ═══════ 3. SCROLL REVEALS ═══════ */
     ;(function initReveal() {
       const io = new IntersectionObserver(entries => {
         entries.forEach(e => {
@@ -3809,7 +3786,7 @@
       });
     })();
 
-    /* ═══════ 5. NUMBER COUNTERS ═══════ */
+    /* ═══════ 4. NUMBER COUNTERS ═══════ */
     ;(function initCounters() {
       const io = new IntersectionObserver(entries => {
         entries.forEach(e => {
@@ -3837,7 +3814,7 @@
       document.querySelectorAll('[data-count]').forEach(el => io.observe(el));
     })();
 
-    /* ═══════ 6. UTILITIES ═══════ */
+    /* ═══════ 5. UTILITIES ═══════ */
     ;(function initUtils() {
 
       /* Nav scroll state + back to top (single listener) */
