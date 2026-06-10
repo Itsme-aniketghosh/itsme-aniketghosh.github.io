@@ -2325,14 +2325,28 @@
       -webkit-backface-visibility: hidden;
       background: #131313;
       border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.5);
     }
+    /* Punched slot — die-cut hole the vinyl strap threads through */
     .id-card-embed .card-face::before {
       content: '';
       position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: #ffffff;
+      top: 13px; left: 50%;
+      width: 56px; height: 7px;
+      margin-left: -28px;
+      border-radius: 4px;
+      background: #0a0a0a;
+      box-shadow: inset 0 2px 3px rgba(0,0,0,0.9),
+                  inset 0 -1px 1px rgba(255,255,255,0.12);
       z-index: 10;
+      pointer-events: none;
+    }
+    /* Plastic sheen across the card surface */
+    .id-card-embed .card-face::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(115deg, rgba(255,255,255,0.05), transparent 35%);
+      z-index: 11;
       pointer-events: none;
     }
     .id-card-embed .card-back-face { transform: rotateY(180deg); }
@@ -2487,13 +2501,57 @@
       z-index: 9;
     }
     .strap {
-      stroke: #252525; stroke-width: 5;
+      stroke: #232323; stroke-width: 7;
       stroke-linecap: butt; fill: none;
     }
-    #grommOuter { fill: #333333; stroke: #555555; stroke-width: 1; }
-    #grommHole  { fill: #0c0c0c; }
-    #grommHi    { fill: rgba(255,255,255,0.35); }
-    @media (max-width: 480px) { .strap { stroke-width: 3.5; } }
+    /* Stitched center seam — makes the strap read as woven fabric */
+    .strap-stitch {
+      stroke: rgba(255,255,255,0.16); stroke-width: 1;
+      stroke-dasharray: 4 3;
+      stroke-linecap: butt; fill: none;
+    }
+    @media (max-width: 480px) { .strap { stroke-width: 5; } }
+    /* Badge clip — metal clamp + clear vinyl strap through the punched slot */
+    .badge-clip {
+      position: absolute;
+      left: 50%; top: -24px;
+      transform: translateX(-50%) translateZ(3px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      pointer-events: none;
+    }
+    .bc-clamp {
+      width: 46px; height: 14px;
+      border-radius: 3px;
+      background: linear-gradient(#9a9a9a, #595959 55%, #7d7d7d);
+      border: 1px solid rgba(255,255,255,0.3);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.6);
+      position: relative;
+    }
+    .bc-clamp::after {
+      content: '';
+      position: absolute;
+      left: 5px; right: 5px; top: 50%;
+      height: 1px;
+      background: rgba(0,0,0,0.45);
+    }
+    .bc-strap {
+      width: 26px; height: 29px;
+      margin-top: -1px;
+      border-radius: 2px 2px 4px 4px;
+      background: linear-gradient(115deg, rgba(255,255,255,0.2), rgba(255,255,255,0.1) 55%, rgba(255,255,255,0.15));
+      border: 1px solid rgba(255,255,255,0.28);
+      display: flex;
+      justify-content: center;
+    }
+    .bc-snap {
+      width: 9px; height: 9px;
+      margin-top: 4px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #e0e0e0, #9c9c9c 55%, #6a6a6a);
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.4), inset 0 0 0 1.5px rgba(0,0,0,0.18);
+    }
     /* Flip hint */
     .flip-hint {
       text-align: center; margin-top: 60px;
@@ -2694,6 +2752,10 @@
             <div class="drop-wrapper">
               <div class="float-wrapper">
                 <div class="tilt-wrapper" id="idTiltWrapper">
+                  <div class="badge-clip" aria-hidden="true">
+                    <div class="bc-clamp"></div>
+                    <div class="bc-strap"><div class="bc-snap"></div></div>
+                  </div>
                   <div class="flip-inner" id="idFlipInner" tabindex="0"
                        role="button" aria-label="ID card — click to flip" aria-pressed="false">
 
@@ -4090,9 +4152,7 @@
 <svg class="lanyard-svg" id="idLanyardSvg" xmlns="http://www.w3.org/2000/svg"
      aria-hidden="true" focusable="false">
   <path id="idRopeStroke" class="strap"/>
-  <circle id="idGrommOuter" r="4.5"/>
-  <circle id="idGrommHole"  r="2"/>
-  <circle id="idGrommHi"    r="1.5"/>
+  <path id="idRopeStitch" class="strap-stitch"/>
 </svg>
 
 <!-- ── ID Card: copy toast ───────────────────────── -->
@@ -4108,9 +4168,7 @@
   const flipInner  = document.getElementById('idFlipInner');
   const flipHint   = document.getElementById('idFlipHint');
   const ropeEl     = document.getElementById('idRopeStroke');
-  const grommOuter = document.getElementById('idGrommOuter');
-  const grommHole  = document.getElementById('idGrommHole');
-  const grommHi    = document.getElementById('idGrommHi');
+  const stitchEl   = document.getElementById('idRopeStitch');
 
   const reduceMot = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const NAV_H     = 64;
@@ -4177,11 +4235,9 @@
   function drawTautRope(cardTopY) {
     const cx  = naturalCX.toFixed(1);
     const ty  = Math.max(NAV_H, cardTopY).toFixed(1);
-    ropeEl.setAttribute('d', `M ${cx} ${NAV_H} L ${cx} ${ty}`);
-    grommOuter.setAttribute('cx', cx);  grommOuter.setAttribute('cy', ty);
-    grommHole.setAttribute('cx',  cx);  grommHole.setAttribute('cy', ty);
-    grommHi.setAttribute('cx', (naturalCX - 1.3).toFixed(1));
-    grommHi.setAttribute('cy', (cardTopY  - 1.3).toFixed(1));
+    const d   = `M ${cx} ${NAV_H} L ${cx} ${ty}`;
+    ropeEl.setAttribute('d', d);
+    stitchEl.setAttribute('d', d);
   }
 
   // ── Kick off drop after loader clears ─────────────────────────
@@ -4446,10 +4502,7 @@
       d += ` C ${c1x.toFixed(1)} ${c1y.toFixed(1)},${c2x.toFixed(1)} ${c2y.toFixed(1)},${p2.x.toFixed(1)} ${vy(i+1).toFixed(1)}`;
     }
     ropeEl.setAttribute('d', d);
-    const gx = pts[N-1].x, gy = vy(N-1);
-    grommOuter.setAttribute('cx', gx.toFixed(1)); grommOuter.setAttribute('cy', gy.toFixed(1));
-    grommHole.setAttribute('cx',  gx.toFixed(1)); grommHole.setAttribute('cy',  gy.toFixed(1));
-    grommHi.setAttribute('cx', (gx - 1.3).toFixed(1)); grommHi.setAttribute('cy', (gy - 1.3).toFixed(1));
+    stitchEl.setAttribute('d', d);
   }
 
   // ── Main rAF loop ─────────────────────────────────────────────
@@ -4585,11 +4638,9 @@
     const r  = flipInner.getBoundingClientRect();
     const cx = (r.left + r.width * 0.5).toFixed(1);
     const gy = r.top.toFixed(1);
-    ropeEl.setAttribute('d', `M ${cx} ${NAV_H} L ${cx} ${gy}`);
-    grommOuter.setAttribute('cx', cx); grommOuter.setAttribute('cy', gy);
-    grommHole.setAttribute('cx',  cx); grommHole.setAttribute('cy', gy);
-    grommHi.setAttribute('cx', (parseFloat(cx) - 1.3).toFixed(1));
-    grommHi.setAttribute('cy', (parseFloat(gy) - 1.3).toFixed(1));
+    const d = `M ${cx} ${NAV_H} L ${cx} ${gy}`;
+    ropeEl.setAttribute('d', d);
+    stitchEl.setAttribute('d', d);
     flipInner.addEventListener('click',    () => { if (Date.now() - lastTouchEnd > 500) doFlip(false); });
     flipInner.addEventListener('touchend', e  => { lastTouchEnd = Date.now(); e.preventDefault(); doFlip(false); });
     return;
