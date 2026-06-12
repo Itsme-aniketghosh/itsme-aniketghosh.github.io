@@ -497,11 +497,15 @@
     .hamburger {
       display: none;
       flex-direction: column;
+      align-items: center;
+      justify-content: center;
       gap: 5px;
+      width: 44px;
+      height: 44px;
       cursor: pointer;
       background: none;
       border: none;
-      padding: 4px;
+      padding: 0;
     }
     .hamburger span {
       display: block;
@@ -1380,6 +1384,14 @@
     }
     @media (max-width: 768px) {
       .skills-mode { margin-top: 1.2rem; }
+      /* let the context strip wrap instead of overflowing narrow screens */
+      .pm-ctx {
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: 0.4rem 0.5rem;
+        font-size: 0.64rem;
+      }
+      .pm-ctx-text { min-width: 0; }
     }
     /* evidence flash when a proof pill jumps to its source */
     @keyframes proof-flash {
@@ -2587,6 +2599,9 @@
       }
       .hero-left { width: 100%; gap: 1.25rem; }
       .hero-right { width: 100%; align-items: center; order: -1; }
+      /* drop the in-flow card clear of the nav so the lanyard reads as a
+         rope, not a 16px stub under the bar */
+      .hero-right .id-card-embed { margin-top: 2.75rem; }
       .hero-name { font-size: clamp(2.8rem, 14vw, 4.5rem); }
       .hero-scroll { display: none; }
 
@@ -2614,6 +2629,19 @@
       .skill-category { grid-template-columns: 1fr; gap: 0.75rem; }
       .skill-cat-label { padding-top: 0; }
       .timeline-entry { grid-template-columns: 36px 1fr; gap: 1rem; }
+
+      /* 44px touch targets on mobile (the negative-margin trick collapsed the
+         social hit areas to ~34px sitting 2px apart) */
+      .hero-socials { gap: 0.5rem; }
+      .hero-socials a {
+        min-width: 44px;
+        min-height: 44px;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+      }
+      .sm-btn { min-height: 44px; }
+      .pm-source { padding-top: 0.62rem; padding-bottom: 0.62rem; }
     }
 
     @media (max-width: 480px) {
@@ -4847,6 +4875,14 @@
   const stitchEl   = document.getElementById('idRopeStitch');
 
   const reduceMot = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Phones, touch devices, and narrow viewports skip the fixed-position Verlet
+  // drop entirely. The card rests in normal document flow and scrolls natively
+  // with the page — so it never covers content below the hero — hanging from a
+  // lightweight static rope. A position:fixed card repositioned every frame
+  // stutters against native scroll on mobile; this is the smooth path.
+  const staticCard = reduceMot ||
+    window.matchMedia('(hover: none), (pointer: coarse)').matches ||
+    window.matchMedia('(max-width: 768px)').matches;
   const NAV_H     = 64;
 
   // ── Verlet ────────────────────────────────────────────────────
@@ -4923,7 +4959,7 @@
   const SHAKE_ONSET  = 180; // ~3 s at 60 fps before overdamp kicks in
 
   // ── Hide card immediately — loader covers the ~1.7 s gap ─────
-  if (!reduceMot) tiltWrap.style.transform = 'translateY(-150vh)';
+  if (!staticCard) tiltWrap.style.transform = 'translateY(-150vh)';
 
   // ── Rope init (call with natural position in place) ───────────
   function initRope() {
@@ -4946,6 +4982,10 @@
 
   // ── Kick off drop after loader clears ─────────────────────────
   setTimeout(function startDrop() {
+    // Static-card devices (mobile / touch / reduced-motion) never run the
+    // drop — the card already rests in normal flow. Bailing here also avoids
+    // leaving it translated off-screen when the rAF loop isn't running.
+    if (staticCard) return;
     // Measure natural card position with no transform active
     tiltWrap.style.transform = '';
     const r   = flipInner.getBoundingClientRect();
@@ -5330,8 +5370,10 @@
     });
   }());
 
-  // ── Reduced-motion: static rope, no drop ─────────────────────
-  if (reduceMot) {
+  // ── Static card (mobile / touch / reduced-motion): in-flow card, static
+  //    rope, no Verlet drop. The card scrolls with the page (never covering
+  //    content) and stays tap-to-flip. ──────────────────────────
+  if (staticCard) {
     tiltWrap.style.transform = '';
     // Rope SVG is position:fixed while the card scrolls with the page,
     // so the static rope must be redrawn on scroll and resize.
