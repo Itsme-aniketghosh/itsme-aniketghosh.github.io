@@ -23,13 +23,13 @@
   <meta property="og:site_name" content="Aniket Ghosh">
   <meta property="og:title" content="Aniket Ghosh | AI/ML Engineer">
   <meta property="og:description" content="AI/ML Engineer at Varosync. MS AI student, Khoury College of Computer Sciences, Northeastern University (GPA 4.0, May 2027). Teaching the ML lab for AIDE '26 at Northeastern's Ethics Institute (Sloan-funded). Selected for BlueDot Impact's technical AI safety cohort — alignment, interpretability, and frontier safety methods.">
-  <meta property="og:image" content="https://itsme-aniketghosh.github.io/aniket-ghosh-ai-ml-engineer-northeastern-university.jpg">
+  <meta property="og:image" content="https://itsme-aniketghosh.github.io/og-image.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Aniket Ghosh | AI/ML Engineer">
   <meta name="twitter:description" content="AI/ML Engineer at Varosync. MS AI student, Khoury College of Computer Sciences, Northeastern University (GPA 4.0, May 2027). Teaching the ML lab for AIDE '26 at Northeastern's Ethics Institute (Sloan-funded). Selected for BlueDot Impact's technical AI safety cohort — alignment, interpretability, and frontier safety methods.">
-  <meta name="twitter:image" content="https://itsme-aniketghosh.github.io/aniket-ghosh-ai-ml-engineer-northeastern-university.jpg">
+  <meta name="twitter:image" content="https://itsme-aniketghosh.github.io/og-image.jpg">
   <meta property="og:locale" content="en_US">
   <meta property="og:image:alt" content="Aniket Ghosh — AI/ML Engineer and MS AI student at Northeastern University">
   <meta name="theme-color" content="#0c0c0c">
@@ -42,12 +42,9 @@
   <link rel="me" href="https://linkedin.com/in/aniketghosh-">
   <title>Aniket Ghosh | AI/ML Engineer</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -64,8 +61,8 @@
           "name": "Aniket Ghosh — AI/ML Engineer",
           "description": "Portrait of Aniket Ghosh, AI/ML Engineer at Varosync Inc. and MS Artificial Intelligence student at Northeastern University Khoury College of Computer Sciences.",
           "caption": "Aniket Ghosh — AI/ML Engineer at Varosync and MS AI student at Northeastern University",
-          "width": 800,
-          "height": 800
+          "width": 2585,
+          "height": 2583
         },
         "jobTitle": "AI/ML Engineer",
         "description": "AI/ML Engineer at Varosync, Inc., building frontier models for molecular simulation and clinical trial prediction. MS in Artificial Intelligence at Northeastern University Khoury College (GPA 4.0, expected May 2027). Teaching Co-Lead for the AI and Data Ethics Summer Program (AIDE) at Northeastern's Ethics Institute, funded by the Alfred P. Sloan Foundation. Selected for BlueDot Impact's technical AI safety cohort — a selective program covering alignment research, mechanistic interpretability, and frontier safety methods. Research in mechanistic interpretability, NLP, computer vision, and medical AI. First-author Springer publication, IEEE publication, patent filed.",
@@ -164,7 +161,7 @@
         "credentialCategory": "degree",
         "recognizedBy": { "@id": "https://www.northeastern.edu/#neu" },
         "competencyRequired": "Artificial Intelligence, Machine Learning, NLP, Computer Vision, Mechanistic Interpretability",
-        "validFrom": "2024-09-01",
+        "validFrom": "2025-09-01",
         "validThrough": "2027-05-31"
       },
       {
@@ -248,6 +245,8 @@
       --text:    #f0ece4;
       --muted:   #888;
       --border:  #1e1e1e;
+      --live:    #69d58c;
+      --live:    oklch(78% 0.14 150);
       --sans:    'Onest', sans-serif;
       --display: 'Playfair Display', Georgia, serif;
       --mono:    'JetBrains Mono', monospace;
@@ -261,7 +260,8 @@
       overflow-x: hidden;
     }
 
-    ::selection { background: rgba(240, 236, 228, 0.2); color: var(--text); }
+    /* Solid cream highlight, dark text: readable on every surface */
+    ::selection { background: var(--text); color: var(--bg); }
 
     /* Light-background states → invert selection so text stays readable */
     /* hover-triggered light bg */
@@ -278,9 +278,9 @@
     .dt-btn::selection,
     .dt-btn *::selection,
     .stat-pill::selection,
-    .now-badge::selection,
-    .research-status.published::selection,
-    .avail-pill::selection {
+    .sm-btn.active::selection,
+    .skill-pill.lit::selection,
+    .research-status.published::selection {
       background: rgba(12, 12, 12, 0.2);
       color: var(--bg);
     }
@@ -289,11 +289,58 @@
     ::-webkit-scrollbar-track { background: var(--bg); }
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
+    /* Film grain — static print texture over everything except loader/cursor */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+      background-size: 180px 180px;
+      opacity: 0.05;
+      pointer-events: none;
+      z-index: 9500;
+    }
+
     /* ════════════════════════════════════
        2. TYPOGRAPHY
     ════════════════════════════════════ */
     h1, h2, h3 { font-family: var(--display); font-weight: 900; line-height: 1.08; letter-spacing: -0.02em; }
     a { color: inherit; text-decoration: none; }
+
+    .svg-icon {
+      width: 1em; height: 1em;
+      vertical-align: -0.125em;
+      flex-shrink: 0;
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .skip-link {
+      position: fixed;
+      top: 0.75rem; left: 0.75rem;
+      z-index: 10001;
+      background: var(--text);
+      color: var(--bg);
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.6rem 1rem;
+      transform: translateY(-200%);
+    }
+    .skip-link:focus-visible {
+      transform: translateY(0);
+      outline: 1px solid var(--bg);
+      outline-offset: -4px;
+    }
 
     .eyebrow {
       font-family: var(--mono);
@@ -311,37 +358,6 @@
       font-size: clamp(2.2rem, 4.5vw, 3.5rem);
       letter-spacing: -0.025em;
       color: var(--text);
-    }
-
-    /* ════════════════════════════════════
-       3. CURSOR
-    ════════════════════════════════════ */
-    .cursor-dot {
-      width: 8px; height: 8px;
-      background: var(--text);
-      border-radius: 50%;
-      position: fixed;
-      pointer-events: none;
-      z-index: 9999;
-      left: 0; top: 0;
-      transform: translate(-50%, -50%);
-      will-change: left, top;
-    }
-    .cursor-ring {
-      width: 36px; height: 36px;
-      border: 1px solid rgba(240, 236, 228, 0.35);
-      border-radius: 50%;
-      position: fixed;
-      pointer-events: none;
-      z-index: 9998;
-      left: 0; top: 0;
-      transform: translate(-50%, -50%);
-      transition: width 0.2s ease, height 0.2s ease, border-color 0.2s ease;
-      will-change: left, top;
-    }
-    .cursor-ring.expanded {
-      width: 56px; height: 56px;
-      border-color: rgba(240, 236, 228, 0.6);
     }
 
     /* ════════════════════════════════════
@@ -510,9 +526,16 @@
       gap: 2rem;
       opacity: 0;
       pointer-events: none;
+      /* visibility removes the closed menu from tab order and the a11y tree */
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+    }
+    .mobile-menu.open {
+      opacity: 1;
+      pointer-events: all;
+      visibility: visible;
       transition: opacity 0.3s ease;
     }
-    .mobile-menu.open { opacity: 1; pointer-events: all; }
     .mobile-menu a {
       font-family: var(--display);
       font-size: 2rem;
@@ -574,6 +597,11 @@
       line-height: 0.95;
       letter-spacing: -0.04em;
       color: var(--text);
+    }
+    /* Editorial signature: surname in italic */
+    .hero-name .name-word:nth-child(2) .nw-inner {
+      font-style: italic;
+      font-weight: 800;
     }
     /* Each word is its own overflow mask */
     .name-word {
@@ -654,6 +682,10 @@
       color: var(--muted);
       font-size: 1rem;
       transition: color 0.2s ease, transform 0.2s ease;
+      /* padded hit area without changing the visual layout */
+      display: inline-flex;
+      padding: 0.55rem;
+      margin: -0.55rem;
     }
     .hero-socials a:hover { color: var(--text); transform: translateY(-2px); }
 
@@ -795,11 +827,12 @@
       transform: translateY(-1px) scale(1.03);
     }
 
-    /* Glitch text-shadow state (added/removed by JS) */
+    /* Glitch text-shadow state (added/removed by JS) — monochrome split;
+       color stays reserved for live signals */
     .curr-line.glitching .cl-text {
       text-shadow:
-        -3px 0 rgba(255, 0, 80, 0.5),
-         3px 0 rgba(0, 180, 255, 0.5);
+        -3px 0 rgba(240, 236, 228, 0.4),
+         3px 0 rgba(240, 236, 228, 0.18);
     }
 
     .hero-right {
@@ -810,90 +843,25 @@
       position: relative;
     }
 
-    .hero-photo-wrap {
-      position: relative;
-      width: 100%;
-      max-width: 340px;
-      aspect-ratio: 3 / 4;
-    }
-    .hero-photo-inner {
-      position: absolute;
-      inset: 0;
-      overflow: hidden;
-    }
-    .hero-photo {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: top center;
-      display: block;
-    }
-    .hero-photo-bw  { z-index: 1; }
-    .hero-photo-color {
-      z-index: 2;
-      opacity: 0;
-      transition: opacity 0.6s ease;
-    }
-    .hero-photo-wrap:hover .hero-photo-color { opacity: 1; }
-    .hero-photo-placeholder {
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--display);
-      font-size: 6rem;
-      font-weight: 800;
-      color: var(--border);
-    }
-    .hero-status {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-top: 1rem;
-      font-family: var(--mono);
-      font-size: 0.75rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--text);
-    }
-    .hero-status-sub {
-      margin-top: 0.35rem;
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.07em;
-      color: var(--text);
-      pointer-events: none;
-      white-space: nowrap;
-    }
-    .status-dot {
-      width: 6px; height: 6px;
-      background: var(--text);
-      border-radius: 50%;
-      animation: dot-pulse 2.5s ease-in-out infinite;
-    }
     @keyframes dot-pulse {
       0%, 100% { opacity: 1; }
       50% { opacity: 0.3; }
     }
 
-    /* ── Availability pill ── */
+    /* ── Availability status line ── */
     .avail-pill {
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.6rem;
       margin-top: 0.9rem;
       margin-bottom: 0.2rem;
       font-family: var(--mono);
       font-size: 0.72rem;
       letter-spacing: 0.04em;
-      color: var(--bg);
-      background: var(--text);
-      padding: 0.3rem 0.75rem;
+      color: var(--text);
+      background: rgba(240, 236, 228, 0.03);
+      border: 1px solid rgba(240, 236, 228, 0.16);
+      padding: 0.4rem 0.85rem;
       border-radius: 2px;
       width: fit-content;
     }
@@ -902,7 +870,8 @@
       width: 6px;
       height: 6px;
       border-radius: 50%;
-      background: var(--bg);
+      background: var(--live);
+      box-shadow: 0 0 8px rgba(105, 213, 140, 0.5);
       flex-shrink: 0;
       animation: dot-pulse 2.5s ease-in-out infinite;
     }
@@ -1025,8 +994,9 @@
     .dt-live-dot::before {
       content: '';
       width: 6px; height: 6px;
-      background: var(--text);
+      background: var(--live);
       border-radius: 50%;
+      box-shadow: 0 0 8px rgba(105, 213, 140, 0.45);
       display: block;
       animation: dot-pulse 2.5s ease-in-out infinite;
     }
@@ -1204,6 +1174,12 @@
       text-transform: uppercase;
       color: var(--muted);
     }
+    /* Text-valued stats read at a smaller size so they decode instantly */
+    .stat-val--sm {
+      font-size: clamp(1.7rem, 2.8vw, 2.5rem);
+      line-height: 1.15;
+      padding: 0.3em 0 0.15em;
+    }
 
     /* ════════════════════════════════════
        8. SKILLS MARQUEE
@@ -1212,10 +1188,10 @@
 
     .skill-category {
       display: grid;
-      grid-template-columns: 180px 1fr;
+      grid-template-columns: 150px 1fr;
       align-items: start;
-      gap: 2.5rem;
-      padding: 1.75rem 0;
+      gap: 2rem;
+      padding: 1.1rem 0;
       border-top: 1px solid var(--border);
       transition: background 0.25s ease;
       position: relative;
@@ -1254,15 +1230,15 @@
     .skill-pills {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.45rem;
+      gap: 0.4rem;
     }
 
     .skill-pill {
       display: inline-block;
-      padding: 0.35rem 0.9rem;
+      padding: 0.3rem 0.75rem;
       border: 1px solid var(--border);
       font-family: var(--mono);
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       color: var(--muted);
       white-space: nowrap;
       border-radius: 2px;
@@ -1279,6 +1255,102 @@
       outline: 1px solid var(--text);
       outline-offset: 3px;
     }
+    .skills-hint {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      margin-top: 0.75rem;
+    }
+    #skills .section-head { margin-bottom: 2.5rem; }
+    /* Proof-mode toggle */
+    .skills-mode { margin-top: 1.1rem; }
+    .sm-btn {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: none;
+      border: 1px solid rgba(240, 236, 228, 0.28);
+      border-radius: 2px;
+      color: var(--text);
+      padding: 0.55rem 1.2rem;
+      cursor: pointer;
+      transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+    .sm-btn:hover { background: rgba(240, 236, 228, 0.06); }
+    .sm-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+    .sm-btn:focus-visible { outline: 1px solid var(--text); outline-offset: 3px; }
+
+    /* Proof mode: a row of sources above the table; hovering one lights
+       the skills it proves in the table itself */
+    .pm-sources {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 1.75rem;
+    }
+    .pm-source {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text);
+      background: none;
+      border: 1px solid rgba(240, 236, 228, 0.28);
+      border-radius: 2px;
+      padding: 0.45rem 0.9rem;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+                  color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+    .pm-sources.pm-in .pm-source { opacity: 1; transform: none; }
+    .pm-sources.pm-in .pm-source:nth-child(1) { transition-delay: 0ms; }
+    .pm-sources.pm-in .pm-source:nth-child(2) { transition-delay: 45ms; }
+    .pm-sources.pm-in .pm-source:nth-child(3) { transition-delay: 90ms; }
+    .pm-sources.pm-in .pm-source:nth-child(4) { transition-delay: 135ms; }
+    .pm-sources.pm-in .pm-source:nth-child(5) { transition-delay: 180ms; }
+    .pm-sources.pm-in .pm-source:nth-child(6) { transition-delay: 225ms; }
+    .pm-sources.pm-in .pm-source:nth-child(7) { transition-delay: 270ms; }
+    .pm-sources.pm-in .pm-source:nth-child(8) { transition-delay: 315ms; }
+    .pm-sources.pm-in .pm-source:nth-child(9) { transition-delay: 360ms; }
+    .pm-sources.pm-in .pm-source:hover,
+    .pm-sources.pm-in .pm-source:focus-visible,
+    .pm-sources.pm-in .pm-source.demo { transition-delay: 0ms; }
+    .pm-source:hover,
+    .pm-source:focus-visible,
+    .pm-source.demo {
+      color: var(--bg);
+      background: var(--text);
+      border-color: var(--text);
+    }
+    .pm-source:focus-visible { outline: 1px solid var(--text); outline-offset: 2px; }
+    .pm-count {
+      font-size: 0.62em;
+      margin-left: 0.45em;
+      opacity: 0.55;
+      letter-spacing: 0;
+    }
+    /* the table's own pills light up; instantly, ignoring entrance stagger */
+    .skill-category.in-view .skill-pills .skill-pill.dim { opacity: 0.18; transition-delay: 0ms; }
+    .skill-category.in-view .skill-pills .skill-pill.lit {
+      color: var(--bg);
+      background: var(--text);
+      border-color: var(--text);
+      transform: translateY(-2px);
+      transition-delay: 0ms;
+    }
+    @media (max-width: 768px) {
+      .skills-mode { margin-top: 1.2rem; }
+    }
+    /* evidence flash when a proof pill jumps to its source */
+    @keyframes proof-flash {
+      0%   { box-shadow: inset 0 0 0 1px var(--text), inset 0 0 70px rgba(240, 236, 228, 0.07); }
+      100% { box-shadow: inset 0 0 0 1px rgba(240, 236, 228, 0), inset 0 0 70px rgba(240, 236, 228, 0); }
+    }
+    .proof-flash { animation: proof-flash 1.6s cubic-bezier(0.22, 1, 0.36, 1) 1; }
     /* reveal + stagger when parent enters view */
     .skill-category.in-view .skill-pill {
       opacity: 1;
@@ -1365,9 +1437,11 @@
       font-size: 0.6rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      background: var(--text);
-      color: var(--bg);
+      background: rgba(105, 213, 140, 0.08);
+      color: var(--live);
+      border: 1px solid rgba(105, 213, 140, 0.35);
       padding: 0.15rem 0.5rem;
+      border-radius: 2px;
       animation: badge-pulse 2.4s ease-in-out infinite;
     }
     @keyframes badge-pulse { 0%,100%{opacity:1} 50%{opacity:0.55} }
@@ -1434,6 +1508,285 @@
     .timeline-entry.in-view .tags .tag:nth-child(3) { transition-delay: 0.66s; }
     .timeline-entry.in-view .tags .tag:nth-child(4) { transition-delay: 0.74s; }
     .timeline-entry.in-view .tags .tag:nth-child(5) { transition-delay: 0.82s; }
+
+    /* ════════════════════════════════════
+       9b. EDUCATION
+    ════════════════════════════════════ */
+    /* The grind, stated plainly: each fragment lands like a drumbeat */
+    .edu-manifest {
+      font-family: var(--display);
+      font-size: clamp(1.7rem, 3.4vw, 2.9rem);
+      font-weight: 700;
+      line-height: 1.45;
+      letter-spacing: -0.015em;
+      max-width: 1050px;
+      margin-bottom: 4rem;
+    }
+    .edu-manifest .mf-lead,
+    .edu-manifest .mf,
+    .edu-manifest .mf-kicker {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+                  transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .edu-manifest .mf-lead   { color: var(--muted); font-style: italic; }
+    .edu-manifest .mf        { color: var(--text); }
+    .edu-manifest .mf-kicker { color: var(--muted); font-style: italic; }
+    .edu-manifest.in-view .mf-lead,
+    .edu-manifest.in-view .mf,
+    .edu-manifest.in-view .mf-kicker { opacity: 1; transform: none; }
+    .edu-manifest.in-view .mf:nth-child(2) { transition-delay: 0.15s; }
+    .edu-manifest.in-view .mf:nth-child(3) { transition-delay: 0.30s; }
+    .edu-manifest.in-view .mf:nth-child(4) { transition-delay: 0.45s; }
+    .edu-manifest.in-view .mf:nth-child(5) { transition-delay: 0.60s; }
+    .edu-manifest.in-view .mf:nth-child(6) { transition-delay: 0.75s; }
+    .edu-manifest.in-view .mf:nth-child(7) { transition-delay: 0.90s; }
+    .edu-manifest.in-view .mf:nth-child(8) { transition-delay: 1.05s; }
+    .edu-manifest.in-view .mf-kicker       { transition-delay: 1.40s; }
+
+    /* Degree credentials: physical cards in the ID-card's world.
+       They deal in on reveal, tilt toward the pointer, and carry a
+       specular sheen — light on plastic, not decoration. */
+    .edu-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .edu-card { position: relative; }
+    /* thrown in spinning from both wings; they bump in the middle and settle */
+    .edu-card.reveal {
+      opacity: 0;
+      transform: none;
+      transition: opacity 0.25s ease;
+    }
+    .edu-card.reveal.in-view { opacity: 1; transform: none; }
+    /* Credentials fall with gravity (same physics as the hero badge),
+       knock into each other on landing, and settle */
+    @keyframes edu-fall-left {
+      0%   { transform: translateY(-85vh) rotate(-6deg);
+             animation-timing-function: cubic-bezier(0.45, 0, 0.8, 0.4); }  /* accelerate */
+      60%  { transform: translateY(0) rotate(2.4deg);
+             animation-timing-function: cubic-bezier(0.2, 0.6, 0.35, 1); }  /* impact: lean into neighbor */
+      78%  { transform: translateY(-9px) rotate(-1.4deg);
+             animation-timing-function: cubic-bezier(0.5, 0, 0.6, 1); }     /* hop off the bump */
+      92%  { transform: translateY(0) rotate(0.5deg); }
+      100% { transform: none; }
+    }
+    @keyframes edu-fall-right {
+      0%   { transform: translateY(-85vh) rotate(6deg);
+             animation-timing-function: cubic-bezier(0.45, 0, 0.8, 0.4); }
+      60%  { transform: translateY(0) rotate(-2.4deg);
+             animation-timing-function: cubic-bezier(0.2, 0.6, 0.35, 1); }
+      78%  { transform: translateY(-9px) rotate(1.4deg);
+             animation-timing-function: cubic-bezier(0.5, 0, 0.6, 1); }
+      92%  { transform: translateY(0) rotate(-0.5deg); }
+      100% { transform: none; }
+    }
+    .edu-card.reveal.in-view:nth-child(1) .edu-tilt {
+      animation: edu-fall-left 0.95s linear 0.05s backwards;
+    }
+    .edu-card.reveal.in-view:nth-child(2) .edu-tilt {
+      animation: edu-fall-right 0.95s linear 0.23s backwards;
+    }
+
+    .edu-tilt {
+      position: relative;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2rem 2rem 1.75rem;
+      overflow: hidden;
+      box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.55);
+      transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+                  border-color 0.3s ease,
+                  box-shadow 0.3s ease;
+    }
+    .edu-card:hover .edu-tilt {
+      transform: translateY(-4px);
+      border-color: rgba(240, 236, 228, 0.28);
+      box-shadow: 0 44px 88px -36px rgba(0, 0, 0, 0.75);
+    }
+    /* edge glow: a 1px ring of light that follows the pointer */
+    .edu-tilt::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 4px;
+      padding: 1px;
+      background: radial-gradient(300px circle at var(--shx, 50%) var(--shy, 0%),
+                  rgba(240, 236, 228, 0.55), transparent 65%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+              mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+              mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .edu-card:hover .edu-tilt::before { opacity: 1; }
+    /* links inside the cards */
+    .edu-school a,
+    .edu-points a {
+      color: var(--text);
+      text-decoration: underline;
+      text-decoration-color: rgba(240, 236, 228, 0.3);
+      text-underline-offset: 3px;
+      transition: text-decoration-color 0.2s ease;
+    }
+    .edu-school a:hover,
+    .edu-points a:hover { text-decoration-color: var(--text); }
+    /* specular sheen that tracks the pointer (set via --shx/--shy in JS) */
+    .edu-tilt::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(540px circle at var(--shx, 50%) var(--shy, -20%),
+                  rgba(240, 236, 228, 0.09), transparent 45%);
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .edu-card:hover .edu-tilt::after { opacity: 1; }
+    /* one-time light sweep when the card lands */
+    .edu-sweep {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(105deg, transparent 0%, rgba(240,236,228,0.08) 50%, transparent 100%);
+      transform: translateX(-120%);
+      transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.35s;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .edu-card.in-view .edu-sweep { transform: translateX(120%); transition-delay: 1.1s; }
+    /* ghost year watermark */
+    .edu-ghost-year {
+      position: absolute;
+      right: 0.02em;
+      bottom: -0.16em;
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 900;
+      font-size: clamp(6.5rem, 9vw, 9rem);
+      line-height: 1;
+      color: var(--text);
+      opacity: 0;
+      transform: translateY(24px) scale(1.08);
+      transition: opacity 1.1s cubic-bezier(0.22, 1, 0.36, 1) 1.15s,
+                  transform 1.1s cubic-bezier(0.22, 1, 0.36, 1) 1.15s;
+      pointer-events: none;
+      user-select: none;
+    }
+    .edu-card.in-view .edu-ghost-year { opacity: 0.055; transform: none; }
+
+    .edu-card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.8rem;
+      margin-bottom: 1.4rem;
+    }
+    .edu-years {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .edu-degree {
+      font-family: var(--display);
+      font-size: clamp(1.3rem, 1.8vw, 1.6rem);
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.2;
+    }
+    .edu-school {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 0.35rem;
+    }
+    .edu-points {
+      list-style: none;
+      margin-top: 1.2rem;
+    }
+    .edu-points li {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.7;
+      padding: 0.22rem 0 0.22rem 1rem;
+      position: relative;
+      opacity: 0;
+      transform: translateX(-14px);
+      transition: opacity 0.4s cubic-bezier(0.22,1,0.36,1),
+                  transform 0.4s cubic-bezier(0.22,1,0.36,1);
+    }
+    .edu-points li::before {
+      content: '--';
+      position: absolute;
+      left: 0;
+      color: var(--border);
+      font-family: var(--mono);
+    }
+    .edu-points li strong { color: var(--text); font-weight: 600; }
+    .edu-card.in-view .edu-points li { opacity: 1; transform: none; }
+    .edu-card.in-view .edu-points li:nth-child(1) { transition-delay: 1.10s; }
+    .edu-card.in-view .edu-points li:nth-child(2) { transition-delay: 1.22s; }
+    .edu-card.in-view .edu-points li:nth-child(3) { transition-delay: 1.34s; }
+
+    /* Registrar stamp: presses into the card after it settles */
+    .edu-card-foot {
+      margin-top: auto;
+      padding-top: 1.4rem;
+      display: flex;
+      justify-content: flex-end;
+    }
+    .edu-stamp {
+      text-align: right;
+      border: 1px solid rgba(240,236,228,0.25);
+      border-radius: 2px;
+      padding: 0.9rem 1.1rem;
+      opacity: 0;
+      position: relative;
+      z-index: 2;
+    }
+    @keyframes stamp-press {
+      0%   { opacity: 0; transform: scale(1.35) rotate(4deg); }
+      55%  { opacity: 1; transform: scale(0.97) rotate(-2.2deg); }
+      100% { opacity: 1; transform: scale(1) rotate(-1.5deg); }
+    }
+    .edu-card.in-view .edu-stamp {
+      animation: stamp-press 0.5s cubic-bezier(0.22, 1, 0.36, 1) 1.55s both;
+    }
+    .edu-stamp-val {
+      display: block;
+      font-family: var(--display);
+      font-weight: 800;
+      font-size: 2rem;
+      line-height: 1;
+      color: var(--text);
+    }
+    .edu-stamp-cap {
+      display: block;
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.45rem;
+    }
+
+    @media (max-width: 768px) {
+      .edu-manifest { margin-bottom: 3rem; }
+      .edu-cards { grid-template-columns: 1fr; }
+      .edu-tilt { padding: 1.5rem 1.25rem 1.4rem; }
+      .edu-ghost-year { font-size: 5.5rem; }
+    }
 
     /* ════════════════════════════════════
        10. PROJECTS (BENTO)
@@ -1749,7 +2102,7 @@
       transition: color 0.2s ease;
     }
     .cert-item:hover { color: var(--text); }
-    .cert-item i { font-size: 0.7rem; margin-top: 0.15rem; flex-shrink: 0; }
+    .cert-item .svg-icon { font-size: 0.7rem; margin-top: 0.3rem; }
 
     /* ── Featured certification spotlight ── */
     .cert-featured {
@@ -1764,7 +2117,7 @@
       padding: 1.75rem 2rem;
       margin-bottom: 1px;
       background: var(--surface);
-      border-left: 2px solid var(--text);
+      border: 1px solid rgba(240, 236, 228, 0.18);
       text-decoration: none;
       color: var(--text);
       transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
@@ -1772,7 +2125,7 @@
     .cert-featured:hover {
       background: var(--text);
       color: var(--bg);
-      border-left-color: var(--bg);
+      border-color: var(--text);
     }
     .cf-meta {
       grid-area: meta;
@@ -1890,7 +2243,11 @@
       border: 1px solid var(--border);
       color: var(--muted);
       cursor: pointer;
-      padding: 0.4rem 0.65rem;
+      min-width: 44px;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       font-size: 0.8rem;
       transition: color 0.2s ease, border-color 0.2s ease;
     }
@@ -1898,8 +2255,16 @@
     .copy-btn:active { transform: scale(0.97); }
     .contact-ai-row {
       display: flex;
-      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
       margin-bottom: 1.25rem;
+    }
+    .contact-ai-note {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.06em;
+      color: var(--muted);
     }
     .contact-ai-row a {
       font-family: var(--mono);
@@ -1986,7 +2351,7 @@
     .reveal-stagger.in-view > * { opacity: 1; transform: translateY(0); }
 
     /* ── Section number entrance ── */
-    .section-num.in-view { opacity: 0.055; transform: scale(1); }
+    .section-num.in-view { opacity: 0.085; transform: scale(1); }
 
     /* ── Timeline: slide from left ── */
     .timeline-entry.reveal { transform: translateX(-24px) translateY(16px); }
@@ -2021,13 +2386,6 @@
     .certs-grid.reveal-stagger.in-view > *:nth-child(6) { transition-delay: 400ms; }
     .certs-grid.reveal-stagger.in-view > * { opacity: 1; transform: none; }
 
-    /* ── Hero photo gentle float ── */
-    .hero-photo-wrap { animation: photo-float 9s ease-in-out infinite; will-change: transform; }
-    @keyframes photo-float {
-      0%, 100% { transform: translateY(0); }
-      50%       { transform: translateY(-7px); }
-    }
-
     /* Char split */
     .split-text .char {
       display: inline-block;
@@ -2045,7 +2403,7 @@
     .back-to-top {
       position: fixed;
       bottom: 2rem; right: 2rem;
-      width: 40px; height: 40px;
+      width: 44px; height: 44px;
       border: 1px solid var(--border);
       background: var(--bg);
       color: var(--muted);
@@ -2148,7 +2506,7 @@
     }
     .sp-label {
       font-family: var(--mono);
-      font-size: 0.42rem;
+      font-size: 0.5rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--muted);
@@ -2158,6 +2516,9 @@
     /* ════════════════════════════════════
        19. RESPONSIVE
     ════════════════════════════════════ */
+    @media (max-width: 1280px) {
+      .nav-links { gap: 1.5rem; }
+    }
     @media (max-width: 1199px) {
       .hero-name { font-size: clamp(3rem, 8vw, 7rem); }
       .bento-grid { grid-template-columns: repeat(2, 1fr); }
@@ -2167,7 +2528,8 @@
     }
 
     @media (max-width: 1024px) {
-      .nav-links { gap: 1.75rem; }
+      .nav-links { gap: 1rem; }
+      .nav-links a { font-size: 0.8rem; }
       .about-grid { grid-template-columns: 1fr; gap: 3rem; }
       .about-stats { grid-template-columns: repeat(3, 1fr); }
       .research-grid { grid-template-columns: 1fr; }
@@ -2189,7 +2551,6 @@
       }
       .hero-left { width: 100%; gap: 1.25rem; }
       .hero-right { width: 100%; align-items: center; order: -1; }
-      .hero-photo-wrap { max-width: 280px; }
       .hero-name { font-size: clamp(2.8rem, 14vw, 4.5rem); }
       .hero-scroll { display: none; }
 
@@ -2212,7 +2573,6 @@
 
       footer { flex-direction: column; gap: 0.75rem; text-align: center; }
 
-      .cursor-dot, .cursor-ring { display: none; }
       .side-progress { display: none; }
 
       .skill-category { grid-template-columns: 1fr; gap: 0.75rem; }
@@ -2242,38 +2602,8 @@
       font-weight: 600;
       letter-spacing: 1.2px;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.38);
+      color: rgba(255,255,255,0.55); /* work-authorization line must clear AA */
       font-family: var(--mono);
-    }
-    /* ── Status badges below card ── */
-    .card-meta-badges {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 9px;
-      margin-top: 14px;
-      position: relative;
-      z-index: 95;
-      transition: opacity 700ms;
-    }
-    .card-meta-badges.hide { opacity: 0; }
-    .card-meta-badge {
-      font-size: 8.5px;
-      font-weight: 700;
-      letter-spacing: 1.9px;
-      text-transform: uppercase;
-      color: rgba(240,236,228,0.38);
-      font-family: var(--mono);
-      padding: 5px 12px;
-      border: 1px solid rgba(240,236,228,0.13);
-      border-radius: 2px;
-      white-space: nowrap;
-      background: rgba(6,6,6,0.55);
-    }
-    .card-meta-badge--highlight {
-      color: rgba(240,236,228,0.72);
-      border-color: rgba(240,236,228,0.28);
-      background: rgba(240,236,228,0.03);
     }
     .id-card-embed img { -webkit-user-drag: none; user-select: none; }
     .id-card-embed .scene {
@@ -2302,7 +2632,8 @@
       transition: transform 600ms cubic-bezier(0.23, 1, 0.32, 1);
       cursor: pointer;
       user-select: none;
-      touch-action: none;
+      /* pan-y keeps vertical swipes scrolling the page; horizontal drags grab the card */
+      touch-action: pan-y;
     }
     .id-card-embed .flip-inner:focus-visible {
       outline: 2px solid rgba(255,255,255,0.45);
@@ -2325,14 +2656,28 @@
       -webkit-backface-visibility: hidden;
       background: #131313;
       border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.5);
     }
+    /* Punched slot — die-cut hole the vinyl strap threads through */
     .id-card-embed .card-face::before {
       content: '';
       position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: #ffffff;
+      top: 13px; left: 50%;
+      width: 56px; height: 7px;
+      margin-left: -28px;
+      border-radius: 4px;
+      background: #0a0a0a;
+      box-shadow: inset 0 2px 3px rgba(0,0,0,0.9),
+                  inset 0 -1px 1px rgba(255,255,255,0.12);
       z-index: 10;
+      pointer-events: none;
+    }
+    /* Plastic sheen across the card surface */
+    .id-card-embed .card-face::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(115deg, rgba(255,255,255,0.05), transparent 35%);
+      z-index: 11;
       pointer-events: none;
     }
     .id-card-embed .card-back-face { transform: rotateY(180deg); }
@@ -2341,7 +2686,7 @@
       font-weight: 500;
       letter-spacing: 1.5px;
       text-transform: uppercase;
-      color: #5a5a5a;
+      color: #8a8a8a;
       line-height: 1;
       font-family: var(--mono);
     }
@@ -2401,7 +2746,7 @@
       justify-content: center;
       font-size: 38px;
       font-weight: 600;
-      color: #5a5a5a;
+      color: #8a8a8a;
       background: #1a1a1a;
       border-radius: 8px;
     }
@@ -2467,11 +2812,12 @@
     .id-card-embed .b-monogram {
       text-align: center; padding: 8px 0 10px;
       font-family: Georgia, 'Times New Roman', serif;
-      font-style: italic; font-size: 14px; color: #5a5a5a;
+      font-style: italic; font-size: 14px; color: #8a8a8a; /* AA on #131313 */
       flex-shrink: 0;
     }
     .id-card-embed .b-return-email {
-      background: none; border: none; padding: 0;
+      background: none; border: none;
+      padding: 10px 12px; margin: -10px -12px;
       font-family: var(--mono); font-size: 11px; font-weight: 400;
       color: #f5f5f5; cursor: pointer;
       transition: opacity 200ms;
@@ -2487,19 +2833,63 @@
       z-index: 9;
     }
     .strap {
-      stroke: #252525; stroke-width: 5;
+      stroke: #232323; stroke-width: 7;
       stroke-linecap: butt; fill: none;
     }
-    #grommOuter { fill: #333333; stroke: #555555; stroke-width: 1; }
-    #grommHole  { fill: #0c0c0c; }
-    #grommHi    { fill: rgba(255,255,255,0.35); }
-    @media (max-width: 480px) { .strap { stroke-width: 3.5; } }
+    /* Stitched center seam — makes the strap read as woven fabric */
+    .strap-stitch {
+      stroke: rgba(255,255,255,0.16); stroke-width: 1;
+      stroke-dasharray: 4 3;
+      stroke-linecap: butt; fill: none;
+    }
+    @media (max-width: 480px) { .strap { stroke-width: 5; } }
+    /* Badge clip — metal clamp + clear vinyl strap through the punched slot */
+    .badge-clip {
+      position: absolute;
+      left: 50%; top: -24px;
+      transform: translateX(-50%) translateZ(3px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      pointer-events: none;
+    }
+    .bc-clamp {
+      width: 46px; height: 14px;
+      border-radius: 3px;
+      background: linear-gradient(#9a9a9a, #595959 55%, #7d7d7d);
+      border: 1px solid rgba(255,255,255,0.3);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.6);
+      position: relative;
+    }
+    .bc-clamp::after {
+      content: '';
+      position: absolute;
+      left: 5px; right: 5px; top: 50%;
+      height: 1px;
+      background: rgba(0,0,0,0.45);
+    }
+    .bc-strap {
+      width: 26px; height: 29px;
+      margin-top: -1px;
+      border-radius: 2px 2px 4px 4px;
+      background: linear-gradient(115deg, rgba(255,255,255,0.2), rgba(255,255,255,0.1) 55%, rgba(255,255,255,0.15));
+      border: 1px solid rgba(255,255,255,0.28);
+      display: flex;
+      justify-content: center;
+    }
+    .bc-snap {
+      width: 9px; height: 9px;
+      margin-top: 4px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #e0e0e0, #9c9c9c 55%, #6a6a6a);
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.4), inset 0 0 0 1.5px rgba(0,0,0,0.18);
+    }
     /* Flip hint */
     .flip-hint {
       text-align: center; margin-top: 60px;
       font-size: 10px; font-weight: 500;
       letter-spacing: 1.5px; text-transform: uppercase;
-      color: #5a5a5a; font-family: var(--mono);
+      color: #8a8a8a; font-family: var(--mono);
       transition: opacity 400ms; pointer-events: none; user-select: none;
       position: relative; z-index: 95;
     }
@@ -2562,10 +2952,9 @@
       .hero-blast-below .hero-desc, .hero-blast-below .hero-ctas,
       .hero-blast-below .hero-socials, .hero-blast-below .hero-scroll { animation: none; opacity: 1; transform: none; }
       .hero-marquee-track          { animation-play-state: paused; }
-      .hero-photo-wrap             { animation: none; will-change: auto; }
       .hero-scroll-line            { animation: none; }
       /* Decorative pulses */
-      .status-dot, .avail-dot      { animation: none; opacity: 1; }
+      .avail-dot                   { animation: none; opacity: 1; }
       .now-badge, .stat-pill       { animation: none; }
       .live-badge                  { animation: none; opacity: 1; border-color: var(--text); }
       /* Content swap */
@@ -2580,6 +2969,17 @@
       .bento-cell                  { transition-duration: 0ms !important; }
       .skill-category              { transition-duration: 0ms !important; }
       .skill-category::after       { animation: none; }
+      /* Education */
+      .edu-points li, .edu-ghost-year, .edu-card.reveal,
+      .edu-manifest .mf, .edu-manifest .mf-lead, .edu-manifest .mf-kicker {
+        transition-duration: 0ms !important;
+        transition-delay: 0ms !important;
+      }
+      .edu-card.in-view .edu-stamp { animation: none; opacity: 1; transform: rotate(-1.5deg); }
+      .edu-card.in-view .edu-tilt  { animation: none; }
+      .edu-sweep                   { transition: none; }
+      .edu-tilt                    { transition: none; }
+      .pm-source                   { transition: none; opacity: 1; transform: none; }
       /* Currently section — flip-board & glitch are JS-driven; disable CSS transitions */
       .curr-line                   { transition: none !important; }
       .cl-text                     { transition: none !important; }
@@ -2591,6 +2991,8 @@
 
 <body>
 
+  <a class="skip-link" href="#main">Skip to content</a>
+
   <!-- Loader -->
   <div class="loader" id="loader" aria-hidden="true">
     <div style="text-align:center;">
@@ -2599,16 +3001,13 @@
     </div>
   </div>
 
-  <!-- Cursor -->
-  <div class="cursor-dot" id="cursorDot"></div>
-  <div class="cursor-ring" id="cursorRing"></div>
-
   <!-- Navigation -->
   <nav class="nav" id="nav">
     <a href="#hero" class="nav-logo">AG</a>
 
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
+      <li><a href="#education">Education</a></li>
       <li><a href="#skills">Skills</a></li>
       <li><a href="#experience">Experience</a></li>
       <li><a href="#projects">Projects</a></li>
@@ -2618,9 +3017,9 @@
     </ul>
 
     <div class="nav-right">
-      <a href="resume.pdf" target="_blank" class="btn btn-outline">Resume</a>
-      <a href="https://ag-hosh-my-digital-twin.hf.space/" target="_blank" class="btn btn-filled">Talk to AI</a>
-      <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <a href="resume.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-outline">Resume</a>
+      <a href="https://ag-hosh-my-digital-twin.hf.space/" target="_blank" rel="noopener noreferrer" class="btn btn-filled">Talk to AI</a>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobileMenu">
         <span></span><span></span><span></span>
       </button>
     </div>
@@ -2629,6 +3028,7 @@
   <!-- Mobile Menu -->
   <div class="mobile-menu" id="mobileMenu">
     <a href="#about" class="mobile-link">About</a>
+    <a href="#education" class="mobile-link">Education</a>
     <a href="#skills" class="mobile-link">Skills</a>
     <a href="#experience" class="mobile-link">Experience</a>
     <a href="#projects" class="mobile-link">Projects</a>
@@ -2637,7 +3037,7 @@
     <a href="#contact" class="mobile-link">Contact</a>
   </div>
 
-  <main>
+  <main id="main">
 
     <!-- ─── HERO ─── -->
     <section class="hero" id="hero">
@@ -2666,25 +3066,26 @@
           </div>
         </div>
         <p class="hero-desc" id="heroDesc">
-          AI/ML Engineer at Varosync, building the ML stack for drug-development AI: hybrid pipelines,
-          KG reasoning, and conditioning embeddings for generative models. MS AI at Northeastern Khoury (4.0).
-          I ship interpretable ML for problems where being wrong has consequences.
+          AI/ML Engineer at Varosync, building the ML stack for drug-development AI: cheminformatics
+          comparables, knowledge-graph reasoning, and evidence-grounded failure analysis.
+          MS AI at Northeastern Khoury (4.0). I ship interpretable ML for problems where
+          being wrong has consequences.
         </p>
         <div class="avail-pill">
           <span class="avail-dot"></span>
           Open to Spring 2027 (Jan 2027 start): full-time ML/AI roles and co-ops.
         </div>
         <div class="hero-ctas" id="heroCtas">
-          <a href="https://ag-hosh-my-digital-twin.hf.space/" target="_blank" class="btn btn-filled">Talk to My AI Twin</a>
-          <a href="resume.pdf" target="_blank" class="btn btn-outline">Resume</a>
+          <a href="https://ag-hosh-my-digital-twin.hf.space/" target="_blank" rel="noopener noreferrer" class="btn btn-filled">Talk to My AI Twin</a>
+          <a href="resume.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-outline">Resume</a>
           <a href="#projects" class="btn btn-ghost">View Work</a>
         </div>
         <div class="hero-socials" id="heroSocials">
-          <a href="https://github.com/Itsme-aniketghosh" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
-          <a href="https://linkedin.com/in/aniketghosh-" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-          <a href="https://www.codechef.com/users/a_ghosh" target="_blank" aria-label="CodeChef"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-0.125em"><path d="M11.257 0C7.112.04 3.398 2.698 2.03 6.646c-.778 2.244-.6 4.776.496 6.882.483.932 1.12 1.78 1.664 2.69.664 1.112 1.008 2.363 1.09 3.643.048.757.015 1.516.024 2.274.007.581.438 1.07 1.012 1.1.528.025 1.01-.384 1.044-.917.014-.222 0-.446.005-.669.01-.604.454-1.1 1.033-1.204.587-.105 1.17.23 1.372.795.088.245.074.512.077.77.006.522.395.987.913 1.04.569.058 1.08-.343 1.12-.92.02-.265.003-.534.007-.8.01-.565.44-1.065 1.003-1.155.585-.093 1.163.263 1.35.83.066.2.057.42.06.633.008.535.413 1.006.947 1.046.578.043 1.087-.387 1.1-.97.01-.449-.015-.902.018-1.35.076-1.025.332-2.035.834-2.934.445-.8 1.01-1.527 1.49-2.3 1.292-2.075 1.657-4.63.955-6.98C18.964 2.658 15.34.035 11.257 0zm.643 3.355c2.55.14 4.884 1.826 5.746 4.24.672 1.893.373 4.046-.786 5.673-.433.601-.963 1.133-1.41 1.726-.613.808-1.053 1.733-1.29 2.707-.21.864-.246 1.756-.24 2.643-1.174-.577-2.56-.567-3.73.007.008-.82-.017-1.643-.18-2.447-.245-1.212-.79-2.352-1.59-3.286-.442-.52-.95-.983-1.368-1.524-1.29-1.672-1.612-3.96-.836-5.924.882-2.244 3.06-3.804 5.484-3.815z"/></svg></a>
-          <a href="https://www.hackerrank.com/profile/aniket_ghosh" target="_blank" aria-label="HackerRank"><i class="fab fa-hackerrank"></i></a>
-          <a href="mailto:ghosh.anik@northeastern.edu" aria-label="Email"><i class="fas fa-envelope"></i></a>
+          <a href="https://github.com/Itsme-aniketghosh" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><svg class="svg-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+          <a href="https://linkedin.com/in/aniketghosh-" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><svg class="svg-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+          <a href="https://www.codechef.com/users/a_ghosh" target="_blank" rel="noopener noreferrer" aria-label="CodeChef"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-0.125em"><path d="M11.257 0C7.112.04 3.398 2.698 2.03 6.646c-.778 2.244-.6 4.776.496 6.882.483.932 1.12 1.78 1.664 2.69.664 1.112 1.008 2.363 1.09 3.643.048.757.015 1.516.024 2.274.007.581.438 1.07 1.012 1.1.528.025 1.01-.384 1.044-.917.014-.222 0-.446.005-.669.01-.604.454-1.1 1.033-1.204.587-.105 1.17.23 1.372.795.088.245.074.512.077.77.006.522.395.987.913 1.04.569.058 1.08-.343 1.12-.92.02-.265.003-.534.007-.8.01-.565.44-1.065 1.003-1.155.585-.093 1.163.263 1.35.83.066.2.057.42.06.633.008.535.413 1.006.947 1.046.578.043 1.087-.387 1.1-.97.01-.449-.015-.902.018-1.35.076-1.025.332-2.035.834-2.934.445-.8 1.01-1.527 1.49-2.3 1.292-2.075 1.657-4.63.955-6.98C18.964 2.658 15.34.035 11.257 0zm.643 3.355c2.55.14 4.884 1.826 5.746 4.24.672 1.893.373 4.046-.786 5.673-.433.601-.963 1.133-1.41 1.726-.613.808-1.053 1.733-1.29 2.707-.21.864-.246 1.756-.24 2.643-1.174-.577-2.56-.567-3.73.007.008-.82-.017-1.643-.18-2.447-.245-1.212-.79-2.352-1.59-3.286-.442-.52-.95-.983-1.368-1.524-1.29-1.672-1.612-3.96-.836-5.924.882-2.244 3.06-3.804 5.484-3.815z"/></svg></a>
+          <a href="https://www.hackerrank.com/profile/aniket_ghosh" target="_blank" rel="noopener noreferrer" aria-label="HackerRank"><svg class="svg-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M0 0v24h24V0zm9.95 8.002h1.805c.061 0 .111.05.111.111v7.767c0 .061-.05.111-.11.111H9.95c-.061 0-.111-.05-.111-.11v-2.87H7.894v2.87c0 .06-.05.11-.11.11H5.976a.11.11 0 01-.11-.11V8.112c0-.06.05-.11.11-.11h1.806c.061 0 .11.05.11.11v2.869H9.84v-2.87c0-.06.05-.11.11-.11zm2.999 0h5.778c.061 0 .111.05.111.11v7.767a.11.11 0 01-.11.112h-5.78a.11.11 0 01-.11-.11V8.111c0-.06.05-.11.11-.11z"/></svg></a>
+          <a href="mailto:ghosh.anik@northeastern.edu" aria-label="Email"><svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></a>
         </div>
       </div>
 
@@ -2694,6 +3095,10 @@
             <div class="drop-wrapper">
               <div class="float-wrapper">
                 <div class="tilt-wrapper" id="idTiltWrapper">
+                  <div class="badge-clip" aria-hidden="true">
+                    <div class="bc-clamp"></div>
+                    <div class="bc-strap"><div class="bc-snap"></div></div>
+                  </div>
                   <div class="flip-inner" id="idFlipInner" tabindex="0"
                        role="button" aria-label="ID card — click to flip" aria-pressed="false">
 
@@ -2707,15 +3112,19 @@
                         <div class="f-photo-slot" id="idPhotoSlot">
                           <div class="f-photo-stack">
                             <img class="f-photo f-photo-bw"
-                                 src="aniket-ghosh-ai-ml-engineer-northeastern-university-bw.jpg"
+                                 src="aniket-ghosh-ai-ml-engineer-northeastern-university-bw-640.jpg"
                                  alt="Aniket Ghosh — AI/ML Engineer at Varosync, MS AI student at Northeastern University"
+                                 width="640" height="640"
                                  loading="eager"
+                                 fetchpriority="high"
                                  draggable="false"
                                  onerror="this.closest('.f-photo-slot').classList.add('photo-missing')">
                             <img class="f-photo f-photo-color"
-                                 src="aniket-ghosh-ai-ml-engineer-northeastern-university.jpg"
-                                 alt="Aniket Ghosh — AI/ML Engineer at Varosync, MS AI student at Northeastern University"
-                                 loading="eager"
+                                 src="aniket-ghosh-ai-ml-engineer-northeastern-university-640.jpg"
+                                 alt=""
+                                 width="640" height="640"
+                                 loading="lazy"
+                                 decoding="async"
                                  draggable="false"
                                  aria-hidden="true">
                           </div>
@@ -2772,8 +3181,6 @@
           </div><!-- /scene -->
         </div><!-- /id-card-embed -->
         <div class="flip-hint" id="idFlipHint">tap to flip</div>
-        <div class="card-meta-badges" style="display:none">
-        </div>
       </div>
 
       <div class="hero-scroll" aria-hidden="true">
@@ -2788,13 +3195,14 @@
         <span class="dt-live-dot">Live</span>
         <p class="dt-text">
           <strong>My AI Digital Twin is live on HuggingFace.</strong>
-          Ask it anything about my experience, projects, skills, or availability. It knows everything about me.
+          Ask it about my experience, projects, or availability.
+          First load takes about 20 seconds while the Space wakes.
         </p>
       </div>
       <div class="dt-strip-right">
         <span class="dt-name">ag-hosh-my-digital-twin.hf.space</span>
-        <a href="https://ag-hosh-my-digital-twin.hf.space/" target="_blank" class="dt-btn">
-          Start a conversation <i class="fas fa-arrow-right"></i>
+        <a href="https://ag-hosh-my-digital-twin.hf.space/" target="_blank" rel="noopener noreferrer" class="dt-btn">
+          Start a conversation <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </a>
       </div>
     </div>
@@ -2815,7 +3223,7 @@
              data-full="Building the ML stack at Varosync (AWS / Nebius / Mithril)"
              data-tags="AWS,Nebius,Mithril,RunPod,GCP">
           <span class="cl-dash" aria-hidden="true">—</span>
-          <span class="cl-text" aria-label="Building the ML stack at Varosync (AWS / Nebius / Mithril)"></span>
+          <span class="cl-text"></span>
           <div class="cl-tags" aria-hidden="true"></div>
         </div>
 
@@ -2823,7 +3231,7 @@
              data-full="Teaching the ML lab for AIDE '26 at Northeastern's Ethics Institute"
              data-tags="Sloan-funded,Ethics Institute,ML Lab,Khoury">
           <span class="cl-dash" aria-hidden="true">—</span>
-          <span class="cl-text" aria-label="Teaching the ML lab for AIDE '26 at Northeastern's Ethics Institute"></span>
+          <span class="cl-text"></span>
           <div class="cl-tags" aria-hidden="true"></div>
         </div>
 
@@ -2831,7 +3239,7 @@
              data-full="Looking for Spring 2027 ML/AI roles"
              data-tags="Open to work,Spring 2027,Full-time,Co-op">
           <span class="cl-dash" aria-hidden="true">—</span>
-          <span class="cl-text" aria-label="Looking for Spring 2027 ML/AI roles"></span>
+          <span class="cl-text"></span>
           <div class="cl-tags" aria-hidden="true"></div>
         </div>
 
@@ -2839,7 +3247,7 @@
              data-full="Accepted into BlueDot Impact's selective Technical AI Safety cohort"
              data-tags="AI Safety,Selective Cohort,BlueDot Impact,Alignment,Interpretability">
           <span class="cl-dash" aria-hidden="true">—</span>
-          <span class="cl-text" aria-label="Accepted into BlueDot Impact's selective Technical AI Safety cohort"></span>
+          <span class="cl-text"></span>
           <div class="cl-tags" aria-hidden="true"></div>
         </div>
 
@@ -2857,10 +3265,10 @@
           <div class="about-brief">
             <p>
               I build ML systems for problems where being wrong has consequences. Right now that means
-              <a href="https://varosync.com/" target="_blank"><strong>Varosync</strong></a>, a computational
+              <a href="https://varosync.com/" target="_blank" rel="noopener noreferrer"><strong>Varosync</strong></a>, a computational
               drug development startup where I'm building the ML stack to predict clinical trial safety and
-              efficacy, from hybrid pipelines and knowledge-graph reasoning to production infrastructure on
-              AWS, Nebius, and Mithril.
+              efficacy: comparable-molecule analysis, knowledge-graph reasoning, and evidence-grounded
+              failure reads, on production infrastructure across AWS, Nebius, and Mithril.
             </p>
             <p>
               Before this: medical imaging research at CMATER Lab (Jadavpur), a published Springer paper on
@@ -2878,7 +3286,7 @@
               My path into AI started with contrasts. I grew up traveling with my father, an SAP consultant at IBM,
               through cities like Chicago, Bonn, and Zurich, while spending seven years teaching mathematics and
               computer science to underprivileged students through
-              <a href="https://www.hope-foundation.in/" target="_blank">The Hope Foundation</a> in Kolkata.
+              <a href="https://www.hope-foundation.in/" target="_blank" rel="noopener noreferrer">The Hope Foundation</a> in Kolkata.
               The gap between what technology could do and who it actually reached became the question I have kept
               returning to. Over time, that question became more specific. If AI is going to keep deciding who gets
               hired, who gets treated, and on what evidence, who is checking its reasoning, and on whose behalf?
@@ -2890,9 +3298,9 @@
               was in a domain where being wrong has real consequences. At Northeastern's Khoury College, where I am
               completing my MS in AI, I took a PhD-level seminar on mechanistic interpretability alongside doctoral
               researchers. This summer, I'm teaching the CS lab for the
-              <a href="https://cssh.northeastern.edu/ethics/aide-summer/" target="_blank">AIDE program</a> at
+              <a href="https://cssh.northeastern.edu/ethics/aide-summer/" target="_blank" rel="noopener noreferrer">AIDE program</a> at
               Northeastern's Ethics Institute, bringing Python, ML, and interpretability to a residential cohort of
-              PhD philosophers and AI ethicists. I also work as an AI/ML Engineer at <a href="https://varosync.com/" target="_blank"><strong>Varosync, Inc.</strong></a>,
+              PhD philosophers and AI ethicists. I also work as an AI/ML Engineer at <a href="https://varosync.com/" target="_blank" rel="noopener noreferrer"><strong>Varosync, Inc.</strong></a>,
               a New York startup simulating a drug's 24-hour pharmacological performance to predict safety and efficacy
               in clinical trials.
             </p>
@@ -2914,12 +3322,12 @@
             <span class="stat-label">MS GPA · Northeastern Khoury</span>
           </div>
           <div class="stat-block">
-            <span class="stat-val">2nd / 180+</span>
+            <span class="stat-val stat-val--sm">2nd of 180+</span>
             <span class="stat-label">Undergrad Rank · Director's Award</span>
           </div>
           <div class="stat-block">
-            <span class="stat-val">2 + 1</span>
-            <span class="stat-label">Publications · Patent Filed</span>
+            <span class="stat-val stat-val--sm">2 papers · 1 patent</span>
+            <span class="stat-label">Springer First Author · IEEE</span>
           </div>
           <div class="stat-block">
             <span class="stat-val">AIDE '26</span>
@@ -2928,23 +3336,92 @@
           </div>
           <div class="stat-block">
             <span class="stat-val" data-count="40" data-suffix="+">40+</span>
-            <span class="stat-label">Graduate NLP TA (Spring '26)</span>
+            <span class="stat-label">Students Taught · Graduate NLP TA</span>
           </div>
           <div class="stat-block">
             <span class="stat-val" data-count="7" data-suffix="+">7+</span>
-            <span class="stat-label">Hope Foundation Educator</span>
+            <span class="stat-label">Years Teaching · Hope Foundation</span>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ─── SKILLS ─── -->
-    <section class="section" id="skills">
+    <!-- ─── EDUCATION ─── -->
+    <section class="section" id="education">
       <span class="section-num" aria-hidden="true">02</span>
       <div class="section-head reveal-stagger">
-        <h2 class="section-heading split-text">Skills</h2>
+        <h2 class="section-heading split-text">Education</h2>
       </div>
-      <div class="skills-table">
+
+      <!-- The grind, stated plainly -->
+      <p class="edu-manifest reveal">
+        <span class="visually-hidden">Six years, summarized: four internships, two published papers, one patent filed, three teaching posts, forty-plus students taught, one selective AI-safety cohort, and a 4.0 in both degrees. Still going.</span>
+        <span aria-hidden="true"><span class="mf-lead">Six years, summarized:</span> <span class="mf">four internships,</span> <span class="mf">two published papers,</span> <span class="mf">one patent filed,</span> <span class="mf">three teaching posts,</span> <span class="mf">forty-plus students taught,</span> <span class="mf">one selective AI-safety cohort,</span> <span class="mf">and a 4.0 in both degrees.</span> <span class="mf-kicker">Still going.</span></span>
+      </p>
+
+      <div class="edu-cards">
+
+        <article class="edu-card reveal">
+          <div class="edu-tilt">
+            <span class="edu-ghost-year" aria-hidden="true">'27</span>
+            <span class="edu-sweep" aria-hidden="true"></span>
+            <div class="edu-card-head">
+              <span class="edu-years">2025 – 2027</span>
+              <span class="now-badge">In Progress</span>
+            </div>
+            <h3 class="edu-degree">MS, Artificial Intelligence</h3>
+            <p class="edu-school"><a href="https://www.khoury.northeastern.edu/" target="_blank" rel="noopener noreferrer">Northeastern University · Khoury College of Computer Sciences</a> · Boston, MA</p>
+            <ul class="edu-points">
+              <li><strong>Full-time AI/ML Engineer at <a href="https://varosync.com/" target="_blank" rel="noopener noreferrer">Varosync</a></strong>, in parallel with the degree</li>
+              <li><strong>Graduate NLP TA</strong> for 40+ students · PhD-level mech-interp seminar (CS 7180)</li>
+              <li><strong><a href="https://cssh.northeastern.edu/ethics/aide-summer/" target="_blank" rel="noopener noreferrer">Teaching Co-Lead, AIDE '26</a></strong> · selected for <strong><a href="https://bluedot.org/courses/technical-ai-safety" target="_blank" rel="noopener noreferrer">BlueDot</a></strong>'s AI-safety cohort</li>
+            </ul>
+            <div class="edu-card-foot">
+              <div class="edu-stamp" aria-label="GPA 4.0 out of 4.0">
+                <span class="edu-stamp-val">4.0</span>
+                <span class="edu-stamp-cap">/ 4.0 GPA</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="edu-card reveal">
+          <div class="edu-tilt">
+            <span class="edu-ghost-year" aria-hidden="true">'24</span>
+            <span class="edu-sweep" aria-hidden="true"></span>
+            <div class="edu-card-head">
+              <span class="edu-years">2020 – 2024</span>
+            </div>
+            <h3 class="edu-degree">BS, Computer Science</h3>
+            <p class="edu-school"><a href="https://iem.edu.in/" target="_blank" rel="noopener noreferrer">Institute of Engineering &amp; Management</a> · Kolkata, India</p>
+            <ul class="edu-points">
+              <li>Ranked <strong>2nd of 180+</strong> · Director's Award</li>
+              <li><strong>First-author Springer paper</strong> · <strong><a href="https://ieeexplore.ieee.org/document/11518522/" target="_blank" rel="noopener noreferrer">IEEE paper</a></strong> + patent filed</li>
+              <li>Research at <strong><a href="https://www.cmaterju.in/" target="_blank" rel="noopener noreferrer">CMATER</a></strong> and <strong><a href="https://www.nehu.ac.in/" target="_blank" rel="noopener noreferrer">NEHU</a></strong> · 7 years teaching at <strong><a href="https://www.hope-foundation.in/" target="_blank" rel="noopener noreferrer">Hope Foundation</a></strong></li>
+            </ul>
+            <div class="edu-card-foot">
+              <div class="edu-stamp" aria-label="Ranked 2nd of more than 180 students, Director's Award">
+                <span class="edu-stamp-val">2nd</span>
+                <span class="edu-stamp-cap">of 180+ · Director's Award</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ─── SKILLS ─── -->
+    <section class="section" id="skills">
+      <span class="section-num" aria-hidden="true">03</span>
+      <div class="section-head reveal-stagger">
+        <h2 class="section-heading split-text">Skills</h2>
+        <div class="skills-mode">
+          <button type="button" class="sm-btn" id="smProof" aria-pressed="false">Map skills to proof</button>
+        </div>
+        <p class="skills-hint" id="skillsHint" hidden></p>
+      </div>
+      <div class="skills-table" id="skillsList">
 
         <div class="skill-category reveal">
           <span class="skill-cat-label">Languages</span>
@@ -3017,11 +3494,13 @@
         </div>
 
       </div>
+
+      <div class="pm-sources" id="skillsProof" hidden></div>
     </section>
 
     <!-- ─── EXPERIENCE ─── -->
     <section class="section section-alt" id="experience">
-      <span class="section-num" aria-hidden="true">03</span>
+      <span class="section-num" aria-hidden="true">04</span>
       <div class="section-head reveal-stagger">
         <h2 class="section-heading split-text">Experience</h2>
       </div>
@@ -3032,7 +3511,7 @@
           <div class="timeline-body">
             <div class="timeline-top">
               <div>
-                <h3 class="timeline-company"><a href="https://varosync.com/" target="_blank">Varosync, Inc.</a></h3>
+                <h3 class="timeline-company"><a href="https://varosync.com/" target="_blank" rel="noopener noreferrer">Varosync, Inc.</a></h3>
                 <p class="timeline-role">AI/ML Engineer</p>
                 <p class="timeline-role" style="font-size:0.78rem; margin-top:0.2rem; color:var(--muted);">Boston, MA</p>
               </div>
@@ -3044,20 +3523,22 @@
             <p class="timeline-desc">
               Varosync is a computational drug development startup building the AI engine that simulates
               a drug's 24-hour pharmacological behavior to predict clinical trial safety and efficacy.
-              I work across the ML stack, from representation learning and knowledge-graph reasoning
-              to production infrastructure.
+              I own the comparables and failure-analysis lane: given a drug candidate, surface every
+              comparable that came before it, what failed, and why, with every claim traceable to
+              public evidence.
             </p>
             <ul class="timeline-points">
-              <li>Building hybrid ML pipelines (classical + deep) for drug candidate screening, with reproducible runs and leave-one-group-out evaluation</li>
-              <li>Designing knowledge-graph + embedding systems that produce conditioning embeddings for generative models</li>
+              <li>Building a comparables engine over public drug data: structural similarity (Morgan fingerprints, Tanimoto) and mechanistic similarity through target-pathway knowledge graphs</li>
+              <li>Shipping source-grounded failure reads: stratified risk tiers and denominators where every emitted item resolves to public evidence with full provenance</li>
+              <li>Designing leakage-safe recovery benchmarks: time-aware held-out splits that prove the system recovers known clinical failure precedents</li>
               <li>Owning ML infrastructure across a hybrid cloud stack: AWS, Nebius (GPU training), and Mithril (inference/batch)</li>
               <li>Claude Code and Cursor wired into the daily agentic loop</li>
             </ul>
             <div class="tags">
               <span class="tag">Drug Discovery AI</span>
-              <span class="tag">Hybrid ML Pipelines</span>
+              <span class="tag">Cheminformatics</span>
               <span class="tag">Knowledge Graphs</span>
-              <span class="tag">Generative Conditioning</span>
+              <span class="tag">Benchmark Design</span>
               <span class="tag">AWS</span>
               <span class="tag">Nebius</span>
               <span class="tag">Mithril</span>
@@ -3070,7 +3551,7 @@
           <div class="timeline-body">
             <div class="timeline-top">
               <div>
-                <h3 class="timeline-company"><a href="https://cssh.northeastern.edu/ethics/aide-summer/" target="_blank">AI and Data Ethics Summer Program</a></h3>
+                <h3 class="timeline-company"><a href="https://cssh.northeastern.edu/ethics/aide-summer/" target="_blank" rel="noopener noreferrer">AI and Data Ethics Summer Program</a></h3>
                 <p class="timeline-role">Teaching Co-Lead, Machine Learning Lab</p>
                 <p class="timeline-role" style="font-size:0.78rem; margin-top:0.2rem; color:var(--muted);">Northeastern University · Part-time alongside Varosync</p>
               </div>
@@ -3080,7 +3561,7 @@
               </div>
             </div>
             <p class="timeline-desc">
-              Nine-week summer intensive led by <a href="https://cssh.northeastern.edu/faculty/kathleen-katie-creel/" target="_blank">Kathleen (Katie) Creel</a>, funded by the Alfred P. Sloan Foundation, bringing together
+              Nine-week summer intensive led by <a href="https://cssh.northeastern.edu/faculty/kathleen-katie-creel/" target="_blank" rel="noopener noreferrer">Kathleen (Katie) Creel</a>, funded by the Alfred P. Sloan Foundation, bringing together
               ~10-12 philosophy PhD students from institutions across the country for training in
               ML, AI ethics, and metascience. Designing and leading a 12-session hands-on ML lab
               built from scratch: covering Python, fairness, differential privacy, neural networks
@@ -3116,14 +3597,12 @@
               </div>
             </div>
             <p class="timeline-desc">
-              Teaching PyTorch and ML/DL labs for <a href="https://linkedin.com/in/amirtahmasebi" target="_blank">Professor Amir Tahmasebi</a>'s graduate NLP course.
-              Helping students understand deep learning fundamentals, transformer architectures,
-              and practical implementation. Also grading.
+              Taught the PyTorch and deep-learning labs for <a href="https://linkedin.com/in/amirtahmasebi" target="_blank" rel="noopener noreferrer">Professor Amir Tahmasebi</a>'s
+              graduate NLP course, from fundamentals through transformer architectures.
             </p>
             <ul class="timeline-points">
-              <li>Teaching PyTorch fundamentals and neural network implementation</li>
-              <li>Running hands-on ML/DL lab sessions for graduate students</li>
-              <li>Supporting students with assignments and projects</li>
+              <li>Ran weekly hands-on labs: PyTorch basics through transformer implementation</li>
+              <li>Supported 40+ graduate students across assignments, projects, and grading</li>
             </ul>
             <div class="tags">
               <span class="tag">PyTorch</span>
@@ -3139,7 +3618,7 @@
           <div class="timeline-body">
             <div class="timeline-top">
               <div>
-                <h3 class="timeline-company"><a href="https://www.cmaterju.in/" target="_blank">CMATER Lab</a>, Jadavpur University</h3>
+                <h3 class="timeline-company"><a href="https://www.cmaterju.in/" target="_blank" rel="noopener noreferrer">CMATER Lab</a>, Jadavpur University</h3>
                 <p class="timeline-role">Researcher and Research Mentor</p>
                 <p class="timeline-role" style="font-size:0.78rem; margin-top:0.2rem; color:var(--muted);">Kolkata, India</p>
               </div>
@@ -3149,7 +3628,7 @@
             </div>
             <p class="timeline-desc">
               Developed custom ML pipelines for cell segmentation in histopathological
-              images under Dr. Kaushiki Roy and <a href="https://cse.jadavpuruniversity.in/faculty/debotosh-bhattacharjee" target="_blank">Dr. Debotosh Bhattacharjee</a>. Implemented
+              images under Dr. Kaushiki Roy and <a href="https://cse.jadavpuruniversity.in/faculty/debotosh-bhattacharjee" target="_blank" rel="noopener noreferrer">Dr. Debotosh Bhattacharjee</a>. Implemented
               preprocessing techniques using color quantization and DBSCAN clustering
               for densely packed cell detection. Guided junior researchers in deep learning
               for medical imaging.
@@ -3173,7 +3652,7 @@
           <div class="timeline-body">
             <div class="timeline-top">
               <div>
-                <h3 class="timeline-company"><a href="https://www.nehu.ac.in/" target="_blank">North-Eastern Hill University</a></h3>
+                <h3 class="timeline-company"><a href="https://www.nehu.ac.in/" target="_blank" rel="noopener noreferrer">North-Eastern Hill University</a></h3>
                 <p class="timeline-role">Research Intern</p>
                 <p class="timeline-role" style="font-size:0.78rem; margin-top:0.2rem; color:var(--muted);">Remote</p>
               </div>
@@ -3200,7 +3679,7 @@
           <div class="timeline-body">
             <div class="timeline-top">
               <div>
-                <h3 class="timeline-company"><a href="https://www.novotelkolkata.com/" target="_blank">Novotel Kolkata Hotel and Residences</a></h3>
+                <h3 class="timeline-company"><a href="https://www.novotelkolkata.com/" target="_blank" rel="noopener noreferrer">Novotel Kolkata Hotel and Residences</a></h3>
                 <p class="timeline-role">Industrial Trainee</p>
                 <p class="timeline-role" style="font-size:0.78rem; margin-top:0.2rem; color:var(--muted);">Kolkata, India</p>
               </div>
@@ -3225,12 +3704,12 @@
           <div class="timeline-body">
             <div class="timeline-top">
               <div>
-                <h3 class="timeline-company"><a href="https://www.hope-foundation.in/" target="_blank">The Hope Foundation</a></h3>
+                <h3 class="timeline-company"><a href="https://www.hope-foundation.in/" target="_blank" rel="noopener noreferrer">The Hope Foundation</a></h3>
                 <p class="timeline-role">Volunteer Educator and Mentor</p>
                 <p class="timeline-role" style="font-size:0.78rem; margin-top:0.2rem; color:var(--muted);">Kolkata, India</p>
               </div>
               <div class="timeline-meta">
-                <span class="timeline-date">2006 – May 2025 (7 years active)</span>
+                <span class="timeline-date">2016 – May 2025 (7 years active)</span>
               </div>
             </div>
             <p class="timeline-desc">
@@ -3257,7 +3736,7 @@
 
     <!-- ─── PROJECTS ─── -->
     <section class="section" id="projects">
-      <span class="section-num" aria-hidden="true">04</span>
+      <span class="section-num" aria-hidden="true">05</span>
       <div class="section-head reveal-stagger">
         <h2 class="section-heading split-text">Projects</h2>
       </div>
@@ -3269,7 +3748,7 @@
           <div class="proj-top">
             <span class="proj-num">01</span>
             <div class="proj-links">
-              <a href="https://github.com/Itsme-aniketghosh/Sufficient-Cause-Disambiguation" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+              <a href="https://github.com/Itsme-aniketghosh/Sufficient-Cause-Disambiguation" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><svg class="svg-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
             </div>
           </div>
           <div class="proj-body">
@@ -3285,7 +3764,7 @@
               <span class="proj-tag">Llama-3-8B</span>
               <span class="proj-tag">Bias Detection</span>
             </div>
-            <span class="proj-arrow"><i class="fas fa-arrow-up-right"></i></span>
+            <span class="proj-arrow"><svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></span>
           </div>
         </div>
 
@@ -3296,8 +3775,8 @@
             <span class="proj-num">02</span>
             <div class="proj-links">
               <span class="live-badge">Live</span>
-              <a href="https://github.com/Itsme-aniketghosh/LLM-my-digital-twin" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
-              <a href="https://ag-hosh-my-digital-twin.hf.space/" target="_blank" aria-label="Live Demo"><i class="fas fa-arrow-up-right-from-square"></i></a>
+              <a href="https://github.com/Itsme-aniketghosh/LLM-my-digital-twin" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><svg class="svg-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+              <a href="https://ag-hosh-my-digital-twin.hf.space/" target="_blank" rel="noopener noreferrer" aria-label="Live Demo"><svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a>
             </div>
           </div>
           <div class="proj-body">
@@ -3313,7 +3792,7 @@
               <span class="proj-tag">Gradio</span>
             </div>
             <span class="proj-metric">Sub-ms retrieval</span>
-            <span class="proj-arrow"><i class="fas fa-arrow-up-right"></i></span>
+            <span class="proj-arrow"><svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></span>
           </div>
         </div>
 
@@ -3323,7 +3802,7 @@
           <div class="proj-top">
             <span class="proj-num">03</span>
             <div class="proj-links">
-              <a href="https://github.com/Itsme-aniketghosh/autonomous-traders-mcp" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+              <a href="https://github.com/Itsme-aniketghosh/autonomous-traders-mcp" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><svg class="svg-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
             </div>
           </div>
           <div class="proj-body">
@@ -3337,7 +3816,7 @@
               <span class="proj-tag">Multi-Agent</span>
               <span class="proj-tag">Gradio</span>
             </div>
-            <span class="proj-arrow"><i class="fas fa-arrow-up-right"></i></span>
+            <span class="proj-arrow"><svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></span>
           </div>
         </div>
 
@@ -3347,12 +3826,12 @@
           <div class="proj-top">
             <span class="proj-num">04</span>
             <div class="proj-links">
-              <a href="https://github.com/Itsme-aniketghosh/biomedical-link-prediction" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+              <a href="https://github.com/Itsme-aniketghosh/biomedical-link-prediction" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><svg class="svg-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
             </div>
           </div>
           <div class="proj-body">
             <h3 class="proj-name">Biomedical KG Link Prediction</h3>
-            <p class="proj-ctx">CS 5100 · Foundations of AI</p>
+            <p class="proj-ctx">CS 5100 · Khoury College</p>
             <p class="proj-desc">Classical ML (Random Forest: 0.94 AUC) vs embeddings (TransE: 0.61 AUC) on BioRED knowledge graph.</p>
           </div>
           <div class="proj-footer">
@@ -3361,7 +3840,7 @@
               <span class="proj-tag">PyTorch</span>
             </div>
             <span class="proj-metric">0.94 AUC</span>
-            <span class="proj-arrow"><i class="fas fa-arrow-up-right"></i></span>
+            <span class="proj-arrow"><svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></span>
           </div>
         </div>
 
@@ -3371,7 +3850,7 @@
           <div class="proj-top">
             <span class="proj-num">05</span>
             <div class="proj-links">
-              <a href="https://github.com/Itsme-aniketghosh/grokking-fourier-circuits" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+              <a href="https://github.com/Itsme-aniketghosh/grokking-fourier-circuits" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><svg class="svg-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
             </div>
           </div>
           <div class="proj-body">
@@ -3386,7 +3865,7 @@
               <span class="proj-tag">Fourier Analysis</span>
             </div>
             <span class="proj-metric">18:1 plateau ratio</span>
-            <span class="proj-arrow"><i class="fas fa-arrow-up-right"></i></span>
+            <span class="proj-arrow"><svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></span>
           </div>
         </div>
 
@@ -3396,7 +3875,7 @@
           <div class="proj-top">
             <span class="proj-num">06</span>
             <div class="proj-links">
-              <a href="https://github.com/Itsme-aniketghosh/crewai" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+              <a href="https://github.com/Itsme-aniketghosh/crewai" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><svg class="svg-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
             </div>
           </div>
           <div class="proj-body">
@@ -3410,7 +3889,7 @@
               <span class="proj-tag">Claude</span>
             </div>
             <span class="proj-metric">15+ agents</span>
-            <span class="proj-arrow"><i class="fas fa-arrow-up-right"></i></span>
+            <span class="proj-arrow"><svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></span>
           </div>
         </div>
 
@@ -3420,7 +3899,7 @@
           <div class="proj-top">
             <span class="proj-num">07</span>
             <div class="proj-links">
-              <a href="https://github.com/Itsme-aniketghosh/LLM-Cybersecurity-Analyzer" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+              <a href="https://github.com/Itsme-aniketghosh/LLM-Cybersecurity-Analyzer" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><svg class="svg-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
             </div>
           </div>
           <div class="proj-body">
@@ -3433,7 +3912,7 @@
               <span class="proj-tag">FastAPI</span>
               <span class="proj-tag">Terraform</span>
             </div>
-            <span class="proj-arrow"><i class="fas fa-arrow-up-right"></i></span>
+            <span class="proj-arrow"><svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></span>
           </div>
         </div>
 
@@ -3444,8 +3923,8 @@
             <span class="proj-num">08</span>
             <div class="proj-links">
               <span class="live-badge">Live</span>
-              <a href="https://github.com/Itsme-aniketghosh/LLM-Deep-Research" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
-              <a href="https://ag-hosh-deepresearch.hf.space/" target="_blank" aria-label="Live Demo"><i class="fas fa-arrow-up-right-from-square"></i></a>
+              <a href="https://github.com/Itsme-aniketghosh/LLM-Deep-Research" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><svg class="svg-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+              <a href="https://ag-hosh-deepresearch.hf.space/" target="_blank" rel="noopener noreferrer" aria-label="Live Demo"><svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a>
             </div>
           </div>
           <div class="proj-body">
@@ -3458,7 +3937,7 @@
               <span class="proj-tag">Llama 3.2</span>
               <span class="proj-tag">asyncio</span>
             </div>
-            <span class="proj-arrow"><i class="fas fa-arrow-up-right"></i></span>
+            <span class="proj-arrow"><svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></span>
           </div>
         </div>
 
@@ -3468,7 +3947,7 @@
           <div class="proj-top">
             <span class="proj-num">09</span>
             <div class="proj-links">
-              <a href="https://github.com/Itsme-aniketghosh/latency-execution-engine" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+              <a href="https://github.com/Itsme-aniketghosh/latency-execution-engine" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><svg class="svg-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
             </div>
           </div>
           <div class="proj-body">
@@ -3484,7 +3963,7 @@
               <span class="proj-tag">Binance</span>
             </div>
             <span class="proj-metric">44.1% savings vs TWAP</span>
-            <span class="proj-arrow"><i class="fas fa-arrow-up-right"></i></span>
+            <span class="proj-arrow"><svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></span>
           </div>
         </div>
 
@@ -3493,7 +3972,7 @@
 
     <!-- ─── RESEARCH ─── -->
     <section class="section section-alt" id="research">
-      <span class="section-num" aria-hidden="true">05</span>
+      <span class="section-num" aria-hidden="true">06</span>
       <div class="section-head reveal-stagger">
         <h2 class="section-heading split-text">Research</h2>
       </div>
@@ -3544,7 +4023,7 @@
             <span class="tag">Edge Deployment</span>
           </div>
           <a class="research-link" href="https://ieeexplore.ieee.org/document/11518522/" target="_blank" rel="noopener noreferrer">
-            <i class="fas fa-arrow-up-right-from-square"></i> View on IEEE Xplore
+            <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg> View on IEEE Xplore
           </a>
         </div>
 
@@ -3553,12 +4032,12 @@
 
     <!-- ─── CERTIFICATIONS ─── -->
     <section class="section" id="certifications">
-      <span class="section-num" aria-hidden="true">06</span>
+      <span class="section-num" aria-hidden="true">07</span>
       <div class="section-head reveal-stagger">
         <h2 class="section-heading split-text">Certifications</h2>
       </div>
 
-      <a href="https://bluedot.org/courses/technical-ai-safety" target="_blank"
+      <a href="https://bluedot.org/courses/technical-ai-safety" target="_blank" rel="noopener noreferrer"
          class="cert-featured reveal" aria-label="BlueDot Impact — Technical AI Safety selective cohort">
         <span class="cf-sweep" aria-hidden="true"></span>
         <div class="cf-meta">
@@ -3571,13 +4050,13 @@
             <span class="cf-provider">— BlueDot Impact</span>
           </h3>
           <p class="cf-desc">
-            Accepted into BlueDot's competitive technical AI safety cohort — a
+            Accepted into BlueDot's competitive technical AI safety cohort: a
             selective program covering interpretability, alignment research, and
             frontier safety methods.
           </p>
         </div>
         <span class="cf-arrow" aria-hidden="true">
-          <i class="fas fa-arrow-up-right-from-square"></i>
+          <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
         </span>
       </a>
 
@@ -3586,11 +4065,11 @@
         <div class="cert-card">
           <p class="cert-category">Deep Learning and AI</p>
           <div class="cert-list">
-            <a href="https://www.udemy.com/certificate/UC-17f58812-6746-49db-9f1b-55288d0f4cc8/" target="_blank" class="cert-item">
-              <i class="fas fa-arrow-up-right-from-square"></i> Deep Learning A-Z 2024
+            <a href="https://www.udemy.com/certificate/UC-17f58812-6746-49db-9f1b-55288d0f4cc8/" target="_blank" rel="noopener noreferrer" class="cert-item">
+              <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg> Deep Learning A-Z 2024
             </a>
-            <a href="https://www.udemy.com/certificate/UC-82fb2982-1ef2-4612-8dce-85c6247f18d7/" target="_blank" class="cert-item">
-              <i class="fas fa-arrow-up-right-from-square"></i> Machine Learning: NLP in Python V2
+            <a href="https://www.udemy.com/certificate/UC-82fb2982-1ef2-4612-8dce-85c6247f18d7/" target="_blank" rel="noopener noreferrer" class="cert-item">
+              <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg> Machine Learning: NLP in Python V2
             </a>
           </div>
         </div>
@@ -3598,8 +4077,8 @@
         <div class="cert-card">
           <p class="cert-category">ML Frameworks and Data Science</p>
           <div class="cert-list">
-            <a href="https://www.udemy.com/certificate/UC-057b3f62-2d2f-4ac8-88b7-4bb3ac32099e/" target="_blank" class="cert-item">
-              <i class="fas fa-arrow-up-right-from-square"></i> Python for ML and Data Science Masterclass
+            <a href="https://www.udemy.com/certificate/UC-057b3f62-2d2f-4ac8-88b7-4bb3ac32099e/" target="_blank" rel="noopener noreferrer" class="cert-item">
+              <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg> Python for ML and Data Science Masterclass
             </a>
           </div>
         </div>
@@ -3607,14 +4086,14 @@
         <div class="cert-card">
           <p class="cert-category">LLM and GenAI Engineering</p>
           <div class="cert-list">
-            <a href="https://www.udemy.com/certificate/UC-6da190e8-0ec9-4582-b1f9-a3d6e7ef9fd0/" target="_blank" class="cert-item">
-              <i class="fas fa-arrow-up-right-from-square"></i> AI Engineer Core Track
+            <a href="https://www.udemy.com/certificate/UC-6da190e8-0ec9-4582-b1f9-a3d6e7ef9fd0/" target="_blank" rel="noopener noreferrer" class="cert-item">
+              <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg> AI Engineer Core Track
             </a>
-            <a href="https://www.udemy.com/certificate/UC-a96b7f21-f370-4bf6-b298-68afbf573acb/" target="_blank" class="cert-item">
-              <i class="fas fa-arrow-up-right-from-square"></i> AI Engineer Agentic Track
+            <a href="https://www.udemy.com/certificate/UC-a96b7f21-f370-4bf6-b298-68afbf573acb/" target="_blank" rel="noopener noreferrer" class="cert-item">
+              <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg> AI Engineer Agentic Track
             </a>
-            <a href="https://www.udemy.com/certificate/UC-1a50e299-f7ce-45ca-be94-ff11bb88fde4/" target="_blank" class="cert-item">
-              <i class="fas fa-arrow-up-right-from-square"></i> MLOps: Deploy to AWS / Azure / GCP
+            <a href="https://www.udemy.com/certificate/UC-1a50e299-f7ce-45ca-be94-ff11bb88fde4/" target="_blank" rel="noopener noreferrer" class="cert-item">
+              <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg> MLOps: Deploy to AWS / Azure / GCP
             </a>
           </div>
         </div>
@@ -3622,11 +4101,11 @@
         <div class="cert-card">
           <p class="cert-category">Programming and Algorithms</p>
           <div class="cert-list">
-            <a href="https://www.udemy.com/certificate/UC-d732f376-d464-4c4e-85cc-fcf11e7216f8/" target="_blank" class="cert-item">
-              <i class="fas fa-arrow-up-right-from-square"></i> Data Structures and Algorithms C++
+            <a href="https://www.udemy.com/certificate/UC-d732f376-d464-4c4e-85cc-fcf11e7216f8/" target="_blank" rel="noopener noreferrer" class="cert-item">
+              <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg> Data Structures and Algorithms C++
             </a>
-            <a href="https://www.udemy.com/certificate/UC-fedcd3f8-b13a-4412-acaf-4c56a217f4fe/" target="_blank" class="cert-item">
-              <i class="fas fa-arrow-up-right-from-square"></i> C++ Programming
+            <a href="https://www.udemy.com/certificate/UC-fedcd3f8-b13a-4412-acaf-4c56a217f4fe/" target="_blank" rel="noopener noreferrer" class="cert-item">
+              <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg> C++ Programming
             </a>
           </div>
         </div>
@@ -3634,11 +4113,11 @@
         <div class="cert-card">
           <p class="cert-category">Specialized Skills</p>
           <div class="cert-list">
-            <a href="https://www.udemy.com/certificate/UC-7a1d8574-7ee2-4c0a-9ed7-6b2b6e157270/" target="_blank" class="cert-item">
-              <i class="fas fa-arrow-up-right-from-square"></i> High-Performance Computing Python 3x
+            <a href="https://www.udemy.com/certificate/UC-7a1d8574-7ee2-4c0a-9ed7-6b2b6e157270/" target="_blank" rel="noopener noreferrer" class="cert-item">
+              <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg> High-Performance Computing Python 3x
             </a>
-            <a href="https://www.udemy.com/certificate/UC-49132f6d-e26a-4b6c-b43b-9e0d57b234b2/" target="_blank" class="cert-item">
-              <i class="fas fa-arrow-up-right-from-square"></i> Investing in Stocks Complete Course
+            <a href="https://www.udemy.com/certificate/UC-49132f6d-e26a-4b6c-b43b-9e0d57b234b2/" target="_blank" rel="noopener noreferrer" class="cert-item">
+              <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg> Investing in Stocks Complete Course
             </a>
           </div>
         </div>
@@ -3646,11 +4125,11 @@
         <div class="cert-card">
           <p class="cert-category">Competitive Programming</p>
           <div class="cert-list">
-            <a href="https://www.codechef.com/users/a_ghosh" target="_blank" class="cert-item">
-              <i class="fas fa-arrow-up-right-from-square"></i> CodeChef 4-Star Rating
+            <a href="https://www.codechef.com/users/a_ghosh" target="_blank" rel="noopener noreferrer" class="cert-item">
+              <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg> CodeChef 4-Star Rating
             </a>
-            <a href="https://www.hackerrank.com/profile/aniket_ghosh" target="_blank" class="cert-item">
-              <i class="fas fa-arrow-up-right-from-square"></i> HackerRank Profile
+            <a href="https://www.hackerrank.com/profile/aniket_ghosh" target="_blank" rel="noopener noreferrer" class="cert-item">
+              <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg> HackerRank Profile
             </a>
           </div>
         </div>
@@ -3671,18 +4150,19 @@
         <div class="contact-email-row reveal">
           <a href="mailto:ghosh.anik@northeastern.edu" class="contact-email">ghosh.anik@northeastern.edu</a>
           <button class="copy-btn" onclick="copyEmail()" aria-label="Copy email" title="Copy email">
-            <i class="fas fa-copy"></i>
+            <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
           </button>
         </div>
         <div class="contact-ai-row reveal">
-          <a href="https://ag-hosh-my-digital-twin.hf.space/" target="_blank">Talk to My AI Twin</a>
+          <a href="https://ag-hosh-my-digital-twin.hf.space/" target="_blank" rel="noopener noreferrer">Talk to My AI Twin</a>
+          <span class="contact-ai-note">first load wakes the Space, ~20 s</span>
         </div>
         <div class="contact-links-row reveal-stagger">
-          <a href="https://github.com/Itsme-aniketghosh" target="_blank">GitHub</a>
-          <a href="https://linkedin.com/in/aniketghosh-" target="_blank">LinkedIn</a>
-          <a href="resume.pdf" target="_blank">Resume</a>
-          <a href="https://www.codechef.com/users/a_ghosh" target="_blank">CodeChef</a>
-          <a href="https://www.hackerrank.com/profile/aniket_ghosh" target="_blank">HackerRank</a>
+          <a href="https://github.com/Itsme-aniketghosh" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href="https://linkedin.com/in/aniketghosh-" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="resume.pdf" target="_blank" rel="noopener noreferrer">Resume</a>
+          <a href="https://www.codechef.com/users/a_ghosh" target="_blank" rel="noopener noreferrer">CodeChef</a>
+          <a href="https://www.hackerrank.com/profile/aniket_ghosh" target="_blank" rel="noopener noreferrer">HackerRank</a>
         </div>
       </div>
     </section>
@@ -3707,7 +4187,7 @@
   </div>
 
   <a href="#hero" class="back-to-top" id="backToTop" aria-label="Back to top">
-    <i class="fas fa-arrow-up"></i>
+    <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
   </a>
 
   <script>
@@ -3723,60 +4203,7 @@
       }, 1050);
     })();
 
-    /* ═══════ 1. CURSOR ═══════ */
-    ;(function initCursor() {
-      const dot  = document.getElementById('cursorDot');
-      const ring = document.getElementById('cursorRing');
-      if (!dot || !ring) return;
-      if (window.matchMedia('(pointer: coarse)').matches) return;
-
-      let mx = 0, my = 0, rx = 0, ry = 0;
-
-      document.addEventListener('mousemove', e => {
-        mx = e.clientX; my = e.clientY;
-        dot.style.left = mx + 'px';
-        dot.style.top  = my + 'px';
-      }, { passive: true });
-
-      function animRing() {
-        rx += (mx - rx) * 0.08;
-        ry += (my - ry) * 0.08;
-        ring.style.left = rx + 'px';
-        ring.style.top  = ry + 'px';
-        requestAnimationFrame(animRing);
-      }
-      animRing();
-
-      document.querySelectorAll('a, button').forEach(el => {
-        el.addEventListener('mouseenter', () => ring.classList.add('expanded'));
-        el.addEventListener('mouseleave', () => ring.classList.remove('expanded'));
-      });
-    })();
-
-    /* ═══════ 2. HERO LOAD ANIMATION ═══════ */
-    ;(function initHeroAnims() {
-      const items = [
-        { id: 'heroTag',    delay: 0   },
-        { id: 'heroName',   delay: 150 },
-        { id: 'heroMarquee',delay: 300 },
-        { id: 'heroDesc',   delay: 450 },
-        { id: 'heroCtas',   delay: 600 },
-        { id: 'heroSocials',delay: 750 },
-      ];
-      items.forEach(({ id, delay }) => {
-        const el = document.getElementById(id);
-        if (!el) return;
-        el.style.opacity   = '0';
-        el.style.transform = 'translateY(40px)';
-        setTimeout(() => {
-          el.style.transition = 'opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.8s cubic-bezier(0.22,1,0.36,1)';
-          el.style.opacity    = '1';
-          el.style.transform  = 'translateY(0)';
-        }, delay);
-      });
-    })();
-
-    /* ═══════ 3. CHAR SPLIT ═══════ */
+    /* ═══════ 2. CHAR SPLIT ═══════ */
     ;(function initCharSplit() {
       document.querySelectorAll('.split-text').forEach(el => {
         const label = el.textContent;
@@ -3793,7 +4220,7 @@
       });
     })();
 
-    /* ═══════ 4. SCROLL REVEALS ═══════ */
+    /* ═══════ 3. SCROLL REVEALS ═══════ */
     ;(function initReveal() {
       const io = new IntersectionObserver(entries => {
         entries.forEach(e => {
@@ -3809,7 +4236,7 @@
       });
     })();
 
-    /* ═══════ 5. NUMBER COUNTERS ═══════ */
+    /* ═══════ 4. NUMBER COUNTERS ═══════ */
     ;(function initCounters() {
       const io = new IntersectionObserver(entries => {
         entries.forEach(e => {
@@ -3837,7 +4264,7 @@
       document.querySelectorAll('[data-count]').forEach(el => io.observe(el));
     })();
 
-    /* ═══════ 6. UTILITIES ═══════ */
+    /* ═══════ 5. UTILITIES ═══════ */
     ;(function initUtils() {
 
       /* Nav scroll state + back to top (single listener) */
@@ -3862,8 +4289,18 @@
         a.addEventListener('click', () => {
           hamburger.classList.remove('open');
           mobileMenu.classList.remove('open');
+          hamburger.setAttribute('aria-expanded', 'false');
           document.body.style.overflow = '';
         });
+      });
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && mobileMenu.classList.contains('open')) {
+          hamburger.classList.remove('open');
+          mobileMenu.classList.remove('open');
+          hamburger.setAttribute('aria-expanded', 'false');
+          document.body.style.overflow = '';
+          hamburger.focus();
+        }
       });
 
     })();
@@ -3899,11 +4336,6 @@
 
       window.addEventListener('scroll', update, { passive: true });
       update();
-    })();
-
-    /* ═══════ 8. BENTO HOVER DESTINATION ═══════ */
-    ;(function initBentoDest() {
-      /* Reveal destination label on card hover */
     })();
 
     /* ═══════ 9. NAV SCRAMBLE ═══════ */
@@ -3947,10 +4379,14 @@
         const tagsEl = line.querySelector('.cl-tags');
 
         /* --- build char spans ------------------------------------------ */
-        textEl.innerHTML = [...full].map((ch, i) => {
-          const safe = ch === "'" ? '&#39;' : ch === '&' ? '&amp;' : ch === '<' ? '&lt;' : ch;
-          return `<span class="fc" data-ch="${safe}">${ch === ' ' ? ' ' : ch}</span>`;
-        }).join('');
+        /* Screen readers get the real sentence; the animated chars are hidden */
+        const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/'/g, '&#39;');
+        const chars = [...full].map(ch =>
+          `<span class="fc" data-ch="${esc(ch)}">${ch === ' ' ? '\u00A0' : esc(ch)}</span>`
+        ).join('');
+        textEl.innerHTML =
+          `<span class="visually-hidden">${esc(full)}</span>` +
+          `<span aria-hidden="true">${chars}</span>`;
 
         /* --- build tag pills ------------------------------------------- */
         (line.dataset.tags || '').split(',').forEach((tag, i) => {
@@ -4014,56 +4450,63 @@
       const section = document.getElementById('currently');
       if (!section) return;
 
-      section.addEventListener('mousemove', e => {
-        document.querySelectorAll('.curr-line').forEach(line => {
-          const r        = line.getBoundingClientRect();
-          const cy       = r.top + r.height / 2;
-          const dy       = e.clientY - cy;
-          const absDy    = Math.abs(dy);
-          const RADIUS   = 160;
-          const MAX_PUSH = 10;
+      /* rAF-throttled: at most one batch of reads + one batch of writes per frame */
+      const lines = Array.from(document.querySelectorAll('.curr-line'));
+      let pointerY = 0, frameQueued = false;
 
+      function applyMagnet() {
+        frameQueued = false;
+        const RADIUS   = 160;
+        const MAX_PUSH = 10;
+        /* reads first (rects + hover), then writes (transforms) */
+        const measured = lines.map(line => {
+          const r = line.getBoundingClientRect();
+          return { line, cy: r.top + r.height / 2, hovered: line.matches(':hover') };
+        });
+        measured.forEach(({ line, cy, hovered }) => {
+          const dy    = pointerY - cy;
+          const absDy = Math.abs(dy);
           if (absDy > RADIUS) { line.style.transform = ''; return; }
-
-          const strength  = (1 - absDy / RADIUS) * MAX_PUSH;
-          const isHovered = line.matches(':hover');
+          const strength = (1 - absDy / RADIUS) * MAX_PUSH;
           /* attraction when cursor is ON the line, repulsion when nearby */
-          const dir = isHovered ? (dy > 0 ? -0.4 : 0.4) : (dy > 0 ? -1 : 1);
+          const dir = hovered ? (dy > 0 ? -0.4 : 0.4) : (dy > 0 ? -1 : 1);
           line.style.transform = `translateY(${dir * strength}px)`;
         });
-      });
+      }
+
+      section.addEventListener('mousemove', e => {
+        pointerY = e.clientY;
+        if (!frameQueued) { frameQueued = true; requestAnimationFrame(applyMagnet); }
+      }, { passive: true });
 
       section.addEventListener('mouseleave', () => {
-        document.querySelectorAll('.curr-line').forEach(l => { l.style.transform = ''; });
+        lines.forEach(l => { l.style.transform = ''; });
       });
     }());
 
     /* ═══════ 11. COPY EMAIL ═══════ */
-    function copyEmail() {
-      const EMAIL = 'ghosh.anik@northeastern.edu';
-      function flash() {
-        document.querySelectorAll('.copy-btn').forEach(btn => {
-          btn.innerHTML = '<i class="fas fa-check"></i>';
-          setTimeout(() => { btn.innerHTML = '<i class="fas fa-copy"></i>'; }, 2000);
-        });
-      }
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(EMAIL).then(flash).catch(() => {
-          const ta = document.createElement('textarea');
-          ta.value = EMAIL; ta.setAttribute('readonly', '');
-          ta.style.cssText = 'position:fixed;opacity:0;pointer-events:none';
-          document.body.appendChild(ta); ta.select();
-          try { document.execCommand('copy'); } catch (_) {}
-          document.body.removeChild(ta); flash();
-        });
-      } else {
+    /* Shared clipboard helper — also used by the ID-card email button below */
+    function copyTextToClipboard(text, done) {
+      function fallback() {
         const ta = document.createElement('textarea');
-        ta.value = EMAIL; ta.setAttribute('readonly', '');
+        ta.value = text; ta.setAttribute('readonly', '');
         ta.style.cssText = 'position:fixed;opacity:0;pointer-events:none';
         document.body.appendChild(ta); ta.select();
         try { document.execCommand('copy'); } catch (_) {}
-        document.body.removeChild(ta); flash();
+        document.body.removeChild(ta); done();
       }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done).catch(fallback);
+      } else { fallback(); }
+    }
+
+    function copyEmail() {
+      copyTextToClipboard('ghosh.anik@northeastern.edu', () => {
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+          btn.innerHTML = '<svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
+          setTimeout(() => { btn.innerHTML = '<svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>'; }, 2000);
+        });
+      });
     }
 
     /* ═══════ ABOUT CONTENT SWAP ═══════ */
@@ -4106,6 +4549,158 @@
         }, 220);
       });
     })();
+
+    /* ═══════ EDUCATION CARD SHEEN ═══════
+       No tilt: only the specular sheen and edge glow follow the pointer. */
+    ;(function initEduSheen() {
+      if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      document.querySelectorAll('.edu-card').forEach(card => {
+        const tilt = card.querySelector('.edu-tilt');
+        if (!tilt) return;
+        let raf = null, px = 0, py = 0;
+        function apply() {
+          raf = null;
+          const r = card.getBoundingClientRect();
+          tilt.style.setProperty('--shx', (px - r.left).toFixed(0) + 'px');
+          tilt.style.setProperty('--shy', (py - r.top).toFixed(0) + 'px');
+        }
+        card.addEventListener('pointermove', e => {
+          px = e.clientX; py = e.clientY;
+          if (!raf) raf = requestAnimationFrame(apply);
+        });
+      });
+    })();
+
+    /* ═══════ SKILL → PROOF ═══════
+       Off: the skills table, plain, exactly as designed. On: a row of
+       sources rises in above the table; hovering one lights the skills
+       it proves in the table itself, clicking jumps to the work. */
+    ;(function initSkillProof() {
+      const norm = s => s.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const evidence = [];
+      function collect(selector, nameSel) {
+        document.querySelectorAll(selector).forEach(el => {
+          const nameEl = el.querySelector(nameSel);
+          if (nameEl) evidence.push({ el, name: nameEl.textContent.trim() });
+        });
+      }
+      collect('.timeline-entry', '.timeline-company');
+      collect('.bento-cell', '.proj-name');
+      collect('.research-card', '.research-title');
+      const bluedot = document.querySelector('.cert-featured');
+      if (bluedot) evidence.push({ el: bluedot, name: 'BlueDot' });
+      const byName = sub => evidence.find(ev => ev.name.toLowerCase().includes(sub.toLowerCase()));
+
+      const reduceMot = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      function jump(target) {
+        target.scrollIntoView({ behavior: reduceMot ? 'auto' : 'smooth', block: 'center' });
+        target.classList.remove('proof-flash');
+        void target.offsetWidth;
+        target.classList.add('proof-flash');
+        target.addEventListener('animationend',
+          () => target.classList.remove('proof-flash'), { once: true });
+      }
+
+      const SOURCES = [
+        { short: 'Varosync', name: 'Varosync, Inc.', role: 'AI/ML Engineer', find: 'Varosync',
+          skills: ['Python', 'SQL', 'Bash', 'AWS', 'Docker', 'GitHub Actions', 'SLURM', 'CI/CD', 'Knowledge Graphs'] },
+        { short: 'NLP TA', name: 'Northeastern University', role: 'Graduate NLP TA', find: 'Northeastern University',
+          skills: ['PyTorch', 'NLP', 'Transformers', 'Python'] },
+        { short: "AIDE '26", name: 'AI and Data Ethics Summer Program', role: 'Teaching Co-Lead, ML Lab', find: 'AI and Data Ethics',
+          skills: ['Python', 'scikit-learn', 'Explainable AI', 'Mechanistic Interpretability'] },
+        { short: 'BlueDot', name: 'BlueDot Impact', role: 'Technical AI Safety Cohort', find: 'BlueDot',
+          skills: ['Mechanistic Interpretability', 'Explainable AI', 'Prompt Engineering'] },
+        { short: 'CMATER', name: 'CMATER Lab', role: 'Medical-Imaging Research', find: 'CMATER',
+          skills: ['Computer Vision', 'Medical Imaging', 'OpenCV', 'U-Net', 'TensorFlow', 'Keras', 'PyTorch'] },
+        { short: 'NEHU', name: 'NEHU', role: 'Research Intern, ISL Dataset', find: 'North-Eastern Hill',
+          skills: ['Computer Vision', 'OpenCV'] },
+        { short: 'Papers', name: 'Springer + IEEE', role: 'Published Papers, Patent', find: 'Traffic Sign',
+          skills: ['YOLOv8', 'Computer Vision', 'TensorFlow'] },
+        { short: 'Projects', name: 'Shipped Projects', role: '9 builds, 2 live demos', sel: '#projects .bento-grid',
+          skills: ['RAG', 'Hugging Face', 'ChromaDB', 'LangChain', 'LangGraph', 'CrewAI', 'AutoGen', 'MCP',
+                   'OpenAI Agents SDK', 'Multi-Agent Systems', 'FastAPI', 'Terraform', 'GCP', 'Docker',
+                   'PyTorch', 'Prompt Engineering'] },
+        { short: 'Certs', name: 'Certifications', role: 'AI Engineering, MLOps, DSA', sel: '#certifications .certs-grid',
+          skills: ['LangChain', 'LangGraph', 'AutoGen', 'LoRA / QLoRA', 'Kubernetes', 'MLflow', 'C / C++'] }
+      ];
+
+      const listEl = document.getElementById('skillsList');
+      const pills = Array.from(listEl.querySelectorAll('.skill-pill'));
+      const pillByKey = {};
+      pills.forEach(p => { pillByKey[norm(p.textContent)] = p; });
+
+      const covered = new Set();
+      SOURCES.forEach(src => src.skills.forEach(s => {
+        if (pillByKey[norm(s)]) covered.add(norm(s));
+      }));
+      const covText = covered.size + ' / ' + pills.length + ' skills · ' + SOURCES.length + ' sources';
+
+      /* sources live ABOVE the table so the lit pills sit right below them */
+      const srcRow = document.getElementById('skillsProof');
+      listEl.parentNode.insertBefore(srcRow, listEl);
+
+      function setLights(keys) {
+        pills.forEach(p => {
+          const k = norm(p.textContent);
+          p.classList.toggle('lit', !!keys && keys.has(k));
+          p.classList.toggle('dim', !!keys && !keys.has(k));
+        });
+      }
+
+      const lighters = [];
+      SOURCES.forEach(src => {
+        const keys = new Set(src.skills.map(norm));
+        const target = src.find ? (byName(src.find) || {}).el : document.querySelector(src.sel);
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'pm-source';
+        btn.title = src.name + ' · ' + src.role;
+        btn.setAttribute('aria-label', src.name + ', ' + src.role + '. Proves ' +
+          src.skills.join(', ') + '. Activate to jump to it.');
+        btn.textContent = src.short;
+        const ct = document.createElement('sup');
+        ct.className = 'pm-count';
+        ct.setAttribute('aria-hidden', 'true');
+        ct.textContent = '×' + src.skills.length;
+        btn.appendChild(ct);
+        btn.addEventListener('mouseenter', () => setLights(keys));
+        btn.addEventListener('mouseleave', () => setLights(null));
+        btn.addEventListener('focus', () => setLights(keys));
+        btn.addEventListener('blur', () => setLights(null));
+        if (target) btn.addEventListener('click', () => jump(target));
+        lighters.push({ btn, keys });
+        srcRow.appendChild(btn);
+      });
+
+      const btnP = document.getElementById('smProof');
+      const hint = document.getElementById('skillsHint');
+      let demoDone = false;
+      function setProof(on) {
+        srcRow.hidden = !on;
+        requestAnimationFrame(() => srcRow.classList.toggle('pm-in', on));
+        btnP.classList.toggle('active', on);
+        btnP.setAttribute('aria-pressed', String(on));
+        hint.hidden = !on;
+        hint.textContent = covText + ' · hover to trace · click to open the work';
+        if (!on) setLights(null);
+        /* one-time demo: the first source lights its skills by itself,
+           so the hover behavior is impossible to miss */
+        if (on && !demoDone && !reduceMot) {
+          demoDone = true;
+          const first = lighters[0];
+          setTimeout(() => {
+            first.btn.classList.add('demo');
+            setLights(first.keys);
+            setTimeout(() => {
+              first.btn.classList.remove('demo');
+              setLights(null);
+            }, 1400);
+          }, 700);
+        }
+      }
+      btnP.addEventListener('click', () => setProof(btnP.getAttribute('aria-pressed') !== 'true'));
+    })();
   </script>
 
 
@@ -4113,9 +4708,7 @@
 <svg class="lanyard-svg" id="idLanyardSvg" xmlns="http://www.w3.org/2000/svg"
      aria-hidden="true" focusable="false">
   <path id="idRopeStroke" class="strap"/>
-  <circle id="idGrommOuter" r="4.5"/>
-  <circle id="idGrommHole"  r="2"/>
-  <circle id="idGrommHi"    r="1.5"/>
+  <path id="idRopeStitch" class="strap-stitch"/>
 </svg>
 
 <!-- ── ID Card: copy toast ───────────────────────── -->
@@ -4131,9 +4724,7 @@
   const flipInner  = document.getElementById('idFlipInner');
   const flipHint   = document.getElementById('idFlipHint');
   const ropeEl     = document.getElementById('idRopeStroke');
-  const grommOuter = document.getElementById('idGrommOuter');
-  const grommHole  = document.getElementById('idGrommHole');
-  const grommHi    = document.getElementById('idGrommHi');
+  const stitchEl   = document.getElementById('idRopeStitch');
 
   const reduceMot = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const NAV_H     = 64;
@@ -4144,8 +4735,40 @@
   const DAMP = 0.974;
   const ITER = 7;
 
-  const pts = new Array(N);
+  // Two strands forming a loop: left chain `pts`, right chain `ptsR`.
+  // Both hang from their own anchor under the nav and share the tip
+  // particle (ptsR[N-1] === pts[N-1]), where the clamp grips them.
+  const pts  = new Array(N);
+  const ptsR = new Array(N);
+  let anchorLX = 0, anchorRX = 0;
   let naturalCX = 0, naturalCY = 0, cardH = 0, segLen = 0;
+
+  function ropeSpread() {
+    return Math.max(42, Math.min(96, window.innerWidth * 0.075));
+  }
+
+  // Build both chains as straight lines from their anchors to (cx, topY)
+  function buildChains(cx, topY) {
+    const spread = ropeSpread();
+    anchorLX = cx - spread;
+    anchorRX = cx + spread;
+    segLen   = Math.max(8, Math.hypot(spread, topY - NAV_H) / (N - 1));
+    for (let i = 0; i < N; i++) {
+      const t = i / (N - 1);
+      const x = anchorLX + (cx - anchorLX) * t;
+      const y = NAV_H + (topY - NAV_H) * t;
+      pts[i] = { x, y, px: x, py: y };
+    }
+    pts[0].pinned = true;
+    for (let i = 0; i < N - 1; i++) {
+      const t = i / (N - 1);
+      const x = anchorRX + (cx - anchorRX) * t;
+      const y = NAV_H + (topY - NAV_H) * t;
+      ptsR[i] = { x, y, px: x, py: y };
+    }
+    ptsR[0].pinned = true;
+    ptsR[N - 1] = pts[N - 1];   // shared tip
+  }
 
   // ── Phases: 'pre' → 'falling' → 'swing' → 'physics' ─────────
   let phase = 'pre';
@@ -4188,23 +4811,17 @@
     naturalCX = r.left + r.width  * 0.5;
     naturalCY = r.top  + r.height * 0.5;
     cardH     = r.height;
-    segLen     = (r.top - NAV_H) / (N - 1);
-    for (let i = 0; i < N; i++) {
-      const y = NAV_H + i * segLen;
-      pts[i] = { x: naturalCX, y, px: naturalCX, py: y };
-    }
-    pts[0].pinned = true;
+    buildChains(naturalCX, r.top);
   }
 
-  // ── Draw rope as a taut vertical line during fall ─────────────
+  // ── Draw both strands taut during fall (V from the anchors) ───
   function drawTautRope(cardTopY) {
     const cx  = naturalCX.toFixed(1);
     const ty  = Math.max(NAV_H, cardTopY).toFixed(1);
-    ropeEl.setAttribute('d', `M ${cx} ${NAV_H} L ${cx} ${ty}`);
-    grommOuter.setAttribute('cx', cx);  grommOuter.setAttribute('cy', ty);
-    grommHole.setAttribute('cx',  cx);  grommHole.setAttribute('cy', ty);
-    grommHi.setAttribute('cx', (naturalCX - 1.3).toFixed(1));
-    grommHi.setAttribute('cy', (cardTopY  - 1.3).toFixed(1));
+    const d   = `M ${anchorLX.toFixed(1)} ${NAV_H} L ${cx} ${ty}` +
+                ` M ${anchorRX.toFixed(1)} ${NAV_H} L ${cx} ${ty}`;
+    ropeEl.setAttribute('d', d);
+    stitchEl.setAttribute('d', d);
   }
 
   // ── Kick off drop after loader clears ─────────────────────────
@@ -4222,12 +4839,7 @@
     if (window.scrollY > 50) {
       const sy = window.scrollY;
       naturalCY = r.top + r.height * 0.5 + sy;   // convert to absolute page Y
-      segLen    = Math.max(8, (naturalCY - cardH * 0.5 - NAV_H) / (N - 1));
-      for (let i = 0; i < N; i++) {
-        const y = NAV_H + i * segLen;
-        pts[i] = { x: naturalCX, y, px: naturalCX, py: y };
-      }
-      pts[0].pinned = true;
+      buildChains(naturalCX, naturalCY - cardH * 0.5);
       const sceneEl = document.getElementById('idScene');
       if (sceneEl) sceneEl.style.perspective = 'none';
       tiltWrap.style.position          = 'fixed';
@@ -4265,6 +4877,7 @@
     }
 
     naturalCY = r.top  + r.height * 0.5;
+    buildChains(naturalCX, r.top);   // sets the anchors drawTautRope needs
 
     // Start card above the viewport (card bottom just above top edge)
     dropOffY  = -(naturalCY + cardH * 0.5 + 30);
@@ -4335,41 +4948,30 @@
       sp.id = 'idCardSpacer';
       sp.style.cssText = `width:${fr.width}px;height:${fr.height}px;flex-shrink:0;pointer-events:none;`;
       const hintEl   = document.getElementById('idFlipHint');
-      const badgesEl = document.querySelector('.card-meta-badges');
       const heroRight = document.querySelector('.hero-right');
       if (hintEl) heroRight.insertBefore(sp, hintEl);
       else heroRight.appendChild(sp);
 
-      // Reposition badges as fixed to the LEFT of the card.
-      if (badgesEl) {
-        badgesEl.style.position  = 'fixed';
-        badgesEl.style.top       = (fr.top + fr.height * 0.38) + 'px';
-        badgesEl.style.right     = (window.innerWidth - fr.left + 20) + 'px';
-        badgesEl.style.marginTop = '0';
-        badgesEl.style.left      = 'auto';
-      }
-
-      // Hide both until the bounce settles, then fade in.
-      if (hintEl)   hintEl.classList.add('hide');
-      if (badgesEl) badgesEl.classList.add('hide');
+      // Hide the hint until the bounce settles, then fade in.
+      if (hintEl) hintEl.classList.add('hide');
       setTimeout(() => {
-        if (hintEl)   hintEl.classList.remove('hide');
-        if (badgesEl) badgesEl.classList.remove('hide');
+        if (hintEl) hintEl.classList.remove('hide');
       }, 2200);
     }
 
     // Transfer fall velocity into Verlet: the lower rope points get the
-    // downward momentum — they'll tension against the anchor and swing
+    // downward momentum — they'll tension against the anchors and swing
     const v = dropVY;
     for (let i = Math.floor(N * 0.55); i < N; i++) {
       const t = (i - Math.floor(N * 0.55)) / (N - Math.floor(N * 0.55));
       pts[i].py -= v * (0.7 + t * 1.6);  // tip gets most velocity
+      if (i < N - 1) ptsR[i].py -= v * (0.7 + t * 1.6);  // tip is shared
     }
     // Lateral kick — swing to the right on first arc
-    pts[N - 1].px += 35;
-    pts[N - 2].px += 22;
-    pts[N - 3].px += 12;
-    pts[N - 4].px += 5;
+    pts[N - 1].px += 35;                       // shared tip
+    pts[N - 2].px += 22;  ptsR[N - 2].px += 22;
+    pts[N - 3].px += 12;  ptsR[N - 3].px += 12;
+    pts[N - 4].px += 5;   ptsR[N - 4].px += 5;
 
     swingFrames = 0;
     phase = 'swing';
@@ -4400,9 +5002,9 @@
     (function scheduleWiggle(delay) {
       setTimeout(function () {
         if (!dragged && phase === 'physics') {
-          pts[N - 1].px += 16;
-          pts[N - 2].px += 10;
-          pts[N - 3].px += 4;
+          pts[N - 1].px += 16;                     // shared tip
+          pts[N - 2].px += 10;  ptsR[N - 2].px += 10;
+          pts[N - 3].px += 4;   ptsR[N - 3].px += 4;
         }
         scheduleWiggle(8000);
       }, delay);
@@ -4410,6 +5012,27 @@
   }
 
   // ── Verlet physics ────────────────────────────────────────────
+  function integrate(p) {
+    const effDamp = DAMP - overdamp * 0.04;
+    let vx = (p.x - p.px) * effDamp;
+    let vy = (p.y - p.py) * effDamp + GRAV;
+    const spd = Math.sqrt(vx * vx + vy * vy);
+    if (spd > 20) { const s = 20 / spd; vx *= s; vy *= s; }
+    p.px = p.x; p.py = p.y;
+    p.x += vx; p.y += vy;
+  }
+
+  function relaxChain(chain) {
+    for (let i = 0; i < N - 1; i++) {
+      const a = chain[i], b = chain[i + 1];
+      const dx = b.x - a.x, dy = b.y - a.y;
+      const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+      const d    = (dist - segLen) / dist * 0.5;
+      if (!a.pinned)               { a.x += dx * d; a.y += dy * d; }
+      if (!(grabbed && i === N-2)) { b.x -= dx * d; b.y -= dy * d; }
+    }
+  }
+
   function stepPhysics() {
     if (document.hidden) return;
     for (let i = 1; i < N; i++) {
@@ -4419,24 +5042,14 @@
         p.x = curGrabX; p.y = curGrabY;
         continue;
       }
-      const effDamp = DAMP - overdamp * 0.04;
-      let vx = (p.x - p.px) * effDamp;
-      let vy = (p.y - p.py) * effDamp + GRAV;
-      const spd = Math.sqrt(vx * vx + vy * vy);
-      if (spd > 20) { const s = 20 / spd; vx *= s; vy *= s; }
-      p.px = p.x; p.py = p.y;
-      p.x += vx; p.y += vy;
+      integrate(p);
     }
+    for (let i = 1; i < N - 1; i++) integrate(ptsR[i]);  // tip already done
     for (let k = 0; k < ITER; k++) {
-      pts[0].x = naturalCX; pts[0].y = NAV_H;
-      for (let i = 0; i < N - 1; i++) {
-        const a = pts[i], b = pts[i + 1];
-        const dx = b.x - a.x, dy = b.y - a.y;
-        const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-        const d    = (dist - segLen) / dist * 0.5;
-        if (!a.pinned)               { a.x += dx * d; a.y += dy * d; }
-        if (!(grabbed && i === N-2)) { b.x -= dx * d; b.y -= dy * d; }
-      }
+      pts[0].x  = anchorLX; pts[0].y  = NAV_H;
+      ptsR[0].x = anchorRX; ptsR[0].y = NAV_H;
+      relaxChain(pts);
+      relaxChain(ptsR);
     }
   }
 
@@ -4457,22 +5070,23 @@
       `translate(${x.toFixed(1)}px,${(y + bounceY).toFixed(1)}px) rotateY(${currentRY.toFixed(2)}deg)`;
   }
 
-  function drawRope() {
-    const sy = window.scrollY;
-    const vy = i => pts[i].y - sy;   // viewport y for point i
-    let d = `M ${pts[0].x.toFixed(1)} ${vy(0).toFixed(1)}`;
+  function chainPath(chain, sy) {
+    let d = `M ${chain[0].x.toFixed(1)} ${(chain[0].y - sy).toFixed(1)}`;
     for (let i = 0; i < N - 1; i++) {
-      const p0 = pts[Math.max(0, i-1)], p1 = pts[i];
-      const p2 = pts[i+1],              p3 = pts[Math.min(N-1, i+2)];
+      const p0 = chain[Math.max(0, i-1)], p1 = chain[i];
+      const p2 = chain[i+1],              p3 = chain[Math.min(N-1, i+2)];
       const c1x = p1.x + (p2.x - p0.x) / 6, c1y = (p1.y - sy) + (p2.y - p0.y) / 6;
       const c2x = p2.x - (p3.x - p1.x) / 6, c2y = (p2.y - sy) - (p3.y - p1.y) / 6;
-      d += ` C ${c1x.toFixed(1)} ${c1y.toFixed(1)},${c2x.toFixed(1)} ${c2y.toFixed(1)},${p2.x.toFixed(1)} ${vy(i+1).toFixed(1)}`;
+      d += ` C ${c1x.toFixed(1)} ${c1y.toFixed(1)},${c2x.toFixed(1)} ${c2y.toFixed(1)},${p2.x.toFixed(1)} ${(p2.y - sy).toFixed(1)}`;
     }
+    return d;
+  }
+
+  function drawRope() {
+    const sy = window.scrollY;
+    const d  = chainPath(pts, sy) + ' ' + chainPath(ptsR, sy);
     ropeEl.setAttribute('d', d);
-    const gx = pts[N-1].x, gy = vy(N-1);
-    grommOuter.setAttribute('cx', gx.toFixed(1)); grommOuter.setAttribute('cy', gy.toFixed(1));
-    grommHole.setAttribute('cx',  gx.toFixed(1)); grommHole.setAttribute('cy',  gy.toFixed(1));
-    grommHi.setAttribute('cx', (gx - 1.3).toFixed(1)); grommHi.setAttribute('cy', (gy - 1.3).toFixed(1));
+    stitchEl.setAttribute('d', d);
   }
 
   // ── Main rAF loop ─────────────────────────────────────────────
@@ -4491,6 +5105,7 @@
       energyMA = energyMA * 0.94 + Math.hypot(tip.x - tip.px, tip.y - tip.py) * 0.06;
       if (!grabbed && energyMA < REST_THRESH) {
         for (let i = 1; i < N; i++) { pts[i].px = pts[i].x; pts[i].py = pts[i].y; }
+        for (let i = 1; i < N - 1; i++) { ptsR[i].px = ptsR[i].x; ptsR[i].py = ptsR[i].y; }
         energyMA = 0; shakeFrames = 0; overdamp = 0;
       } else if (!grabbed && energyMA > SHAKE_THRESH) {
         if (++shakeFrames >= SHAKE_ONSET) overdamp = Math.min(1, overdamp + 0.03);
@@ -4518,6 +5133,9 @@
     if (ptrDown && !dragged) {
       const dx = t.clientX - startX, dy = t.clientY - startY;
       if (dx * dx + dy * dy > 36) {
+        // On touch, claim only mostly-horizontal gestures; vertical swipes
+        // belong to page scroll (touch-action: pan-y on the card).
+        if (e.touches && Math.abs(dy) > Math.abs(dx)) { ptrDown = false; return; }
         dragged = grabbed = true;
         grabOffX = pts[N-1].x - t.clientX;
         grabOffY = pts[N-1].y - t.clientY;
@@ -4588,35 +5206,52 @@
     btn.addEventListener('touchstart', e => e.stopPropagation(), { passive: true });
     btn.addEventListener('click', e => {
       e.stopPropagation();
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(EMAIL).then(showToast).catch(fallback);
-      } else { fallback(); }
+      copyTextToClipboard(EMAIL, showToast);
     });
-    function fallback() {
-      const ta = document.createElement('textarea');
-      ta.value = EMAIL; ta.setAttribute('readonly', '');
-      ta.style.cssText = 'position:fixed;opacity:0;pointer-events:none';
-      document.body.appendChild(ta); ta.select();
-      try { document.execCommand('copy'); } catch (_) {}
-      document.body.removeChild(ta); showToast();
-    }
   }());
 
   // ── Reduced-motion: static rope, no drop ─────────────────────
   if (reduceMot) {
     tiltWrap.style.transform = '';
-    const r  = flipInner.getBoundingClientRect();
-    const cx = (r.left + r.width * 0.5).toFixed(1);
-    const gy = r.top.toFixed(1);
-    ropeEl.setAttribute('d', `M ${cx} ${NAV_H} L ${cx} ${gy}`);
-    grommOuter.setAttribute('cx', cx); grommOuter.setAttribute('cy', gy);
-    grommHole.setAttribute('cx',  cx); grommHole.setAttribute('cy', gy);
-    grommHi.setAttribute('cx', (parseFloat(cx) - 1.3).toFixed(1));
-    grommHi.setAttribute('cy', (parseFloat(gy) - 1.3).toFixed(1));
+    // Rope SVG is position:fixed while the card scrolls with the page,
+    // so the static rope must be redrawn on scroll and resize.
+    function drawStaticRope() {
+      const r  = flipInner.getBoundingClientRect();
+      const cx = r.left + r.width * 0.5;
+      const gy = r.top.toFixed(1);
+      const ay = (NAV_H - window.scrollY).toFixed(1);
+      const spread = ropeSpread();
+      const d = `M ${(cx - spread).toFixed(1)} ${ay} L ${cx.toFixed(1)} ${gy}` +
+                ` M ${(cx + spread).toFixed(1)} ${ay} L ${cx.toFixed(1)} ${gy}`;
+      ropeEl.setAttribute('d', d);
+      stitchEl.setAttribute('d', d);
+    }
+    drawStaticRope();
+    window.addEventListener('scroll', drawStaticRope, { passive: true });
+    window.addEventListener('resize', drawStaticRope);
     flipInner.addEventListener('click',    () => { if (Date.now() - lastTouchEnd > 500) doFlip(false); });
     flipInner.addEventListener('touchend', e  => { lastTouchEnd = Date.now(); e.preventDefault(); doFlip(false); });
     return;
   }
+
+  // ── Re-anchor after viewport changes (rotation, window resize) ──
+  // The spacer holds the card's place in the layout; measure it and
+  // rebuild both chains so the card hangs from the new position.
+  let resizeTimer = null;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      if (phase !== 'physics' && phase !== 'swing') return;
+      const sp = document.getElementById('idCardSpacer');
+      if (!sp) return;
+      const r  = sp.getBoundingClientRect();
+      const sy = window.scrollY;
+      naturalCX = r.left + r.width * 0.5;
+      naturalCY = r.top + r.height * 0.5 + sy;
+      cardH     = r.height;
+      buildChains(naturalCX, naturalCY - cardH * 0.5);
+    }, 150);
+  });
 
   tiltWrap.style.willChange = 'transform';
   requestAnimationFrame(tick);
