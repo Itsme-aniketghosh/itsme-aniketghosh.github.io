@@ -1594,6 +1594,18 @@
     .edu-manifest .mf-link:focus-visible::after,
     .edu-manifest .mf-link.mf-lit::after { transform: scaleX(1); transform-origin: left; }
     .edu-manifest .mf-link:focus-visible { outline: 1px solid var(--text); outline-offset: 3px; border-radius: 1px; }
+    /* Touch / narrow: fragments wrap, so the absolute box-width underline would
+       run past the last line's text. Use a real text underline (follows the
+       words exactly, wraps correctly) and drop the sweep — touch can't hover. */
+    @media (hover: none), (max-width: 768px) {
+      .edu-manifest .mf-link::after { content: none; }
+      .edu-manifest .mf-link {
+        text-decoration: underline;
+        text-decoration-color: rgb(var(--text-rgb) / 0.4);
+        text-decoration-thickness: 1.5px;
+        text-underline-offset: 4px;
+      }
+    }
     .edu-manifest.in-view .mf-lead,
     .edu-manifest.in-view .mf,
     .edu-manifest.in-view .mf-kicker { opacity: 1; transform: none; filter: none; }
@@ -4533,8 +4545,10 @@
 
       document.querySelectorAll('.curr-line').forEach(buildScrambler);
 
-      /* --- Magnetic repulsion / attraction (desktop only) -------------- */
-      if (isTouchDev) return;
+      /* --- Magnetic repulsion / attraction (desktop, pointer only) ------ */
+      /* Off on touch AND at mobile widths: there's no hovering pointer there,
+         and the pointer-driven line shifts read as random "shaking." */
+      if (isTouchDev || window.matchMedia('(max-width: 768px)').matches) return;
       const section = document.getElementById('currently');
       if (!section) return;
 
