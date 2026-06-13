@@ -5389,6 +5389,24 @@
   //    content) and stays tap-to-flip. ──────────────────────────
   if (staticCard) {
     tiltWrap.style.transform = '';
+
+    // impact() (skipped on this path) is what normally un-masks the hero name
+    // and fans in the copy below it. Trigger that reveal here, timed just after
+    // the loader clears (~1.05s) and in step with the tag / marquee blast —
+    // otherwise the name stays hidden behind its mask and .hero-desc /
+    // .hero-ctas / .hero-socials stay stuck at opacity 0 on mobile.
+    (function revealHero() {
+      const nm = document.getElementById('heroName');
+      const heroEl = document.querySelector('.hero');
+      if (reduceMot) {
+        if (nm) nm.classList.add('name-revealed');
+        if (heroEl) heroEl.classList.add('hero-blast-below');
+        return;
+      }
+      setTimeout(() => { if (nm) nm.classList.add('name-revealed'); }, 1100);
+      setTimeout(() => { if (heroEl) heroEl.classList.add('hero-blast-below'); }, 1300);
+    })();
+
     // Rope SVG is position:fixed while the card scrolls with the page,
     // so the static rope must be redrawn on scroll and resize.
     function drawStaticRope() {
@@ -5405,8 +5423,22 @@
     drawStaticRope();
     window.addEventListener('scroll', drawStaticRope, { passive: true });
     window.addEventListener('resize', drawStaticRope);
-    flipInner.addEventListener('click',    () => { if (Date.now() - lastTouchEnd > 500) doFlip(false); });
-    flipInner.addEventListener('touchend', e  => { lastTouchEnd = Date.now(); e.preventDefault(); doFlip(false); });
+
+    // Tap-to-flip: flip only on a genuine tap, not when a vertical scroll
+    // happens to begin on the card (touch-action: pan-y lets the page scroll).
+    let tx = 0, ty = 0, tMoved = false;
+    flipInner.addEventListener('touchstart', e => {
+      const t = e.touches[0]; tx = t.clientX; ty = t.clientY; tMoved = false;
+    }, { passive: true });
+    flipInner.addEventListener('touchmove', e => {
+      const t = e.touches[0];
+      if (Math.abs(t.clientX - tx) > 10 || Math.abs(t.clientY - ty) > 10) tMoved = true;
+    }, { passive: true });
+    flipInner.addEventListener('touchend', e => {
+      lastTouchEnd = Date.now();
+      if (!tMoved) { if (e.cancelable) e.preventDefault(); doFlip(false); }
+    });
+    flipInner.addEventListener('click', () => { if (Date.now() - lastTouchEnd > 500) doFlip(false); });
     return;
   }
 
