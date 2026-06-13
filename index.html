@@ -421,6 +421,14 @@
     }
     .nav-links a:hover { color: var(--text); }
     .nav-links a:hover::after { transform: scaleX(1); }
+    /* return cue: pulse the Education link after a manifest jump, so the way
+       back is obvious */
+    @keyframes nav-pulse {
+      0%, 100% { color: var(--muted); }
+      50%      { color: var(--text); }
+    }
+    .nav-links a.nav-pulse { animation: nav-pulse 0.7s ease 3; }
+    .nav-links a.nav-pulse::after { transform: scaleX(1); }
 
     .nav-right {
       display: flex;
@@ -1561,6 +1569,16 @@
     .edu-manifest .mf-lead   { color: var(--muted); font-style: italic; }
     .edu-manifest .mf        { color: var(--text); }
     .edu-manifest .mf-kicker { color: var(--muted); font-style: italic; }
+    /* manifest fragments that jump to their proof elsewhere on the page */
+    .edu-manifest .mf-link {
+      color: var(--text);
+      text-decoration: underline;
+      text-decoration-color: rgb(var(--text-rgb) / 0.28);
+      text-underline-offset: 5px;
+      cursor: pointer;
+    }
+    .edu-manifest .mf-link:hover { text-decoration-color: var(--text); }
+    .edu-manifest .mf-link:focus-visible { outline: 1px solid var(--text); outline-offset: 3px; border-radius: 1px; }
     .edu-manifest.in-view .mf-lead,
     .edu-manifest.in-view .mf,
     .edu-manifest.in-view .mf-kicker { opacity: 1; transform: none; }
@@ -3413,8 +3431,7 @@
 
       <!-- The grind, stated plainly -->
       <p class="edu-manifest reveal">
-        <span class="visually-hidden">Six years, summarized: four internships, two published papers, one patent filed, three teaching posts, forty-plus students taught, one selective AI-safety cohort, and a 4.0 in both degrees. Still going.</span>
-        <span aria-hidden="true"><span class="mf-lead">Six years, summarized:</span> <span class="mf">four internships,</span> <span class="mf">two published papers,</span> <span class="mf">one patent filed,</span> <span class="mf">three teaching posts,</span> <span class="mf">forty-plus students taught,</span> <span class="mf">one selective AI-safety cohort,</span> <span class="mf">and a 4.0 in both degrees.</span> <span class="mf-kicker">Still going.</span></span>
+        <span class="mf-lead">Six years, summarized:</span> <a class="mf mf-link" href="#experience" aria-label="Four internships. Jump to Experience.">four internships,</a> <a class="mf mf-link" href="#research" aria-label="Two published papers. Jump to Research.">two published papers,</a> <a class="mf mf-link" href="#research" aria-label="One patent filed. Jump to Research.">one patent filed,</a> <a class="mf mf-link" href="#experience" aria-label="Three teaching posts. Jump to Experience.">three teaching posts,</a> <a class="mf mf-link" href="#experience" aria-label="Forty-plus students taught. Jump to Experience.">forty-plus students taught,</a> <a class="mf mf-link" href="#certifications" aria-label="One selective AI-safety cohort. Jump to Certifications.">one selective AI-safety cohort,</a> <span class="mf">and a 4.0 in both degrees.</span> <span class="mf-kicker">Still going.</span>
       </p>
 
       <div class="edu-cards">
@@ -4624,6 +4641,31 @@
         card.addEventListener('pointermove', e => {
           px = e.clientX; py = e.clientY;
           if (!raf) raf = requestAnimationFrame(apply);
+        });
+      });
+    })();
+
+    /* ═══════ EDUCATION MANIFEST → JUMP + RETURN CUE ═══════
+       Each manifest fragment links to its proof elsewhere on the page; after
+       the jump, the "Education" nav link pulses once to show the way back. */
+    ;(function initManifestNav() {
+      const links  = document.querySelectorAll('.edu-manifest .mf-link');
+      if (!links.length) return;
+      const eduNav = document.querySelector('.nav-links a[href="#education"]');
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      links.forEach(link => {
+        link.addEventListener('click', e => {
+          const target = document.querySelector(link.getAttribute('href'));
+          if (!target) return;
+          e.preventDefault();
+          target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+          if (eduNav && !reduce) {
+            eduNav.classList.remove('nav-pulse');
+            void eduNav.offsetWidth;            // restart the animation
+            eduNav.classList.add('nav-pulse');
+            eduNav.addEventListener('animationend',
+              () => eduNav.classList.remove('nav-pulse'), { once: true });
+          }
         });
       });
     })();
