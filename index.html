@@ -4668,26 +4668,40 @@
       }
 
       const SOURCES = [
+        // Drug-discovery role: comparables engine over target-pathway knowledge
+        // graphs, source-grounded (RAG) failure reads with full provenance,
+        // hybrid-cloud ML infra (AWS / Nebius / GCP).
         { short: 'Varosync', type: 'current role', name: 'Varosync, Inc.', role: 'AI/ML Engineer · Boston, MA', find: 'Varosync',
-          skills: ['Python', 'SQL', 'Bash', 'AWS', 'Docker', 'GitHub Actions', 'SLURM', 'CI/CD', 'Knowledge Graphs'] },
+          skills: ['Python', 'SQL', 'Bash', 'AWS', 'GCP', 'Docker', 'GitHub Actions', 'SLURM', 'CI/CD',
+                   'Knowledge Graphs', 'RAG', 'Explainable AI'] },
+        // Ran the PyTorch / transformer labs for the graduate NLP course.
         { short: 'NLP TA', type: 'teaching', name: 'Northeastern · Khoury College', role: 'Teaching Assistant, NLP', find: 'Northeastern University',
-          skills: ['PyTorch', 'NLP', 'Transformers', 'Python'] },
+          skills: ['Python', 'PyTorch', 'NLP', 'Transformers'] },
+        // 12-session ML lab built from scratch: fairness, transformers, mech-interp.
         { short: "AIDE '26", type: 'summer program', name: 'AI & Data Ethics Summer Program', role: 'Teaching Co-Lead, ML Lab · Northeastern', find: 'AI and Data Ethics',
-          skills: ['Python', 'scikit-learn', 'Explainable AI', 'Mechanistic Interpretability'] },
+          skills: ['Python', 'scikit-learn', 'Transformers', 'Mechanistic Interpretability', 'Explainable AI'] },
         { short: 'BlueDot', type: 'cohort', name: 'BlueDot Impact', role: 'Technical AI Safety cohort', find: 'BlueDot',
           skills: ['Mechanistic Interpretability', 'Explainable AI', 'Prompt Engineering'] },
+        // Histopathology cell segmentation: classical CV + deep learning (PyTorch).
         { short: 'CMATER', type: 'research', name: 'CMATER Lab, Jadavpur University', role: 'Researcher & Research Mentor', find: 'CMATER',
-          skills: ['Computer Vision', 'Medical Imaging', 'OpenCV', 'U-Net', 'TensorFlow', 'Keras', 'PyTorch'] },
+          skills: ['Computer Vision', 'Medical Imaging', 'OpenCV', 'U-Net', 'PyTorch'] },
         { short: 'NEHU', type: 'internship', name: 'North-Eastern Hill University', role: 'Research Intern · ISL dataset', find: 'North-Eastern Hill',
           skills: ['Computer Vision', 'OpenCV'] },
+        // Springer (YOLOv8 traffic signs) + IEEE (histopath, intrusion detection) + patent.
         { short: 'Papers', type: 'publications', name: 'Springer + IEEE', role: 'Published papers + patent filed', find: 'Traffic Sign',
-          skills: ['YOLOv8', 'Computer Vision', 'TensorFlow'] },
+          skills: ['YOLOv8', 'Computer Vision', 'PyTorch', 'Medical Imaging'] },
+        // 9 shipped builds: 2 mech-interp studies, agent systems, a biomedical KG
+        // link-predictor (RF + embeddings), RAG twin, RL execution engine.
         { short: 'Projects', type: 'shipped work', name: 'Shipped Projects', role: '9 builds · 2 live demos', sel: '#projects .bento-grid',
-          skills: ['RAG', 'Hugging Face', 'ChromaDB', 'LangChain', 'LangGraph', 'CrewAI', 'AutoGen', 'MCP',
-                   'OpenAI Agents SDK', 'Multi-Agent Systems', 'FastAPI', 'Terraform', 'GCP', 'Docker',
-                   'PyTorch', 'Prompt Engineering'] },
+          skills: ['RAG', 'Hugging Face', 'CrewAI', 'MCP', 'OpenAI Agents SDK', 'Multi-Agent Systems',
+                   'FastAPI', 'Terraform', 'GCP', 'Docker', 'PyTorch', 'scikit-learn', 'Prompt Engineering',
+                   'Knowledge Graphs', 'Mechanistic Interpretability', 'Transformers', 'Explainable AI'] },
+        // Formal-training backstop: the courses that round out the stack and back
+        // the skills not headlined by a job, paper, or shipped project.
         { short: 'Certs', type: 'credential', name: 'Certifications', role: 'AI Engineering · MLOps · DSA', sel: '#certifications .certs-grid',
-          skills: ['LangChain', 'LangGraph', 'AutoGen', 'LoRA / QLoRA', 'Kubernetes', 'MLflow', 'C / C++'] }
+          skills: ['TensorFlow', 'Keras', 'scikit-learn', 'NLP', 'LangChain', 'LangGraph', 'CrewAI', 'AutoGen',
+                   'MCP', 'OpenAI Agents SDK', 'RAG', 'ChromaDB', 'Hugging Face', 'Prompt Engineering',
+                   'LoRA / QLoRA', 'Kubernetes', 'MLflow', 'CI/CD', 'Docker', 'AWS', 'GCP', 'FastAPI', 'C / C++'] }
       ];
 
       const listEl = document.getElementById('skillsList');
