@@ -4530,15 +4530,18 @@
           });
         }
 
-        /* --- trigger on scroll-enter ----------------------------------- */
-        const io = new IntersectionObserver(entries => {
-          entries.forEach(e => {
-            if (!e.isIntersecting) return;
-            scramble();
-            io.unobserve(line);
-          });
-        }, { threshold: 0.4 });
-        io.observe(line);
+        /* --- trigger the reveal scramble on scroll-enter (pointer devices
+           only; on touch/mobile the line just shows its text, no flip) ---- */
+        if (hoverPointer) {
+          const io = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+              if (!e.isIntersecting) return;
+              scramble();
+              io.unobserve(line);
+            });
+          }, { threshold: 0.4 });
+          io.observe(line);
+        }
 
         /* --- hover: glitch in, re-scramble out (pointer devices only) --- */
         if (hoverPointer) {
