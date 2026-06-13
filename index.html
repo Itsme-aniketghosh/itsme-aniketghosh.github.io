@@ -4788,7 +4788,6 @@
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.className = 'pm-source';
-        btn.title = src.name + ' · ' + src.role;
         btn.setAttribute('aria-label', src.name + ', ' + src.role + '. Proves ' +
           src.skills.join(', ') + '. Activate to jump to it.');
         btn.textContent = src.short;
@@ -4820,8 +4819,6 @@
         else setCtx(null);
       }
       pills.forEach(p => {
-        const srcs = srcByKey[norm(p.textContent)] || [];
-        if (srcs.length) p.title = 'Proven by ' + srcs.map(s => s.short).join(', ');
         p.addEventListener('mouseenter', () => pillEnter(p));
         p.addEventListener('mouseleave', () => { if (proofOn) clearAll(); });
       });
