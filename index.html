@@ -1563,8 +1563,10 @@
       display: inline-block;
       opacity: 0;
       transform: translateY(18px);
+      filter: blur(5px);
       transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
-                  transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+                  transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+                  filter 0.55s cubic-bezier(0.22, 1, 0.36, 1);
     }
     .edu-manifest .mf-lead   { color: var(--muted); font-style: italic; }
     .edu-manifest .mf        { color: var(--text); }
@@ -1589,11 +1591,12 @@
       transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
     }
     .edu-manifest .mf-link:hover::after,
-    .edu-manifest .mf-link:focus-visible::after { transform: scaleX(1); transform-origin: left; }
+    .edu-manifest .mf-link:focus-visible::after,
+    .edu-manifest .mf-link.mf-lit::after { transform: scaleX(1); transform-origin: left; }
     .edu-manifest .mf-link:focus-visible { outline: 1px solid var(--text); outline-offset: 3px; border-radius: 1px; }
     .edu-manifest.in-view .mf-lead,
     .edu-manifest.in-view .mf,
-    .edu-manifest.in-view .mf-kicker { opacity: 1; transform: none; }
+    .edu-manifest.in-view .mf-kicker { opacity: 1; transform: none; filter: none; }
     .edu-manifest.in-view .mf:nth-child(2) { transition-delay: 0.15s; }
     .edu-manifest.in-view .mf:nth-child(3) { transition-delay: 0.30s; }
     .edu-manifest.in-view .mf:nth-child(4) { transition-delay: 0.45s; }
@@ -4680,6 +4683,24 @@
           }
         });
       });
+
+      /* On first scroll-in, after the fragments settle, run a one-time wave:
+         each link's underline sweeps in then out, left to right — it reveals
+         which phrases are clickable without leaving a resting line. */
+      const manifest = document.querySelector('.edu-manifest');
+      if (manifest && !reduce && 'IntersectionObserver' in window) {
+        const io = new IntersectionObserver(entries => {
+          if (!entries.some(e => e.isIntersecting)) return;
+          io.disconnect();
+          links.forEach((link, i) => {
+            setTimeout(() => {
+              link.classList.add('mf-lit');
+              setTimeout(() => link.classList.remove('mf-lit'), 560);
+            }, 1500 + i * 150);            // start after the entrance stagger settles
+          });
+        }, { threshold: 0.5 });
+        io.observe(manifest);
+      }
     })();
 
     /* ═══════ SKILL → PROOF ═══════
