@@ -421,6 +421,14 @@
     }
     .nav-links a:hover { color: var(--text); }
     .nav-links a:hover::after { transform: scaleX(1); }
+    /* return cue: pulse the Education link after a manifest jump, so the way
+       back is obvious */
+    @keyframes nav-pulse {
+      0%, 100% { color: var(--muted); }
+      50%      { color: var(--text); }
+    }
+    .nav-links a.nav-pulse { animation: nav-pulse 0.7s ease 3; }
+    .nav-links a.nav-pulse::after { transform: scaleX(1); }
 
     .nav-right {
       display: flex;
@@ -1555,15 +1563,40 @@
       display: inline-block;
       opacity: 0;
       transform: translateY(18px);
+      filter: blur(5px);
       transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
-                  transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+                  transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+                  filter 0.55s cubic-bezier(0.22, 1, 0.36, 1);
     }
     .edu-manifest .mf-lead   { color: var(--muted); font-style: italic; }
     .edu-manifest .mf        { color: var(--text); }
     .edu-manifest .mf-kicker { color: var(--muted); font-style: italic; }
+    /* manifest fragments that jump to their proof elsewhere on the page.
+       No resting underline; the cue is an underline that draws in left→right
+       on hover (and retracts to the right on leave) — clean until touched. */
+    .edu-manifest .mf-link {
+      color: var(--text);
+      text-decoration: none;
+      cursor: pointer;
+      position: relative;
+    }
+    .edu-manifest .mf-link::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: 0.02em;
+      width: 100%; height: 1.5px;
+      background: var(--text);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .edu-manifest .mf-link:hover::after,
+    .edu-manifest .mf-link:focus-visible::after,
+    .edu-manifest .mf-link.mf-lit::after { transform: scaleX(1); transform-origin: left; }
+    .edu-manifest .mf-link:focus-visible { outline: 1px solid var(--text); outline-offset: 3px; border-radius: 1px; }
     .edu-manifest.in-view .mf-lead,
     .edu-manifest.in-view .mf,
-    .edu-manifest.in-view .mf-kicker { opacity: 1; transform: none; }
+    .edu-manifest.in-view .mf-kicker { opacity: 1; transform: none; filter: none; }
     .edu-manifest.in-view .mf:nth-child(2) { transition-delay: 0.15s; }
     .edu-manifest.in-view .mf:nth-child(3) { transition-delay: 0.30s; }
     .edu-manifest.in-view .mf:nth-child(4) { transition-delay: 0.45s; }
@@ -3413,8 +3446,7 @@
 
       <!-- The grind, stated plainly -->
       <p class="edu-manifest reveal">
-        <span class="visually-hidden">Six years, summarized: four internships, two published papers, one patent filed, three teaching posts, forty-plus students taught, one selective AI-safety cohort, and a 4.0 in both degrees. Still going.</span>
-        <span aria-hidden="true"><span class="mf-lead">Six years, summarized:</span> <span class="mf">four internships,</span> <span class="mf">two published papers,</span> <span class="mf">one patent filed,</span> <span class="mf">three teaching posts,</span> <span class="mf">forty-plus students taught,</span> <span class="mf">one selective AI-safety cohort,</span> <span class="mf">and a 4.0 in both degrees.</span> <span class="mf-kicker">Still going.</span></span>
+        <span class="mf-lead">Six years, summarized:</span> <a class="mf mf-link" href="#experience" aria-label="Four internships. Jump to Experience.">four internships,</a> <a class="mf mf-link" href="#research" aria-label="Two published papers. Jump to Research.">two published papers,</a> <a class="mf mf-link" href="#research" aria-label="One patent filed. Jump to Research.">one patent filed,</a> <a class="mf mf-link" href="#experience" aria-label="Three teaching posts. Jump to Experience.">three teaching posts,</a> <span class="mf">forty-plus students taught,</span> <a class="mf mf-link" href="#certifications" aria-label="One selective AI-safety cohort. Jump to Certifications.">one selective AI-safety cohort,</a> <span class="mf">and a 4.0 in both degrees.</span> <span class="mf-kicker">Still going.</span>
       </p>
 
       <div class="edu-cards">
@@ -3455,7 +3487,8 @@
             <ul class="edu-points">
               <li>Ranked <strong>2nd of 180+</strong> · Director's Award</li>
               <li><strong>First-author Springer paper</strong> · <strong><a href="https://ieeexplore.ieee.org/document/11518522/" target="_blank" rel="noopener noreferrer">IEEE paper</a></strong> + patent filed</li>
-              <li>Research at <strong><a href="https://www.cmaterju.in/" target="_blank" rel="noopener noreferrer">CMATER</a></strong> and <strong><a href="https://www.nehu.ac.in/" target="_blank" rel="noopener noreferrer">NEHU</a></strong> · 7 years teaching at <strong><a href="https://www.hope-foundation.in/" target="_blank" rel="noopener noreferrer">Hope Foundation</a></strong></li>
+              <li><strong>2 research roles</strong> · <strong><a href="https://www.cmaterju.in/" target="_blank" rel="noopener noreferrer">CMATER Lab</a></strong> medical imaging (~2 yrs) · <strong><a href="https://www.nehu.ac.in/" target="_blank" rel="noopener noreferrer">NEHU</a></strong> sign-language dataset</li>
+              <li><strong>7 years</strong> teaching at <strong><a href="https://www.hope-foundation.in/" target="_blank" rel="noopener noreferrer">Hope Foundation</a></strong></li>
             </ul>
             <div class="edu-card-foot">
               <div class="edu-stamp" aria-label="Ranked 2nd of more than 180 students, Director's Award">
@@ -4627,6 +4660,49 @@
       });
     })();
 
+    /* ═══════ EDUCATION MANIFEST → JUMP + RETURN CUE ═══════
+       Each manifest fragment links to its proof elsewhere on the page; after
+       the jump, the "Education" nav link pulses once to show the way back. */
+    ;(function initManifestNav() {
+      const links  = document.querySelectorAll('.edu-manifest .mf-link');
+      if (!links.length) return;
+      const eduNav = document.querySelector('.nav-links a[href="#education"]');
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      links.forEach(link => {
+        link.addEventListener('click', e => {
+          const target = document.querySelector(link.getAttribute('href'));
+          if (!target) return;
+          e.preventDefault();
+          target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+          if (eduNav && !reduce) {
+            eduNav.classList.remove('nav-pulse');
+            void eduNav.offsetWidth;            // restart the animation
+            eduNav.classList.add('nav-pulse');
+            eduNav.addEventListener('animationend',
+              () => eduNav.classList.remove('nav-pulse'), { once: true });
+          }
+        });
+      });
+
+      /* On first scroll-in, after the fragments settle, run a one-time wave:
+         each link's underline sweeps in then out, left to right — it reveals
+         which phrases are clickable without leaving a resting line. */
+      const manifest = document.querySelector('.edu-manifest');
+      if (manifest && !reduce && 'IntersectionObserver' in window) {
+        const io = new IntersectionObserver(entries => {
+          if (!entries.some(e => e.isIntersecting)) return;
+          io.disconnect();
+          links.forEach((link, i) => {
+            setTimeout(() => {
+              link.classList.add('mf-lit');
+              setTimeout(() => link.classList.remove('mf-lit'), 560);
+            }, 1500 + i * 150);            // start after the entrance stagger settles
+          });
+        }, { threshold: 0.5 });
+        io.observe(manifest);
+      }
+    })();
+
     /* ═══════ SKILL → PROOF ═══════
        Off: the skills table, plain, exactly as designed. On: a row of
        sources rises in above the table; hovering one lights the skills
@@ -4788,7 +4864,6 @@
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.className = 'pm-source';
-        btn.title = src.name + ' · ' + src.role;
         btn.setAttribute('aria-label', src.name + ', ' + src.role + '. Proves ' +
           src.skills.join(', ') + '. Activate to jump to it.');
         btn.textContent = src.short;
@@ -4820,8 +4895,6 @@
         else setCtx(null);
       }
       pills.forEach(p => {
-        const srcs = srcByKey[norm(p.textContent)] || [];
-        if (srcs.length) p.title = 'Proven by ' + srcs.map(s => s.short).join(', ');
         p.addEventListener('mouseenter', () => pillEnter(p));
         p.addEventListener('mouseleave', () => { if (proofOn) clearAll(); });
       });
