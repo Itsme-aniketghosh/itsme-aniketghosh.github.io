@@ -4465,6 +4465,13 @@
       const CHAR_STAGGER = 18;   // ms delay between chars starting
       const RESOLVE_AT   = 8;    // frames before a char snaps to its real value
       const isTouchDev   = window.matchMedia('(pointer: coarse)').matches;
+      /* Hover effects (glitch + re-scramble) and the pointer magnet only run
+         where a real pointer hovers and the viewport isn't mobile-width. On
+         touch, scroll/tap fire SYNTHETIC mouse events that would re-trigger the
+         scramble as a finger grazes the lines — that was the mobile "shaking." */
+      const hoverPointer = !isTouchDev
+        && window.matchMedia('(hover: hover) and (pointer: fine)').matches
+        && !window.matchMedia('(max-width: 768px)').matches;
 
       /* Live clock */
       const clockEl = document.getElementById('currClock');
@@ -4533,22 +4540,22 @@
         }, { threshold: 0.4 });
         io.observe(line);
 
-        /* --- hover: glitch in, re-scramble out ------------------------- */
-        line.addEventListener('mouseenter', () => {
-          line.classList.add('glitching');
-          setTimeout(() => line.classList.remove('glitching'), 440);
-        });
-        line.addEventListener('mouseleave', () => {
-          scramble();
-        });
+        /* --- hover: glitch in, re-scramble out (pointer devices only) --- */
+        if (hoverPointer) {
+          line.addEventListener('mouseenter', () => {
+            line.classList.add('glitching');
+            setTimeout(() => line.classList.remove('glitching'), 440);
+          });
+          line.addEventListener('mouseleave', () => {
+            scramble();
+          });
+        }
       }
 
       document.querySelectorAll('.curr-line').forEach(buildScrambler);
 
-      /* --- Magnetic repulsion / attraction (desktop, pointer only) ------ */
-      /* Off on touch AND at mobile widths: there's no hovering pointer there,
-         and the pointer-driven line shifts read as random "shaking." */
-      if (isTouchDev || window.matchMedia('(max-width: 768px)').matches) return;
+      /* --- Magnetic repulsion / attraction (pointer devices only) ------- */
+      if (!hoverPointer) return;
       const section = document.getElementById('currently');
       if (!section) return;
 
