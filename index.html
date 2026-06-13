@@ -1288,6 +1288,11 @@
 
     /* Proof mode: a row of sources above the table; hovering one lights
        the skills it proves in the table itself */
+    /* author display:flex below beats the UA [hidden] rule, so without this
+       the empty proof row + context strip reserve ~170px before the toggle
+       is ever tapped — collapse them while hidden */
+    .pm-sources[hidden],
+    .pm-ctx[hidden] { display: none; }
     .pm-sources {
       display: flex;
       flex-wrap: wrap;
