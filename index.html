@@ -279,6 +279,7 @@
     .dt-btn::selection,
     .dt-btn *::selection,
     .stat-pill::selection,
+    .sm-btn.active::selection,
     .skill-pill.lit::selection,
     .research-status.published::selection {
       background: rgba(12, 12, 12, 0.2);
@@ -1267,6 +1268,24 @@
       margin-top: 0.75rem;
     }
     #skills .section-head { margin-bottom: 2.5rem; }
+    /* Proof-mode toggle */
+    .skills-mode { margin-top: 1.1rem; }
+    .sm-btn {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: none;
+      border: 1px solid rgb(var(--text-rgb) / 0.28);
+      border-radius: 2px;
+      color: var(--text);
+      padding: 0.55rem 1.2rem;
+      cursor: pointer;
+      transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+    .sm-btn:hover { background: rgb(var(--text-rgb) / 0.06); }
+    .sm-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+    .sm-btn:focus-visible { outline: 1px solid var(--text); outline-offset: 3px; }
 
     /* Proof mode: a row of sources above the table; hovering one lights
        the skills it proves in the table itself */
@@ -1363,6 +1382,7 @@
       transition-delay: 0ms;
     }
     @media (max-width: 768px) {
+      .skills-mode { margin-top: 1.2rem; }
       /* let the context strip wrap instead of overflowing narrow screens */
       .pm-ctx {
         flex-wrap: wrap;
@@ -2624,6 +2644,7 @@
         justify-content: center;
         margin: 0;
       }
+      .sm-btn { min-height: 44px; }
       .pm-source { padding-top: 0.62rem; padding-bottom: 0.62rem; }
     }
 
@@ -3474,6 +3495,9 @@
       <span class="section-num" aria-hidden="true">03</span>
       <div class="section-head reveal-stagger">
         <h2 class="section-heading split-text">Skills</h2>
+        <div class="skills-mode">
+          <button type="button" class="sm-btn" id="smProof" aria-pressed="false">Map skills to proof</button>
+        </div>
         <p class="skills-hint" id="skillsHint" hidden></p>
       </div>
       <div class="skills-table" id="skillsList">
@@ -3550,7 +3574,7 @@
 
       </div>
 
-      <div class="pm-sources pm-in" id="skillsProof"></div>
+      <div class="pm-sources" id="skillsProof" hidden></div>
     </section>
 
     <!-- ─── EXPERIENCE ─── -->
@@ -4806,9 +4830,9 @@
         srcRow.appendChild(btn);
       });
 
-      /* a skill pill: light it, dim the rest, and light up every source that
-         proves it — the mirror of hovering a source. Always on (no toggle). */
-      let proofOn = true;
+      /* a skill pill (proof mode only): light it, dim the rest, and light up
+         every source that proves it — the mirror of hovering a source */
+      let proofOn = false;
       function pillEnter(pill) {
         if (!proofOn) return;
         const k = norm(pill.textContent);
@@ -4826,16 +4850,32 @@
         p.addEventListener('mouseleave', () => { if (proofOn) clearAll(); });
       });
 
-      /* Always on: the sources + context strip are part of the section, not a
-         toggled mode. Visibility and the lit/dim highlighting come from the
-         static `pm-in` class on #skillsProof in the HTML, so nothing here is
-         gated on rAF / IntersectionObserver / timers. We just un-hide the
-         context strip + coverage line and set the resting prompt. */
+      const btnP = document.getElementById('smProof');
       const hint = document.getElementById('skillsHint');
-      pmCtx.hidden = false;
-      hint.hidden = false;
-      hint.textContent = covText;
-      setCtx(null);
+      let demoDone = false;
+      function setProof(on) {
+        proofOn = on;
+        srcRow.hidden = !on;
+        pmCtx.hidden = !on;
+        requestAnimationFrame(() => srcRow.classList.toggle('pm-in', on));
+        btnP.classList.toggle('active', on);
+        btnP.setAttribute('aria-pressed', String(on));
+        hint.hidden = !on;
+        hint.textContent = covText;
+        if (on) setCtx(null); else clearAll();
+        /* one-time demo: the first source plays a full hover by itself, so
+           both the lighting and the context strip are impossible to miss */
+        if (on && !demoDone && !reduceMot) {
+          demoDone = true;
+          const first = SOURCES[0];
+          const firstKeys = new Set(first.skills.map(norm));
+          setTimeout(() => {
+            srcEnter(first, firstKeys);
+            setTimeout(clearAll, 1400);
+          }, 700);
+        }
+      }
+      btnP.addEventListener('click', () => setProof(btnP.getAttribute('aria-pressed') !== 'true'));
     })();
   </script>
 
