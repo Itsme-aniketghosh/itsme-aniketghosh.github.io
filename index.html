@@ -1321,11 +1321,9 @@
     .pm-sources.pm-in .pm-source:nth-child(8) { transition-delay: 315ms; }
     .pm-sources.pm-in .pm-source:nth-child(9) { transition-delay: 360ms; }
     .pm-sources.pm-in .pm-source:hover,
-    .pm-sources.pm-in .pm-source:focus-visible,
-    .pm-sources.pm-in .pm-source.demo { transition-delay: 0ms; }
+    .pm-sources.pm-in .pm-source:focus-visible { transition-delay: 0ms; }
     .pm-source:hover,
-    .pm-source:focus-visible,
-    .pm-source.demo {
+    .pm-source:focus-visible {
       color: var(--bg);
       background: var(--text);
       border-color: var(--text);
@@ -2612,6 +2610,11 @@
 
       .bento-grid { grid-template-columns: 1fr; }
       .bento-cell.span-2, .bento-cell.span-3 { grid-column: span 1; }
+      /* the smallest informative labels (course line, tech tags) drop below
+         10px on phones — nudge them up for legibility without disturbing the
+         desktop editorial sizing */
+      .proj-ctx { font-size: 0.72rem; }
+      .proj-tag { font-size: 0.68rem; }
 
       .certs-grid { grid-template-columns: 1fr; }
 
