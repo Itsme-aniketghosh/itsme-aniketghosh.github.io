@@ -56,13 +56,13 @@
         "url": "https://itsme-aniketghosh.github.io/",
         "image": {
           "@type": "ImageObject",
-          "url": "https://itsme-aniketghosh.github.io/aniket-ghosh-ai-ml-engineer-northeastern-university.jpg",
-          "contentUrl": "https://itsme-aniketghosh.github.io/aniket-ghosh-ai-ml-engineer-northeastern-university.jpg",
+          "url": "https://itsme-aniketghosh.github.io/og-image.jpg",
+          "contentUrl": "https://itsme-aniketghosh.github.io/og-image.jpg",
           "name": "Aniket Ghosh — AI/ML Engineer",
           "description": "Portrait of Aniket Ghosh, AI/ML Engineer at Varosync Inc. and MS Artificial Intelligence student at Northeastern University Khoury College of Computer Sciences.",
           "caption": "Aniket Ghosh — AI/ML Engineer at Varosync and MS AI student at Northeastern University",
-          "width": 2585,
-          "height": 2583
+          "width": 1200,
+          "height": 630
         },
         "jobTitle": "AI/ML Engineer",
         "description": "AI/ML Engineer at Varosync, Inc., building frontier models for molecular simulation and clinical trial prediction. MS in Artificial Intelligence at Northeastern University Khoury College (GPA 4.0, expected May 2027). Teaching Co-Lead for the AI and Data Ethics Summer Program (AIDE) at Northeastern's Ethics Institute, funded by the Alfred P. Sloan Foundation. Selected for BlueDot Impact's technical AI safety cohort — a selective program covering alignment research, mechanistic interpretability, and frontier safety methods. Research in mechanistic interpretability, NLP, computer vision, and medical AI. First-author Springer publication, IEEE publication, patent filed.",
@@ -497,11 +497,15 @@
     .hamburger {
       display: none;
       flex-direction: column;
+      align-items: center;
+      justify-content: center;
       gap: 5px;
+      width: 44px;
+      height: 44px;
       cursor: pointer;
       background: none;
       border: none;
-      padding: 4px;
+      padding: 0;
     }
     .hamburger span {
       display: block;
@@ -1288,7 +1292,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 0.4rem;
-      margin-bottom: 1.75rem;
+      margin-bottom: 0.75rem;
     }
     .pm-source {
       font-family: var(--mono);
@@ -1333,6 +1337,42 @@
       opacity: 0.55;
       letter-spacing: 0;
     }
+    /* reverse trace: hovering a skill lights the chips that prove it,
+       and hovering a chip dims its siblings */
+    .pm-sources.pm-in .pm-source.lit {
+      color: var(--bg);
+      background: var(--text);
+      border-color: var(--text);
+      transition-delay: 0ms;
+    }
+    .pm-sources.pm-in .pm-source.dim { opacity: 0.22; transition-delay: 0ms; }
+    /* context strip between the chips and the table: what the hovered
+       chip or skill actually IS — a role, a program, a paper… */
+    .pm-ctx {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      min-height: 1.5rem;
+      margin: 0 0 1.6rem;
+      transition: opacity 0.2s ease;
+    }
+    .pm-ctx.empty { opacity: 0.5; }
+    .pm-ctx-badge {
+      font-size: 0.58rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text);
+      border: 1px solid rgba(240, 236, 228, 0.28);
+      border-radius: 2px;
+      padding: 0.18rem 0.5rem;
+      flex-shrink: 0;
+    }
+    .pm-ctx-name { color: var(--text); }
+    .pm-ctx-role { color: var(--muted); }
     /* the table's own pills light up; instantly, ignoring entrance stagger */
     .skill-category.in-view .skill-pills .skill-pill.dim { opacity: 0.18; transition-delay: 0ms; }
     .skill-category.in-view .skill-pills .skill-pill.lit {
@@ -1344,6 +1384,14 @@
     }
     @media (max-width: 768px) {
       .skills-mode { margin-top: 1.2rem; }
+      /* let the context strip wrap instead of overflowing narrow screens */
+      .pm-ctx {
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: 0.4rem 0.5rem;
+        font-size: 0.64rem;
+      }
+      .pm-ctx-text { min-width: 0; }
     }
     /* evidence flash when a proof pill jumps to its source */
     @keyframes proof-flash {
@@ -2551,6 +2599,9 @@
       }
       .hero-left { width: 100%; gap: 1.25rem; }
       .hero-right { width: 100%; align-items: center; order: -1; }
+      /* drop the in-flow card clear of the nav so the lanyard reads as a
+         rope, not a 16px stub under the bar */
+      .hero-right .id-card-embed { margin-top: 2.75rem; }
       .hero-name { font-size: clamp(2.8rem, 14vw, 4.5rem); }
       .hero-scroll { display: none; }
 
@@ -2578,6 +2629,19 @@
       .skill-category { grid-template-columns: 1fr; gap: 0.75rem; }
       .skill-cat-label { padding-top: 0; }
       .timeline-entry { grid-template-columns: 36px 1fr; gap: 1rem; }
+
+      /* 44px touch targets on mobile (the negative-margin trick collapsed the
+         social hit areas to ~34px sitting 2px apart) */
+      .hero-socials { gap: 0.5rem; }
+      .hero-socials a {
+        min-width: 44px;
+        min-height: 44px;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+      }
+      .sm-btn { min-height: 44px; }
+      .pm-source { padding-top: 0.62rem; padding-bottom: 0.62rem; }
     }
 
     @media (max-width: 480px) {
@@ -2980,6 +3044,7 @@
       .edu-sweep                   { transition: none; }
       .edu-tilt                    { transition: none; }
       .pm-source                   { transition: none; opacity: 1; transform: none; }
+      .pm-ctx                      { transition: none; }
       /* Currently section — flip-board & glitch are JS-driven; disable CSS transitions */
       .curr-line                   { transition: none !important; }
       .cl-text                     { transition: none !important; }
@@ -4603,26 +4668,40 @@
       }
 
       const SOURCES = [
-        { short: 'Varosync', name: 'Varosync, Inc.', role: 'AI/ML Engineer', find: 'Varosync',
-          skills: ['Python', 'SQL', 'Bash', 'AWS', 'Docker', 'GitHub Actions', 'SLURM', 'CI/CD', 'Knowledge Graphs'] },
-        { short: 'NLP TA', name: 'Northeastern University', role: 'Graduate NLP TA', find: 'Northeastern University',
-          skills: ['PyTorch', 'NLP', 'Transformers', 'Python'] },
-        { short: "AIDE '26", name: 'AI and Data Ethics Summer Program', role: 'Teaching Co-Lead, ML Lab', find: 'AI and Data Ethics',
-          skills: ['Python', 'scikit-learn', 'Explainable AI', 'Mechanistic Interpretability'] },
-        { short: 'BlueDot', name: 'BlueDot Impact', role: 'Technical AI Safety Cohort', find: 'BlueDot',
+        // Drug-discovery role: comparables engine over target-pathway knowledge
+        // graphs, source-grounded (RAG) failure reads with full provenance,
+        // hybrid-cloud ML infra (AWS / Nebius / GCP).
+        { short: 'Varosync', type: 'current role', name: 'Varosync, Inc.', role: 'AI/ML Engineer · Boston, MA', find: 'Varosync',
+          skills: ['Python', 'SQL', 'Bash', 'AWS', 'GCP', 'Docker', 'GitHub Actions', 'SLURM', 'CI/CD',
+                   'Knowledge Graphs', 'RAG', 'Explainable AI'] },
+        // Ran the PyTorch / transformer labs for the graduate NLP course.
+        { short: 'NLP TA', type: 'teaching', name: 'Northeastern · Khoury College', role: 'Teaching Assistant, NLP', find: 'Northeastern University',
+          skills: ['Python', 'PyTorch', 'NLP', 'Transformers'] },
+        // 12-session ML lab built from scratch: fairness, transformers, mech-interp.
+        { short: "AIDE '26", type: 'summer program', name: 'AI & Data Ethics Summer Program', role: 'Teaching Co-Lead, ML Lab · Northeastern', find: 'AI and Data Ethics',
+          skills: ['Python', 'scikit-learn', 'Transformers', 'Mechanistic Interpretability', 'Explainable AI'] },
+        { short: 'BlueDot', type: 'cohort', name: 'BlueDot Impact', role: 'Technical AI Safety cohort', find: 'BlueDot',
           skills: ['Mechanistic Interpretability', 'Explainable AI', 'Prompt Engineering'] },
-        { short: 'CMATER', name: 'CMATER Lab', role: 'Medical-Imaging Research', find: 'CMATER',
-          skills: ['Computer Vision', 'Medical Imaging', 'OpenCV', 'U-Net', 'TensorFlow', 'Keras', 'PyTorch'] },
-        { short: 'NEHU', name: 'NEHU', role: 'Research Intern, ISL Dataset', find: 'North-Eastern Hill',
+        // Histopathology cell segmentation: classical CV + deep learning (PyTorch).
+        { short: 'CMATER', type: 'research', name: 'CMATER Lab, Jadavpur University', role: 'Researcher & Research Mentor', find: 'CMATER',
+          skills: ['Computer Vision', 'Medical Imaging', 'OpenCV', 'U-Net', 'PyTorch'] },
+        { short: 'NEHU', type: 'internship', name: 'North-Eastern Hill University', role: 'Research Intern · ISL dataset', find: 'North-Eastern Hill',
           skills: ['Computer Vision', 'OpenCV'] },
-        { short: 'Papers', name: 'Springer + IEEE', role: 'Published Papers, Patent', find: 'Traffic Sign',
-          skills: ['YOLOv8', 'Computer Vision', 'TensorFlow'] },
-        { short: 'Projects', name: 'Shipped Projects', role: '9 builds, 2 live demos', sel: '#projects .bento-grid',
-          skills: ['RAG', 'Hugging Face', 'ChromaDB', 'LangChain', 'LangGraph', 'CrewAI', 'AutoGen', 'MCP',
-                   'OpenAI Agents SDK', 'Multi-Agent Systems', 'FastAPI', 'Terraform', 'GCP', 'Docker',
-                   'PyTorch', 'Prompt Engineering'] },
-        { short: 'Certs', name: 'Certifications', role: 'AI Engineering, MLOps, DSA', sel: '#certifications .certs-grid',
-          skills: ['LangChain', 'LangGraph', 'AutoGen', 'LoRA / QLoRA', 'Kubernetes', 'MLflow', 'C / C++'] }
+        // Springer (YOLOv8 traffic signs) + IEEE (histopath, intrusion detection) + patent.
+        { short: 'Papers', type: 'publications', name: 'Springer + IEEE', role: 'Published papers + patent filed', find: 'Traffic Sign',
+          skills: ['YOLOv8', 'Computer Vision', 'PyTorch', 'Medical Imaging'] },
+        // 9 shipped builds: 2 mech-interp studies, agent systems, a biomedical KG
+        // link-predictor (RF + embeddings), RAG twin, RL execution engine.
+        { short: 'Projects', type: 'shipped work', name: 'Shipped Projects', role: '9 builds · 2 live demos', sel: '#projects .bento-grid',
+          skills: ['RAG', 'Hugging Face', 'CrewAI', 'MCP', 'OpenAI Agents SDK', 'Multi-Agent Systems',
+                   'FastAPI', 'Terraform', 'GCP', 'Docker', 'PyTorch', 'scikit-learn', 'Prompt Engineering',
+                   'Knowledge Graphs', 'Mechanistic Interpretability', 'Transformers', 'Explainable AI'] },
+        // Formal-training backstop: the courses that round out the stack and back
+        // the skills not headlined by a job, paper, or shipped project.
+        { short: 'Certs', type: 'credential', name: 'Certifications', role: 'AI Engineering · MLOps · DSA', sel: '#certifications .certs-grid',
+          skills: ['TensorFlow', 'Keras', 'scikit-learn', 'NLP', 'LangChain', 'LangGraph', 'CrewAI', 'AutoGen',
+                   'MCP', 'OpenAI Agents SDK', 'RAG', 'ChromaDB', 'Hugging Face', 'Prompt Engineering',
+                   'LoRA / QLoRA', 'Kubernetes', 'MLflow', 'CI/CD', 'Docker', 'AWS', 'GCP', 'FastAPI', 'C / C++'] }
       ];
 
       const listEl = document.getElementById('skillsList');
@@ -4636,9 +4715,55 @@
       }));
       const covText = covered.size + ' / ' + pills.length + ' skills · ' + SOURCES.length + ' sources';
 
+      /* reverse map: every source that proves a given skill */
+      const srcByKey = {};
+      SOURCES.forEach(src => src.skills.forEach(s => {
+        const k = norm(s);
+        (srcByKey[k] || (srcByKey[k] = [])).push(src);
+      }));
+
       /* sources live ABOVE the table so the lit pills sit right below them */
       const srcRow = document.getElementById('skillsProof');
       listEl.parentNode.insertBefore(srcRow, listEl);
+
+      /* context strip: names what the hovered chip / skill actually is */
+      const pmCtx = document.createElement('p');
+      pmCtx.className = 'pm-ctx empty';
+      pmCtx.setAttribute('aria-hidden', 'true');
+      const ctxBadge = document.createElement('span');
+      ctxBadge.className = 'pm-ctx-badge';
+      ctxBadge.hidden = true;
+      const ctxText = document.createElement('span');
+      ctxText.className = 'pm-ctx-text';
+      pmCtx.append(ctxBadge, ctxText);
+      pmCtx.hidden = true;
+      listEl.parentNode.insertBefore(pmCtx, listEl);
+
+      const CTX_PROMPT = 'hover a source or a skill to trace the link';
+      function setCtx(arg) {
+        if (!arg) {
+          pmCtx.classList.add('empty');
+          ctxBadge.hidden = true;
+          ctxText.textContent = CTX_PROMPT;
+          return;
+        }
+        pmCtx.classList.remove('empty');
+        if (arg.multi) {
+          ctxBadge.hidden = true;
+          ctxText.textContent = 'proven by  ' + arg.multi.map(s => s.short).join('  ·  ');
+          return;
+        }
+        ctxBadge.hidden = false;
+        ctxBadge.textContent = arg.type;
+        ctxText.textContent = '';
+        const nm = document.createElement('span');
+        nm.className = 'pm-ctx-name';
+        nm.textContent = arg.name;
+        const rl = document.createElement('span');
+        rl.className = 'pm-ctx-role';
+        rl.textContent = arg.role;
+        ctxText.append(nm, document.createTextNode('  ·  '), rl);
+      }
 
       function setLights(keys) {
         pills.forEach(p => {
@@ -4646,6 +4771,24 @@
           p.classList.toggle('lit', !!keys && keys.has(k));
           p.classList.toggle('dim', !!keys && !keys.has(k));
         });
+      }
+      function setSrcLights(shorts) {
+        lighters.forEach(({ btn, short }) => {
+          btn.classList.toggle('lit', !!shorts && shorts.has(short));
+          btn.classList.toggle('dim', !!shorts && !shorts.has(short));
+        });
+      }
+
+      /* a source chip: light the skills it proves, dim its siblings, name it */
+      function srcEnter(src, keys) {
+        setLights(keys);
+        setSrcLights(new Set([src.short]));
+        setCtx(src);
+      }
+      function clearAll() {
+        setLights(null);
+        setSrcLights(null);
+        setCtx(null);
       }
 
       const lighters = [];
@@ -4664,38 +4807,57 @@
         ct.setAttribute('aria-hidden', 'true');
         ct.textContent = '×' + src.skills.length;
         btn.appendChild(ct);
-        btn.addEventListener('mouseenter', () => setLights(keys));
-        btn.addEventListener('mouseleave', () => setLights(null));
-        btn.addEventListener('focus', () => setLights(keys));
-        btn.addEventListener('blur', () => setLights(null));
+        btn.addEventListener('mouseenter', () => srcEnter(src, keys));
+        btn.addEventListener('mouseleave', clearAll);
+        btn.addEventListener('focus', () => srcEnter(src, keys));
+        btn.addEventListener('blur', clearAll);
         if (target) btn.addEventListener('click', () => jump(target));
-        lighters.push({ btn, keys });
+        lighters.push({ btn, keys, short: src.short });
         srcRow.appendChild(btn);
+      });
+
+      /* a skill pill (proof mode only): light it, dim the rest, and light up
+         every source that proves it — the mirror of hovering a source */
+      let proofOn = false;
+      function pillEnter(pill) {
+        if (!proofOn) return;
+        const k = norm(pill.textContent);
+        const srcs = srcByKey[k] || [];
+        setLights(new Set([k]));
+        setSrcLights(new Set(srcs.map(s => s.short)));
+        if (srcs.length === 1) setCtx(srcs[0]);
+        else if (srcs.length > 1) setCtx({ multi: srcs });
+        else setCtx(null);
+      }
+      pills.forEach(p => {
+        const srcs = srcByKey[norm(p.textContent)] || [];
+        if (srcs.length) p.title = 'Proven by ' + srcs.map(s => s.short).join(', ');
+        p.addEventListener('mouseenter', () => pillEnter(p));
+        p.addEventListener('mouseleave', () => { if (proofOn) clearAll(); });
       });
 
       const btnP = document.getElementById('smProof');
       const hint = document.getElementById('skillsHint');
       let demoDone = false;
       function setProof(on) {
+        proofOn = on;
         srcRow.hidden = !on;
+        pmCtx.hidden = !on;
         requestAnimationFrame(() => srcRow.classList.toggle('pm-in', on));
         btnP.classList.toggle('active', on);
         btnP.setAttribute('aria-pressed', String(on));
         hint.hidden = !on;
-        hint.textContent = covText + ' · hover to trace · click to open the work';
-        if (!on) setLights(null);
-        /* one-time demo: the first source lights its skills by itself,
-           so the hover behavior is impossible to miss */
+        hint.textContent = covText;
+        if (on) setCtx(null); else clearAll();
+        /* one-time demo: the first source plays a full hover by itself, so
+           both the lighting and the context strip are impossible to miss */
         if (on && !demoDone && !reduceMot) {
           demoDone = true;
-          const first = lighters[0];
+          const first = SOURCES[0];
+          const firstKeys = new Set(first.skills.map(norm));
           setTimeout(() => {
-            first.btn.classList.add('demo');
-            setLights(first.keys);
-            setTimeout(() => {
-              first.btn.classList.remove('demo');
-              setLights(null);
-            }, 1400);
+            srcEnter(first, firstKeys);
+            setTimeout(clearAll, 1400);
           }, 700);
         }
       }
@@ -4727,6 +4889,14 @@
   const stitchEl   = document.getElementById('idRopeStitch');
 
   const reduceMot = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Phones, touch devices, and narrow viewports skip the fixed-position Verlet
+  // drop entirely. The card rests in normal document flow and scrolls natively
+  // with the page — so it never covers content below the hero — hanging from a
+  // lightweight static rope. A position:fixed card repositioned every frame
+  // stutters against native scroll on mobile; this is the smooth path.
+  const staticCard = reduceMot ||
+    window.matchMedia('(hover: none), (pointer: coarse)').matches ||
+    window.matchMedia('(max-width: 768px)').matches;
   const NAV_H     = 64;
 
   // ── Verlet ────────────────────────────────────────────────────
@@ -4803,7 +4973,7 @@
   const SHAKE_ONSET  = 180; // ~3 s at 60 fps before overdamp kicks in
 
   // ── Hide card immediately — loader covers the ~1.7 s gap ─────
-  if (!reduceMot) tiltWrap.style.transform = 'translateY(-150vh)';
+  if (!staticCard) tiltWrap.style.transform = 'translateY(-150vh)';
 
   // ── Rope init (call with natural position in place) ───────────
   function initRope() {
@@ -4826,6 +4996,10 @@
 
   // ── Kick off drop after loader clears ─────────────────────────
   setTimeout(function startDrop() {
+    // Static-card devices (mobile / touch / reduced-motion) never run the
+    // drop — the card already rests in normal flow. Bailing here also avoids
+    // leaving it translated off-screen when the rAF loop isn't running.
+    if (staticCard) return;
     // Measure natural card position with no transform active
     tiltWrap.style.transform = '';
     const r   = flipInner.getBoundingClientRect();
@@ -5210,8 +5384,10 @@
     });
   }());
 
-  // ── Reduced-motion: static rope, no drop ─────────────────────
-  if (reduceMot) {
+  // ── Static card (mobile / touch / reduced-motion): in-flow card, static
+  //    rope, no Verlet drop. The card scrolls with the page (never covering
+  //    content) and stays tap-to-flip. ──────────────────────────
+  if (staticCard) {
     tiltWrap.style.transform = '';
     // Rope SVG is position:fixed while the card scrolls with the page,
     // so the static rope must be redrawn on scroll and resize.
