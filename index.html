@@ -784,6 +784,7 @@
       line-height: 1.5;
       flex: 1;
       min-width: 0;
+      overflow-wrap: break-word;
       transition: text-shadow 0.4s ease;
       text-shadow: none;
     }
@@ -4492,7 +4493,7 @@
         /* Screen readers get the real sentence; the animated chars are hidden */
         const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/'/g, '&#39;');
         const chars = [...full].map(ch =>
-          `<span class="fc" data-ch="${esc(ch)}">${ch === ' ' ? '\u00A0' : esc(ch)}</span>`
+          `<span class="fc" data-ch="${esc(ch)}">${ch === ' ' ? ' ' : esc(ch)}</span>`
         ).join('');
         textEl.innerHTML =
           `<span class="visually-hidden">${esc(full)}</span>` +
