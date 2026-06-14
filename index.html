@@ -4748,6 +4748,14 @@
       const byName = sub => evidence.find(ev => ev.name.toLowerCase().includes(sub.toLowerCase()));
 
       const reduceMot = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      /* No hover on touch / mobile width: drive the trace by TAP. First tap on a
+         source lights its skills + names it; a second tap on the same source
+         opens the work. Tapping a skill shows what proves it. Hover/focus
+         handlers are skipped here so a tap's synthetic mouse events don't fight
+         the tap state. */
+      const touchMode = window.matchMedia('(max-width: 768px)').matches
+        || !window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+      let tapped = null;
       function jump(target) {
         target.scrollIntoView({ behavior: reduceMot ? 'auto' : 'smooth', block: 'center' });
         target.classList.remove('proof-flash');
@@ -4829,7 +4837,9 @@
       pmCtx.hidden = true;
       listEl.parentNode.insertBefore(pmCtx, listEl);
 
-      const CTX_PROMPT = 'hover a source or a skill to trace the link';
+      const CTX_PROMPT = touchMode
+        ? 'tap a source to trace it · tap again to open the work'
+        : 'hover a source or a skill to trace the link';
       function setCtx(arg) {
         if (!arg) {
           pmCtx.classList.add('empty');
@@ -4896,11 +4906,23 @@
         ct.setAttribute('aria-hidden', 'true');
         ct.textContent = '×' + src.skills.length;
         btn.appendChild(ct);
-        btn.addEventListener('mouseenter', () => srcEnter(src, keys));
-        btn.addEventListener('mouseleave', clearAll);
-        btn.addEventListener('focus', () => srcEnter(src, keys));
-        btn.addEventListener('blur', clearAll);
-        if (target) btn.addEventListener('click', () => jump(target));
+        if (!touchMode) {
+          btn.addEventListener('mouseenter', () => srcEnter(src, keys));
+          btn.addEventListener('mouseleave', clearAll);
+          btn.addEventListener('focus', () => srcEnter(src, keys));
+          btn.addEventListener('blur', clearAll);
+        }
+        btn.addEventListener('click', () => {
+          if (touchMode) {
+            if (tapped !== src.short) {   // first tap: trace, don't open yet
+              tapped = src.short;
+              srcEnter(src, keys);
+              return;
+            }
+            tapped = null;                // second tap on the same source: open it
+          }
+          if (target) jump(target);
+        });
         lighters.push({ btn, keys, short: src.short });
         srcRow.appendChild(btn);
       });
@@ -4919,8 +4941,13 @@
         else setCtx(null);
       }
       pills.forEach(p => {
-        p.addEventListener('mouseenter', () => pillEnter(p));
-        p.addEventListener('mouseleave', () => { if (proofOn) clearAll(); });
+        if (!touchMode) {
+          p.addEventListener('mouseenter', () => pillEnter(p));
+          p.addEventListener('mouseleave', () => { if (proofOn) clearAll(); });
+        } else {
+          /* tap a skill to see which sources prove it (reverse trace) */
+          p.addEventListener('click', () => { tapped = null; pillEnter(p); });
+        }
       });
 
       /* Always on: the sources + context strip are part of the section, not a
