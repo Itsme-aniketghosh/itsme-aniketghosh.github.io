@@ -3173,8 +3173,8 @@
           </div>
         </div>
         <p class="hero-desc" id="heroDesc">
-          AI/ML Engineer at Varosync, building the ML stack for drug-development AI: cheminformatics
-          comparables, knowledge-graph reasoning, and evidence-grounded failure analysis.
+          AI/ML Engineer at Varosync, building the ML stack for drug-development AI: knowledge graphs,
+          molecular-similarity models, and the pipeline behind them.
           MS AI at Northeastern Khoury (4.0). I ship interpretable ML for problems where
           being wrong has consequences.
         </p>
@@ -3373,9 +3373,9 @@
             <p>
               I build ML systems for problems where being wrong has consequences. Right now that means
               <a href="https://varosync.com/" target="_blank" rel="noopener noreferrer"><strong>Varosync</strong></a>, a computational
-              drug development startup where I'm building the ML stack to predict clinical trial safety and
-              efficacy: comparable-molecule analysis, knowledge-graph reasoning, and evidence-grounded
-              failure reads, on production infrastructure across AWS, Nebius, and Mithril.
+              drug-development startup where I own the ML stack: the knowledge graph, the
+              molecular-similarity models, and the pipeline behind them, on production
+              infrastructure across AWS, Nebius, and Mithril.
             </p>
             <p>
               Before this: medical imaging research at CMATER Lab (Jadavpur), a published Springer paper on
@@ -3625,24 +3625,22 @@
               </div>
             </div>
             <p class="timeline-desc">
-              Varosync is a computational drug development startup building the AI engine that simulates
-              a drug's 24-hour pharmacological behavior to predict clinical trial safety and efficacy.
-              I own the comparables and failure-analysis lane: given a drug candidate, surface every
-              comparable that came before it, what failed, and why, with every claim traceable to
-              public evidence.
+              AI/ML engineer owning the modeling stack at Varosync, a computational drug-development
+              startup. From the knowledge graph and the molecular-similarity models to the live query
+              path, I build and run the pipeline end to end.
             </p>
             <ul class="timeline-points">
-              <li>Building a comparables engine over public drug data: structural similarity (Morgan fingerprints, Tanimoto) and mechanistic similarity through target-pathway knowledge graphs</li>
-              <li>Shipping source-grounded failure reads: stratified risk tiers and denominators where every emitted item resolves to public evidence with full provenance</li>
-              <li>Designing leakage-safe recovery benchmarks: time-aware held-out splits that prove the system recovers known clinical failure precedents</li>
+              <li>Building the knowledge graph at the core of the system</li>
+              <li>Training the molecular-similarity search: the embedding models and the retrieval built on them</li>
+              <li>Owning the pipeline downstream of the gold labels, through to the business logic and the user query path</li>
               <li>Owning ML infrastructure across a hybrid cloud stack: AWS, Nebius (GPU training), and Mithril (inference/batch)</li>
               <li>Claude Code and Cursor wired into the daily agentic loop</li>
             </ul>
             <div class="tags">
-              <span class="tag">Drug Discovery AI</span>
-              <span class="tag">Cheminformatics</span>
               <span class="tag">Knowledge Graphs</span>
-              <span class="tag">Benchmark Design</span>
+              <span class="tag">Molecular Similarity</span>
+              <span class="tag">Embeddings</span>
+              <span class="tag">Cheminformatics</span>
               <span class="tag">AWS</span>
               <span class="tag">Nebius</span>
               <span class="tag">Mithril</span>
