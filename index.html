@@ -105,6 +105,8 @@
           "Technical AI Safety",
           "Alignment Research",
           "Mechanistic Interpretability Research",
+          "Model Quantization",
+          "Linear Probing",
           "Curriculum Design",
           "ML Education"
         ],
@@ -3597,6 +3599,8 @@
             <span class="skill-pill">NLP</span>
             <span class="skill-pill">Medical Imaging</span>
             <span class="skill-pill">Mechanistic Interpretability</span>
+            <span class="skill-pill">Linear Probing</span>
+            <span class="skill-pill">Quantization</span>
             <span class="skill-pill">Multi-Agent Systems</span>
             <span class="skill-pill">Explainable AI</span>
             <span class="skill-pill">Knowledge Graphs</span>
@@ -4792,9 +4796,13 @@
         // Springer (YOLOv8 traffic signs) + IEEE (histopath, intrusion detection) + patent.
         { short: 'Papers', type: 'publications', name: 'Springer + IEEE', role: 'Published papers + patent filed', find: 'Traffic Sign',
           skills: ['YOLOv8', 'Computer Vision', 'PyTorch', 'Medical Imaging'] },
-        // 9 shipped builds: 2 mech-interp studies, agent systems, a biomedical KG
-        // link-predictor (RF + embeddings), RAG twin, RL execution engine.
-        { short: 'Projects', type: 'shipped work', name: 'Shipped Projects', role: '9 builds · 2 live demos', sel: '#projects .bento-grid',
+        // Independent interpretability research: linear probes as a map of where
+        // low-bit quantization breaks a model — written up on LessWrong + the blog.
+        { short: 'Probes', type: 'independent research', name: 'Interpretability Research', role: 'LessWrong · linear probes × quantization', find: 'Linear Probes',
+          skills: ['Mechanistic Interpretability', 'Linear Probing', 'Quantization', 'Explainable AI'] },
+        // 8 shipped builds: 2 mech-interp studies, agent systems, a biomedical KG
+        // link-predictor (RF + embeddings), RAG twin.
+        { short: 'Projects', type: 'shipped work', name: 'Shipped Projects', role: '8 builds · 2 live demos', sel: '#projects .bento-grid',
           skills: ['RAG', 'Hugging Face', 'CrewAI', 'MCP', 'OpenAI Agents SDK', 'Multi-Agent Systems',
                    'FastAPI', 'Terraform', 'GCP', 'Docker', 'PyTorch', 'scikit-learn', 'Prompt Engineering',
                    'Knowledge Graphs', 'Mechanistic Interpretability', 'Transformers', 'Explainable AI'] },
