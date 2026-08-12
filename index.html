@@ -504,6 +504,46 @@
     .btn-ghost:hover { color: var(--text); }
     .btn-ghost:hover::after { width: calc(100% - 1.5rem); }
 
+    /* Resume dropdown */
+    .resume-dd { position: relative; display: inline-flex; }
+    .resume-dd.open { z-index: 900; }
+    .resume-dd-btn { cursor: pointer; }
+    .rd-chevron { opacity: 0.8; transition: transform 0.25s ease; }
+    .resume-dd.open .rd-chevron { transform: rotate(180deg); }
+    .resume-dd-menu {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      min-width: 232px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+      padding: 0.35rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      box-shadow: 0 12px 34px rgb(0 0 0 / 0.28);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-6px);
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+    }
+    .resume-dd.open .resume-dd-menu { opacity: 1; visibility: visible; transform: none; }
+    .nav-right .resume-dd-menu { right: 0; left: auto; }
+    .resume-dd-menu a {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: 0.55rem 0.7rem;
+      border-radius: 4px;
+      color: var(--text);
+      transition: background 0.15s ease;
+    }
+    .resume-dd-menu a:hover,
+    .resume-dd-menu a:focus-visible { background: rgb(var(--text-rgb) / 0.07); }
+    .rd-title { font-size: 0.85rem; font-weight: 600; letter-spacing: -0.01em; }
+    .rd-sub { font-size: 0.72rem; color: var(--muted); }
+
     /* Hamburger */
     .hamburger {
       display: none;
@@ -2619,7 +2659,7 @@
     @media (max-width: 768px) {
       .nav { padding: 0 1.5rem; }
       .nav-links { display: none; }
-      .nav-right .btn { display: none; }
+      .nav-right .btn, .nav-right .resume-dd { display: none; }
       .hamburger { display: flex; }
 
       .hero {
@@ -2682,6 +2722,8 @@
 
     @media (max-width: 480px) {
       .hero-ctas { flex-direction: column; align-items: flex-start; }
+      .hero-ctas .resume-dd { width: 100%; }
+      .hero-ctas .resume-dd-menu { width: 100%; }
       .hero-ctas .btn { width: 100%; justify-content: center; }
       .about-stats { grid-template-columns: repeat(2, 1fr); }
       .contact-links-row { gap: 1.25rem; }
@@ -3129,7 +3171,13 @@
 
     <div class="nav-right">
       <a href="https://itsme-aniketghosh.github.io/blog/" target="_blank" rel="noopener noreferrer" class="btn btn-outline nav-blog">My Blog</a>
-      <a href="resume.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-outline">Resume</a>
+      <div class="resume-dd">
+        <button type="button" class="btn btn-outline resume-dd-btn" aria-haspopup="true" aria-expanded="false" aria-label="Resume options">Resume<svg class="rd-chevron" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+        <div class="resume-dd-menu" role="menu">
+          <a href="resume-safety.pdf" target="_blank" rel="noopener noreferrer" role="menuitem"><span class="rd-title">Research / Safety</span><span class="rd-sub">Research Engineer · AI safety</span></a>
+          <a href="resume.pdf" target="_blank" rel="noopener noreferrer" role="menuitem"><span class="rd-title">AI/ML &amp; Data Science</span><span class="rd-sub">ML Engineer · Data Scientist</span></a>
+        </div>
+      </div>
       <a href="https://ag-hosh-my-digital-twin.hf.space/" target="_blank" rel="noopener noreferrer" class="btn btn-filled">Talk to AI</a>
       <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobileMenu">
         <span></span><span></span><span></span>
@@ -3190,7 +3238,13 @@
         <div class="hero-ctas" id="heroCtas">
           <a href="https://ag-hosh-my-digital-twin.hf.space/" target="_blank" rel="noopener noreferrer" class="btn btn-filled">Talk to My AI Twin</a>
           <a href="https://itsme-aniketghosh.github.io/blog/" target="_blank" rel="noopener noreferrer" class="btn btn-outline">Read My Blog</a>
-          <a href="resume.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-outline">Resume</a>
+          <div class="resume-dd">
+            <button type="button" class="btn btn-outline resume-dd-btn" aria-haspopup="true" aria-expanded="false" aria-label="Resume options">Resume<svg class="rd-chevron" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+            <div class="resume-dd-menu" role="menu">
+              <a href="resume-safety.pdf" target="_blank" rel="noopener noreferrer" role="menuitem"><span class="rd-title">Research / Safety</span><span class="rd-sub">Research Engineer · AI safety</span></a>
+              <a href="resume.pdf" target="_blank" rel="noopener noreferrer" role="menuitem"><span class="rd-title">AI/ML &amp; Data Science</span><span class="rd-sub">ML Engineer · Data Scientist</span></a>
+            </div>
+          </div>
           <a href="#projects" class="btn btn-ghost">View Work</a>
         </div>
         <div class="hero-socials" id="heroSocials">
@@ -4065,6 +4119,28 @@
 
         <div class="research-card reveal">
           <span class="research-status published">Published · LessWrong</span>
+          <h3 class="research-title">Function Vectors as a Model-Diffing Tool</h3>
+          <p class="research-desc">
+            Extended function-vector patching from within one model to across two &mdash; copying
+            activations from a clean base model into a LoRA fine-tune trained to give bad medical
+            advice. A guarded greedy search over 1,008 patchable units finds 17 attention heads in
+            layers 12&ndash;19 that repair the misaligned behavior: safe answers rise from 3/36 to
+            27/36 on held-out questions while ARC-Easy capability holds. Tested on Qwen2.5-7B and
+            Llama-3.1-8B.
+          </p>
+          <div class="tags">
+            <span class="tag">Function Vectors</span>
+            <span class="tag">Model Diffing</span>
+            <span class="tag">Activation Patching</span>
+            <span class="tag">AI Safety</span>
+          </div>
+          <a class="research-link" href="https://www.lesswrong.com/posts/6iPEuEnguEtmtaqyJ/function-vectors-as-a-model-diffing-tool-17-heads-repair-a" target="_blank" rel="noopener noreferrer">
+            <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg> Read on LessWrong
+          </a>
+        </div>
+
+        <div class="research-card reveal">
+          <span class="research-status published">Published · LessWrong</span>
           <h3 class="research-title">Linear Probes Tell You Where Quantization Will Hurt</h3>
           <p class="research-desc">
             Trained lightweight linear probes on each layer's activations to map where token-level
@@ -4266,7 +4342,8 @@
         <div class="contact-links-row reveal-stagger">
           <a href="https://github.com/Itsme-aniketghosh" target="_blank" rel="noopener noreferrer">GitHub</a>
           <a href="https://linkedin.com/in/aniketghosh-" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-          <a href="resume.pdf" target="_blank" rel="noopener noreferrer">Resume</a>
+          <a href="resume-safety.pdf" target="_blank" rel="noopener noreferrer">Research Resume</a>
+          <a href="resume.pdf" target="_blank" rel="noopener noreferrer">AI/ML Resume</a>
           <a href="https://itsme-aniketghosh.github.io/blog/" target="_blank" rel="noopener noreferrer">My Blog</a>
           <a href="https://www.codechef.com/users/a_ghosh" target="_blank" rel="noopener noreferrer">CodeChef</a>
           <a href="https://www.hackerrank.com/profile/aniket_ghosh" target="_blank" rel="noopener noreferrer">HackerRank</a>
@@ -5588,6 +5665,42 @@
   requestAnimationFrame(tick);
 
 }());
+</script>
+
+<script>
+  /* Resume dropdown: click to open, outside-click / Esc to close */
+  (function () {
+    const dds = Array.from(document.querySelectorAll('.resume-dd'));
+    if (!dds.length) return;
+    function close(dd) {
+      dd.classList.remove('open');
+      const b = dd.querySelector('.resume-dd-btn');
+      if (b) b.setAttribute('aria-expanded', 'false');
+    }
+    dds.forEach(dd => {
+      const btn = dd.querySelector('.resume-dd-btn');
+      if (!btn) return;
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const willOpen = !dd.classList.contains('open');
+        dds.forEach(other => { if (other !== dd) close(other); });
+        dd.classList.toggle('open', willOpen);
+        btn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+      });
+      dd.querySelectorAll('.resume-dd-menu a').forEach(a => {
+        a.addEventListener('click', () => close(dd));
+      });
+    });
+    document.addEventListener('click', (e) => {
+      dds.forEach(dd => { if (dd.classList.contains('open') && !dd.contains(e.target)) close(dd); });
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') dds.forEach(dd => {
+        if (dd.classList.contains('open')) { const b = dd.querySelector('.resume-dd-btn'); close(dd); if (b) b.focus(); }
+      });
+    });
+  }());
 </script>
 
 </body>
