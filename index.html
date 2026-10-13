@@ -1297,8 +1297,7 @@
       position: relative;
       overflow: hidden;
     }
-    /* Translucent so the icon flow shows through; over --bg it composites to exactly --surface (#141414). */
-    .section-alt { background: rgb(26 26 26 / 0.571); }
+    .section-alt { background: var(--surface); }
 
     .section-num {
       position: absolute;
@@ -3317,39 +3316,59 @@
       .cl-text                     { transition: none !important; }
       .cl-tags, .cl-tag            { transition: none !important; }
       .fc                          { transition: none !important; }
-      /* Section icons */
-      .h-icon                      { transform: none; filter: none; transition: opacity 0.3s ease; }
+      /* Section ink notes */
+      .ink-note                    { transform: rotate(var(--r, -3deg)); transition: opacity 0.3s ease; }
     }
 
-    /* ═══════ SECTION ICON FLOW ═══════
-       A faint particle icon per section, painted under the page (z-index -1) so the
-       streams pass behind every word. 100lvh keeps the buffer steady while mobile
-       URL bars slide in and out. */
-    .icon-flow {
-      position: fixed; top: 0; left: 0;
-      width: 100%; height: 100vh; height: 100lvh;
-      pointer-events: none;
-      z-index: -1;
-      opacity: 0.34;
-    }
-    @media (max-width: 760px) { .icon-flow { opacity: 0.22; } }
-
-    /* Heading icons: the same seven drawings, small, ink-bleeding in beside each heading */
-    .h-icon {
-      display: inline-block;
-      width: 0.6em; height: 0.6em;
-      margin-left: 0.3em;
-      vertical-align: -0.02em;
-      color: rgb(var(--text-rgb) / 0.42);
+    /* ═══════ SECTION INK NOTES ═══════
+       One paper note per section, pinned in the empty space beside the heading. Its
+       icon inks in when the section arrives; once you read on, the note peels off its
+       tape and falls away for good, leaving a scrap of tape behind. */
+    .ink-note {
+      --paper: #ece5d5;
+      --ink: #1f2633;
+      --bleed: #9a6a3c;
+      position: absolute; z-index: 2;
+      top: 4.5rem; right: 3rem;
+      width: 148px; height: 148px;
+      padding: 14px 14px 26px;
+      background: var(--paper);
+      border-radius: 2px;
+      box-shadow: 0 1px 2px rgb(0 0 0 / 0.35), 0 16px 30px -10px rgb(0 0 0 / 0.6);
+      transform: translateY(-10px) rotate(calc(var(--r, -3deg) - 4deg));
       opacity: 0;
-      transform: translateY(0.06em) scale(0.9);
-      filter: blur(5px);
-      transition: opacity 0.7s cubic-bezier(0.23, 1, 0.32, 1),
-                  transform 0.9s cubic-bezier(0.23, 1, 0.32, 1),
-                  filter 0.9s cubic-bezier(0.23, 1, 0.32, 1);
+      transition: opacity 0.45s cubic-bezier(0.23, 1, 0.32, 1), transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+      pointer-events: none;
     }
-    .h-icon svg { display: block; width: 100%; height: 100%; overflow: visible; }
-    .h-icon.on { opacity: 1; transform: none; filter: none; }
+    .ink-note.on { opacity: 1; transform: rotate(var(--r, -3deg)); }
+    .ink-note::after {
+      content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+      background: linear-gradient(135deg, transparent 62%, rgb(60 40 20 / 0.08));
+    }
+    .ink-note svg { display: block; width: 100%; height: 100%; overflow: visible; }
+    .ink-note .ink-main  { color: var(--ink); }
+    .ink-note .ink-bleed { color: var(--bleed); opacity: 0; transition: opacity 1.4s ease 0.25s; }
+    .ink-note.on .ink-bleed { opacity: 0.3; }
+    .ink-tape, .ink-scrap {
+      position: absolute; pointer-events: none;
+      background: rgb(240 236 228 / 0.5);
+      box-shadow: 0 1px 1px rgb(0 0 0 / 0.18);
+    }
+    .ink-tape { top: -9px; left: 50%; width: 58px; height: 18px; transform: translateX(-50%) rotate(-4deg); }
+    .ink-scrap { z-index: 1; width: 22px; height: 12px; background: rgb(240 236 228 / 0.28); clip-path: polygon(0 0, 100% 8%, 86% 50%, 100% 100%, 0 92%); }
+    .ink-label {
+      position: absolute; left: 12px; right: 12px; bottom: 9px;
+      display: flex; justify-content: space-between; gap: 6px;
+      font: 500 8.5px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap;
+      color: rgb(31 38 51 / 0.62);
+    }
+    .ink-note.falling { position: fixed; right: auto; z-index: 60; margin: 0; transition: none; }
+    @media (max-width: 760px) {
+      .ink-note { top: 18px; right: 1rem; width: 72px; height: 72px; padding: 8px; }
+      .ink-tape { top: -6px; width: 32px; height: 11px; }
+      .ink-scrap { width: 16px; height: 9px; }
+      .ink-label { display: none; }
+    }
 
     /* Phone-only motion switch: full particle flow vs a reduced crossfade */
     .motion-toggle { display: none; }
@@ -4026,6 +4045,7 @@
               models, and the pipeline through to the live query path.
             </p>
             <ul class="timeline-points">
+              <li>Awarded the Summer 2026 Research Fellowship (Varosync, Inc. with NYCEDC's NYC AI Nexus) for delivering Trialfecta's v0 asset evidence pipeline, safety-aware drug embeddings and benchmark evaluation harness &middot; <a href="varosync-research-fellowship.pdf" target="_blank" rel="noopener noreferrer">View credential</a></li>
               <li>Built a biomedical knowledge graph from scratch, spanning millions of molecules</li>
               <li>Trained 7&ndash;8B parameter molecular embedding models on an 800M-molecule corpus across a multi-GPU cluster, owning data curation, distributed training, checkpointing and evaluation</li>
               <li>Caught the retrieval benchmark training on future outcomes in 123 of 133 cases; swapped k-fold for a leave-one-group-out, point-in-time split and took post-cutoff training evidence from 21.8% to 0%</li>
@@ -6122,22 +6142,18 @@
 </script>
 
 
-<canvas class="icon-flow" id="iconFlow" aria-hidden="true"></canvas>
 <button class="motion-toggle" id="motionToggle" type="button" role="switch" aria-checked="false">Reduce motion <span class="mt-track" aria-hidden="true"><span class="mt-knob"></span></span></button>
 <script>
-  /* ═══════ SECTION ICON FLOW ═══════
-     One faint particle icon per section, drawn under the page. When the section in
-     view changes, the old icon scatters across the screen and the new one's points
-     rise out of the visible text and stream into place. It only draws while
-     something is moving, so a resting page costs nothing. Heading icons reuse the
-     same drawings. */
-  ;(function initIconFlow() {
-    const canvas = document.getElementById('iconFlow');
-    const toggle = document.getElementById('motionToggle');
-    if (!canvas || !canvas.getContext) return;
-    const ctx = canvas.getContext('2d');
-
+  /* ═══════ SECTION INK NOTES ═══════
+     A paper note per section with that section's icon in ink. The ink bleeds in when
+     the section arrives (SVG turbulence + blur + an alpha threshold, animated with
+     SMIL so nothing runs per frame in JS). Once the visitor reads on, the note peels
+     off and falls; it does not come back on scroll up. */
+  ;(function initInkNotes() {
     const SECTION_ICON = { about: 0, education: 1, skills: 2, experience: 3, projects: 4, research: 5, certifications: 6 };
+    const NAMES = ['About', 'Education', 'Skills', 'Experience', 'Projects', 'Research', 'Certifications'];
+    const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
+    const ROT = [-3, 2.5, -2, 3.5, -2.5, 2, -3.5];
 
     // ---- Icons, in a 100×100 space ----
     const C = (x, y, r) => `M${x - r} ${y}a${r} ${r} 0 1 0 ${2 * r} 0a${r} ${r} 0 1 0 ${-2 * r} 0Z`;
@@ -6171,355 +6187,176 @@
     const ICONS = [
       [ // About: a neuron
         { d: C(50, 54, 11), fill: true },
-        { d: 'M46 44Q40 30 28 20M28 20L18 14M28 20L26 8M54 44Q62 28 74 20M74 20L86 17M74 20L76 8M40 52Q26 50 14 40M60 52Q74 50 88 44M50 65Q53 80 48 90M48 90L38 95M48 90L58 95', w: 4.5 }
+        { d: 'M46 44Q40 30 28 20M28 20L18 14M28 20L26 8M54 44Q62 28 74 20M74 20L86 17M74 20L76 8M40 52Q26 50 14 40M60 52Q74 50 88 44M50 65Q53 80 48 90M48 90L38 95M48 90L58 95', w: 5 }
       ],
       [ // Education: mortarboard
         { d: 'M50 20L92 37L50 54L8 37Z', fill: true },
-        { d: 'M25 45V63Q50 78 75 63V45', w: 5 },
-        { d: 'M85 41V66', w: 3.5 },
-        { d: C(85, 70, 5), fill: true }
+        { d: 'M25 45V63Q50 78 75 63V45', w: 6 },
+        { d: 'M85 41V66', w: 4.5 },
+        { d: C(85, 70, 5.5), fill: true }
       ],
       [ // Skills: a small network
-        { d: edges, w: 2.5 },
-        { d: nodes.map(([x, y]) => C(x, y, 7)).join(''), fill: true }
+        { d: edges, w: 3.5 },
+        { d: nodes.map(([x, y]) => C(x, y, 8)).join(''), fill: true }
       ],
       [ // Experience: gear
         { d: gear(9, 40, 31, 50, 50) + C(50, 50, 13), fill: true, rule: 'evenodd' }
       ],
       [ // Projects: molecule
-        { d: hexD + `M${hex[5][0]} ${hex[5][1]}L82 18M${hex[2][0]} ${hex[2][1]}L14 86`, w: 4.5 },
-        { d: hex.map(p => C(p[0], p[1], 5.5)).join('') + C(82, 18, 8) + C(14, 86, 6.5), fill: true }
+        { d: hexD + `M${hex[5][0]} ${hex[5][1]}L82 18M${hex[2][0]} ${hex[2][1]}L14 86`, w: 5.5 },
+        { d: hex.map(p => C(p[0], p[1], 6.5)).join('') + C(82, 18, 9) + C(14, 86, 7.5), fill: true }
       ],
       [ // Research: magnifier over attention heads
-        { d: C(42, 42, 27), w: 5.5 },
-        { d: 'M62 62L88 88', w: 10 },
-        { d: [[0, 0], [2, 0], [0, 1], [1, 1], [1, 2], [2, 2], [0, 2]].map(([c, r]) => sq(28 + c * 10, 28 + r * 10, 7.5)).join(''), fill: true }
+        { d: C(42, 42, 27), w: 6.5 },
+        { d: 'M62 62L88 88', w: 11 },
+        { d: [[0, 0], [2, 0], [0, 1], [1, 1], [1, 2], [2, 2], [0, 2]].map(([c, r]) => sq(28 + c * 10, 28 + r * 10, 8)).join(''), fill: true }
       ],
       [ // Certifications: seal with ribbons
-        { d: star(14, 31, 26, 50, 40), w: 4.5 },
-        { d: C(50, 40, 15), w: 4 },
-        { d: 'M39 64L33 92L42 86L47 94L49 70M61 64L67 92L58 86L53 94L51 70', w: 4 }
+        { d: star(14, 31, 26, 50, 40), w: 5.5 },
+        { d: C(50, 40, 15), w: 5 },
+        { d: 'M39 64L33 92L42 86L47 94L49 70M61 64L67 92L58 86L53 94L51 70', w: 5 }
       ]
     ];
 
     // ---- Motion mode ----
+    const toggle = document.getElementById('motionToggle');
     const mqReduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const mqSmall = window.matchMedia('(max-width: 760px)');
     const saveData = !!(navigator.connection && navigator.connection.saveData);
     let userMode = null; // 'full' | 'reduced', set from the phone switch
     try { userMode = localStorage.getItem('iconMotion'); } catch (e) {}
     const reduced = () => userMode ? userMode === 'reduced' : (mqReduce.matches || saveData);
 
-    // ---- Heading icons ----
-    function iconSVG(idx, uid) {
-      const id = 'hink' + uid;
-      const body = ICONS[idx].map(op => op.fill
-        ? `<path d="${op.d}" fill="currentColor"${op.rule ? ' fill-rule="evenodd"' : ''}/>`
-        : `<path d="${op.d}" fill="none" stroke="currentColor" stroke-width="${op.w + 1.5}" stroke-linecap="round" stroke-linejoin="round"/>`).join('');
-      return `<svg viewBox="4 4 92 92" focusable="false"><defs><filter id="${id}" x="-25%" y="-25%" width="150%" height="150%">` +
-        `<feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="2" seed="${uid + 3}" result="n"/>` +
-        `<feDisplacementMap in="SourceGraphic" in2="n" scale="0" xChannelSelector="R" yChannelSelector="G">` +
-        `<animate attributeName="scale" values="24;0" keyTimes="0;1" calcMode="spline" keySplines="0.23 1 0.32 1" dur="1.1s" begin="indefinite" fill="freeze"/>` +
-        `</feDisplacementMap></filter></defs><g filter="url(#${id})">${body}</g></svg>`;
+    // ---- Note markup ----
+    // The filters start at their "wet" values and ease to dry ones when the note lands.
+    const INK_FROM = { scale: 36, blur: 4.5 }, INK_TO = { scale: 2.5, blur: 0.5 };
+    function noteSVG(idx) {
+      const paths = extra => ICONS[idx].map(op => op.fill
+        ? `<path d="${op.d}"${op.rule ? ' fill-rule="evenodd"' : ''}/>`
+        : `<path d="${op.d}" fill="none" stroke-width="${op.w + extra}"/>`).join('');
+      const anim = (attr, from, to) => `<animate attributeName="${attr}" values="${from};${to}" keyTimes="0;1" calcMode="spline" keySplines="0.23 1 0.32 1" dur="1.8s" begin="indefinite" fill="freeze"/>`;
+      const g = 'fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"';
+      return `<svg viewBox="0 0 100 100" focusable="false"><defs>` +
+        `<filter id="ink${idx}" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB">` +
+          `<feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="3" seed="${idx * 7 + 2}" result="n"/>` +
+          `<feDisplacementMap in="SourceGraphic" in2="n" scale="${INK_FROM.scale}" xChannelSelector="R" yChannelSelector="G" result="w">${anim('scale', INK_FROM.scale, INK_TO.scale)}</feDisplacementMap>` +
+          `<feGaussianBlur in="w" stdDeviation="${INK_FROM.blur}" result="b">${anim('stdDeviation', INK_FROM.blur, INK_TO.blur)}</feGaussianBlur>` +
+          `<feComponentTransfer in="b"><feFuncA type="linear" slope="5" intercept="-1.6"/></feComponentTransfer>` +
+        `</filter>` +
+        `<filter id="bleed${idx}" x="-30%" y="-30%" width="160%" height="160%">` +
+          `<feTurbulence type="fractalNoise" baseFrequency="0.07" numOctaves="2" seed="${idx * 7 + 5}" result="n"/>` +
+          `<feDisplacementMap in="SourceGraphic" in2="n" scale="9" xChannelSelector="R" yChannelSelector="G" result="w"/>` +
+          `<feGaussianBlur in="w" stdDeviation="2.2"/>` +
+        `</filter></defs>` +
+        `<g class="ink-bleed" filter="url(#bleed${idx})" ${g}>${paths(4)}</g>` +
+        `<g class="ink-main" filter="url(#ink${idx})" ${g}>${paths(1)}</g></svg>`;
     }
-    const headIO = 'IntersectionObserver' in window ? new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (!e.isIntersecting) return;
-        headIO.unobserve(e.target);
-        const el = e.target;
-        setTimeout(() => {
-          el.classList.add('on');
-          const anim = el.querySelector('animate');
-          if (anim && !reduced() && anim.beginElement) anim.beginElement();
-        }, 250);
-      });
-    }, { threshold: 0.6 }) : null;
-    let uid = 0;
-    document.querySelectorAll('section[id] .section-heading').forEach(h => {
-      const idx = SECTION_ICON[h.closest('section').id];
+    function dry(el) {
+      el.querySelectorAll('feDisplacementMap[result="w"] animate, feGaussianBlur animate').forEach(a => a.remove());
+      const dm = el.querySelector(`#ink${el.dataset.idx} feDisplacementMap`), gb = el.querySelector(`#ink${el.dataset.idx} feGaussianBlur`);
+      if (dm) dm.setAttribute('scale', INK_TO.scale);
+      if (gb) gb.setAttribute('stdDeviation', INK_TO.blur);
+    }
+
+    const notes = [];
+    document.querySelectorAll('section[id]').forEach(sec => {
+      const idx = SECTION_ICON[sec.id];
       if (idx === undefined) return;
-      const span = document.createElement('span');
-      span.className = 'h-icon';
-      span.setAttribute('aria-hidden', 'true');
-      span.innerHTML = iconSVG(idx, uid++);
-      h.appendChild(span);
-      if (headIO) headIO.observe(span); else span.classList.add('on');
+      const el = document.createElement('div');
+      el.className = 'ink-note';
+      el.dataset.idx = idx;
+      el.setAttribute('aria-hidden', 'true');
+      el.style.setProperty('--r', ROT[idx] + 'deg');
+      el.innerHTML = `<span class="ink-tape"></span>${noteSVG(idx)}<span class="ink-label"><span>${ROMAN[idx]}</span><span>${NAMES[idx]}</span></span>`;
+      sec.appendChild(el);
+      notes.push({ el, sec, idx, state: 'waiting', shownAt: 0 });
     });
+    if (!notes.length) return;
 
-    // ---- Particles ----
-    let NP = 0, PTS = [], phase, OFF, VEL, seen;
-    function buildPoints() {
-      NP = mqSmall.matches ? 600 : 1300;
-      PTS = ICONS.map(icon => {
-        const s = 220, cv = document.createElement('canvas');
-        cv.width = cv.height = s;
-        const x = cv.getContext('2d');
-        x.translate(s * 0.12, s * 0.12); x.scale(s * 0.76 / 100, s * 0.76 / 100);
-        x.lineCap = 'round'; x.lineJoin = 'round'; x.fillStyle = x.strokeStyle = '#fff';
-        for (const op of icon) {
-          const p = new Path2D(op.d);
-          if (op.fill) x.fill(p, op.rule || 'nonzero'); else { x.lineWidth = op.w; x.stroke(p); }
-        }
-        const d = x.getImageData(0, 0, s, s).data, pts = [];
-        for (let y = 0; y < s; y += 2) for (let X = 0; X < s; X += 2) if (d[(y * s + X) * 4 + 3] > 140) pts.push(X / s, y / s);
-        const out = new Float32Array(NP * 2), n = pts.length / 2;
-        for (let i = 0; i < NP; i++) {
-          const q = (Math.random() * n) | 0;
-          out[i * 2] = pts[q * 2] + (Math.random() - 0.5) * 0.008;
-          out[i * 2 + 1] = pts[q * 2 + 1] + (Math.random() - 0.5) * 0.008;
-        }
-        return out;
-      });
-      phase = new Float32Array(NP);
-      for (let i = 0; i < NP; i++) phase[i] = Math.random() * Math.PI * 2;
-      OFF = new Float32Array(NP * 4); VEL = new Float32Array(NP * 4); seen = new Uint8Array(NP * 2);
+    // ---- Landing: the note sticks on and its ink bleeds in ----
+    function land(n) {
+      if (n.state !== 'waiting') return;
+      n.state = 'shown'; n.shownAt = performance.now();
+      n.el.classList.add('on');
+      if (reduced()) { dry(n.el); return; }
+      n.el.querySelectorAll('animate').forEach(a => { if (a.beginElement) a.beginElement(); });
     }
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (!e.isIntersecting) return;
+          io.unobserve(e.target);
+          const n = notes.find(x => x.el === e.target);
+          if (n) land(n);
+        });
+      }, { threshold: 0.6 });
+      notes.forEach(n => io.observe(n.el));
+    } else notes.forEach(land);
 
-    // Deterministic per-transition randomness
-    function rnd(a, b) {
-      let h = Math.imul(a | 0, 374761393) + Math.imul(b | 0, 668265263);
-      h = Math.imul(h ^ (h >>> 13), 1274126177);
-      return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
-    }
-    const clamp01 = v => v < 0 ? 0 : v > 1 ? 1 : v;
-    const ease3 = e => e < 0.5 ? 4 * e * e * e : 1 - Math.pow(-2 * e + 2, 3) / 2;
-    const smooth = (a, b, v) => { const t = clamp01((v - a) / (b - a)); return t * t * (3 - 2 * t); };
-    const bz = (a, c, b, u) => (1 - u) * (1 - u) * a + 2 * u * (1 - u) * c + u * u * b;
+    // ---- Falling: once read past, the note peels off its tape and drops for good ----
+    function fall(n) {
+      n.state = 'gone';
+      const el = n.el, r = el.getBoundingClientRect();
+      const w = el.offsetWidth, h = el.offsetHeight;
+      const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
 
-    // ---- Canvas size (CSS px; the buffer ignores small height changes from mobile URL bars) ----
-    let W = 0, H = 0, dpr = 1, small = mqSmall.matches;
-    function resize(force) {
-      const w = canvas.clientWidth, h = canvas.clientHeight;
-      if (!force && w === W && Math.abs(h - H) < 120) return;
-      W = w; H = h;
-      dpr = Math.min(window.devicePixelRatio || 1, mqSmall.matches ? 1.25 : 1.5);
-      canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
-      if (small !== mqSmall.matches || !NP) { small = mqSmall.matches; buildPoints(); }
-      kick();
-    }
-    function iconBox() {
-      if (small) { const s = Math.min(W * 0.82, H * 0.5); return { x: (W - s) / 2, y: H * 0.62 - s / 2, s }; }
-      const s = Math.min(W * 0.38, H * 0.68, 620);
-      return { x: W - s - Math.max(32, W * 0.06), y: H * 0.54 - s / 2, s };
-    }
+      // A torn scrap of tape stays where the note was.
+      const scrap = document.createElement('span');
+      scrap.className = 'ink-scrap';
+      scrap.setAttribute('aria-hidden', 'true');
+      scrap.style.left = (el.offsetLeft + w / 2 - 14) + 'px';
+      scrap.style.top = (el.offsetTop - 6) + 'px';
+      scrap.style.transform = `rotate(${ROT[n.idx] * -2}deg)`;
+      n.sec.appendChild(scrap);
 
-    // ---- Cursor springs (desktop mouse only) ----
-    const mouse = { x: -9999, y: -9999, on: false, px: null, py: null, vx: 0, vy: 0 };
-    const field = { on: false, x: 0, y: 0, vx: 0, vy: 0, r: 80, push: 1.6 };
-    let springsActive = false, maxTrail = 9;
-    const LEVELS = 6, buckets = Array.from({ length: LEVELS }, () => []);
-    function seg(slot, alpha, x0, y0, x1, y1) {
-      if (alpha <= 0.02) return;
-      seen[slot] = 1;
-      const o = slot * 2;
-      let ofx = OFF[o], ofy = OFF[o + 1], vx = VEL[o], vy = VEL[o + 1];
-      if (field.on) {
-        const qx = x1 + ofx - field.x, qy = y1 + ofy - field.y, d2 = qx * qx + qy * qy;
-        if (d2 < field.r * field.r) {
-          const d = Math.sqrt(d2) || 1, f = 1 - d / field.r, f2 = f * f;
-          vx += qx / d * f2 * field.push + field.vx * f2 * 0.18;
-          vy += qy / d * f2 * field.push + field.vy * f2 * 0.18;
-        }
+      if (reduced() || r.bottom < 0 || !el.animate) {
+        el.style.transition = 'opacity 0.25s ease';
+        el.style.opacity = '0';
+        setTimeout(() => el.remove(), 300);
+        return;
       }
-      if (ofx || ofy || vx || vy) {
-        vx = (vx - ofx * 0.05) * 0.86; vy = (vy - ofy * 0.05) * 0.86;
-        ofx += vx; ofy += vy;
-        if (Math.abs(ofx) + Math.abs(ofy) + Math.abs(vx) + Math.abs(vy) < 0.02) ofx = ofy = vx = vy = 0;
-        else springsActive = true;
-        OFF[o] = ofx; OFF[o + 1] = ofy; VEL[o] = vx; VEL[o + 1] = vy;
-        x0 += ofx - vx * 2.2; y0 += ofy - vy * 2.2; x1 += ofx; y1 += ofy;
+      // Sections clip their overflow, so lift the note into a fixed layer before letting go.
+      document.body.appendChild(el);
+      el.classList.add('falling');
+      el.style.left = (cx - w / 2) + 'px';
+      el.style.top = (cy - h / 2) + 'px';
+
+      const rot = ROT[n.idx];
+      const px = -w * 0.34, py = -h * 0.46;            // pivot: the tape's left end
+      const swing = 18 + Math.random() * 6;
+      const spin = 30 + Math.random() * 40;
+      const dx = 30 + (Math.random() - 0.3) * 120;
+      const dy = window.innerHeight - r.top + 80;
+      const tf = (tx, ty, a) => `translate(${tx}px, ${ty}px) translate(${px}px, ${py}px) rotate(${a}deg) translate(${-px}px, ${-py}px) rotate(${rot}deg)`;
+      const anim = el.animate([
+        { transform: tf(0, 0, 0), easing: 'cubic-bezier(0.23, 1, 0.32, 1)' },
+        { transform: tf(0, 4, swing), offset: 0.24, easing: 'cubic-bezier(0.5, 0, 0.9, 0.45)' },
+        { transform: tf(dx, dy, swing + spin) }
+      ], { duration: 1400, fill: 'forwards' });
+      anim.onfinish = () => el.remove();
+    }
+
+    let lastY = window.scrollY, queued = false;
+    function onScroll() {
+      queued = false;
+      const y = window.scrollY, down = y > lastY;
+      lastY = y;
+      if (!down) return;
+      const line = window.innerHeight * 0.1, now = performance.now();
+      for (const n of notes) {
+        if (n.state !== 'shown' || now - n.shownAt < 700) continue;
+        if (n.el.getBoundingClientRect().top < line) fall(n);
       }
-      const dx = x0 - x1, dy = y0 - y1, l = Math.hypot(dx, dy);
-      if (l > maxTrail) { x0 = x1 + dx * maxTrail / l; y0 = y1 + dy * maxTrail / l; }
-      buckets[Math.min(LEVELS - 1, (alpha * LEVELS) | 0)].push(x0, y0, x1 + 0.01, y1);
     }
+    window.addEventListener('scroll', () => { if (!queued) { queued = true; requestAnimationFrame(onScroll); } }, { passive: true });
 
-    // ---- Transition state ----
-    const NC = 5;
-    let cur = -1, from = -1, to = -1, t0 = 0, running = false, pending = null, seed = 1;
-    let spawns = [], exits = [];
-    const DUR = () => small ? 2200 : 2600;
-
-    function randomClusters(salt) {
-      const out = [];
-      for (let c = 0; c < NC; c++) out.push({
-        x: (0.05 + 0.9 * rnd(c, seed * 7 + salt)) * W, y: (0.06 + 0.88 * rnd(c + 20, seed * 7 + salt)) * H,
-        d: rnd(c + 40, seed * 7 + salt), bend: (rnd(c + 60, seed * 7 + salt) - 0.5) * 1.3
-      });
-      return out;
-    }
-    // New icons rise out of whatever text is on screen: headings, paragraphs, list items.
-    function textClusters() {
-      const els = [...document.querySelectorAll('main h2, main h3, main p, main li')].filter(el => {
-        const r = el.getBoundingClientRect();
-        return r.width > 40 && r.bottom > 40 && r.top < H - 40;
-      });
-      const out = randomClusters(1);
-      for (let c = 0; c < NC && els.length; c++) {
-        const r = els[(rnd(c, seed * 13 + 3) * els.length) | 0].getBoundingClientRect();
-        out[c].x = r.left + rnd(c, seed * 13 + 4) * r.width;
-        out[c].y = r.top + r.height / 2;
-      }
-      return out;
-    }
-
-    function setTarget(idx) {
-      if (running) { pending = idx; return; }
-      if (idx === cur) return;
-      if (reduced()) { swapStill(idx); return; }
-      from = cur; to = idx; t0 = performance.now(); running = true; seed++;
-      spawns = textClusters(); exits = randomClusters(2);
-      kick();
-    }
-    // Reduced motion: a short crossfade, no travel.
-    let swapTimer = 0;
-    function swapStill(idx) {
-      cur = idx;
-      clearTimeout(swapTimer);
-      canvas.style.transition = 'opacity 0.2s ease';
-      canvas.style.opacity = '0';
-      swapTimer = setTimeout(() => { kick(); canvas.style.opacity = ''; }, 200);
-    }
-
-    function render(k) {
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.clearRect(0, 0, W, H);
-      for (const b of buckets) b.length = 0;
-      seen.fill(0); springsActive = false;
-      const bx = iconBox(), sx = bx.x, sy = bx.y, sw = bx.s, icx = sx + sw / 2, icy = sy + sw / 2;
-      const A = running ? (from >= 0 ? PTS[from] : null) : (cur >= 0 ? PTS[cur] : null);
-      const B = running && to >= 0 ? PTS[to] : null;
-      if (!running) k = 0;
-
-      field.on = mouse.on && !small && !reduced();
-      if (mouse.px !== null) {
-        mouse.vx = mouse.vx * 0.7 + (mouse.x - mouse.px) * 0.3;
-        mouse.vy = mouse.vy * 0.7 + (mouse.y - mouse.py) * 0.3;
-        const ml = Math.hypot(mouse.vx, mouse.vy);
-        if (ml > 12) { mouse.vx *= 12 / ml; mouse.vy *= 12 / ml; }
-      }
-      mouse.px = mouse.x; mouse.py = mouse.y;
-      field.x = mouse.x; field.y = mouse.y; field.vx = mouse.vx; field.vy = mouse.vy;
-
-      for (let i = 0; i < NP; i++) {
-        const ph = phase[i];
-        if (A) {
-          // Outgoing: take off toward another part of the screen, fading mid-flight.
-          const ax = sx + A[i * 2] * sw, ay = sy + A[i * 2 + 1] * sw;
-          const eo = k <= 0 ? 0 : clamp01((k - rnd(i, seed * 31 + 5) * 0.22) / 0.4);
-          if (eo <= 0) seg(i, 0.9, ax, ay, ax, ay);
-          else if (eo < 1) {
-            const c = exits[(rnd(i, seed * 31 + 6) * NC) | 0];
-            const ex = c.x + (rnd(i, seed * 31 + 7) - 0.5) * 0.25 * W, ey = c.y + (rnd(i, seed * 31 + 8) - 0.5) * 0.25 * H;
-            let dx = ax - icx, dy = ay - icy; const dl = Math.hypot(dx, dy) || 1; dx /= dl; dy /= dl;
-            const len = Math.hypot(ex - ax, ey - ay);
-            const cx = ax + dx * len * 0.35, cy = ay + dy * len * 0.35;
-            const u = eo * eo, up = Math.max(0, eo - 0.06) ** 2;
-            seg(i, 0.9 * Math.pow(1 - eo, 1.4), bz(ax, cx, ex, up), bz(ay, cy, ey, up), bz(ax, cx, ex, u), bz(ay, cy, ey, u));
-          }
-        }
-        if (!B || k <= 0) continue;
-        // Incoming: appear beside the text on screen, hover, then stream into the icon.
-        const tx = sx + B[i * 2] * sw, ty = sy + B[i * 2 + 1] * sw;
-        const loose = rnd(i, seed * 31 + 9) < 0.14;
-        const c = spawns[(rnd(i, seed * 31 + 10) * NC) | 0];
-        let spx, spy, bend;
-        if (loose) {
-          spx = rnd(i, seed * 31 + 11) * W; spy = rnd(i, seed * 31 + 12) * H;
-          bend = (rnd(i, seed * 31 + 13) - 0.5) * 0.9;
-        } else {
-          const rr = (rnd(i, seed * 31 + 11) + rnd(i, seed * 31 + 14) - 1) * 0.06, aa = rnd(i, seed * 31 + 12) * 6.283;
-          spx = c.x + Math.cos(aa) * rr * W; spy = c.y + Math.sin(aa) * rr * H;
-          bend = c.bend + (rnd(i, seed * 31 + 13) - 0.5) * 0.12;
-        }
-        const dIn = loose ? rnd(i, seed * 31 + 15) : c.d * 0.7 + rnd(i, seed * 31 + 15) * 0.3;
-        const appear = 0.1 + dIn * 0.3, move = appear + 0.12;
-        if (k < appear) continue;
-        if (k < move) { seg(NP + i, 0.75 * smooth(appear, move, k), spx, spy, spx, spy); continue; }
-        const e = clamp01((k - move) / 0.45);
-        if (e >= 1) { seg(i, 0.9, tx, ty, tx, ty); continue; }
-        const mx = (spx + tx) / 2, my = (spy + ty) / 2, ddx = tx - spx, ddy = ty - spy;
-        const len = Math.hypot(ddx, ddy) || 1, pxn = -ddy / len, pyn = ddx / len;
-        const cx = mx + pxn * bend * len, cy = my + pyn * bend * len;
-        const at = uu => {
-          const wob = Math.sin(uu * 9.4 + ph) * 0.018 * len * (1 - uu);
-          return [bz(spx, cx, tx, uu) + pxn * wob, bz(spy, cy, ty, uu) + pyn * wob];
-        };
-        const p1 = at(ease3(e)), p0 = at(ease3(Math.max(0, e - 0.02)));
-        seg(NP + i, 0.7 + 0.2 * e, p0[0], p0[1], p1[0], p1[1]);
-      }
-      for (let s = 0; s < NP * 2; s++) if (!seen[s]) { OFF[s * 2] = OFF[s * 2 + 1] = VEL[s * 2] = VEL[s * 2 + 1] = 0; }
-
-      ctx.lineCap = 'round';
-      ctx.lineWidth = small ? 1.6 : 1.5;
-      ctx.strokeStyle = 'rgb(240 236 228)';
-      for (let b = 0; b < LEVELS; b++) {
-        const arr = buckets[b];
-        if (!arr.length) continue;
-        ctx.globalAlpha = (b + 0.5) / LEVELS;
-        ctx.beginPath();
-        for (let j = 0; j < arr.length; j += 4) { ctx.moveTo(arr[j], arr[j + 1]); ctx.lineTo(arr[j + 2], arr[j + 3]); }
-        ctx.stroke();
-      }
-      ctx.globalAlpha = 1;
-    }
-
-    let raf = 0;
-    function kick() { if (!raf) raf = requestAnimationFrame(frame); }
-    function frame(now) {
-      raf = 0;
-      if (!W || !NP) return;
-      const k = running ? Math.min(1, (now - t0) / DUR()) : 0;
-      render(k);
-      if (running && k >= 1) {
-        running = false; cur = to;
-        const p = pending; pending = null;
-        if (p !== null && p !== cur) setTarget(p);
-        else render(0);
-      }
-      if (running || springsActive) kick();
-    }
-
-    // ---- Which section is in view ----
-    const sections = [...document.querySelectorAll('section[id]')];
-    function activeIcon() {
-      const line = window.innerHeight * 0.45;
-      for (const s of sections) {
-        const r = s.getBoundingClientRect();
-        if (r.top <= line && r.bottom > line) return s.id in SECTION_ICON ? SECTION_ICON[s.id] : -1;
-      }
-      return -1;
-    }
-    let scrollQueued = false;
-    window.addEventListener('scroll', () => {
-      if (scrollQueued) return;
-      scrollQueued = true;
-      requestAnimationFrame(() => { scrollQueued = false; setTarget(activeIcon()); });
-    }, { passive: true });
-    window.addEventListener('resize', () => resize(false));
-    mqSmall.addEventListener && mqSmall.addEventListener('change', () => resize(true));
-
-    window.addEventListener('pointermove', e => {
-      if (e.pointerType !== 'mouse' || small) return;
-      mouse.x = e.clientX; mouse.y = e.clientY; mouse.on = true;
-      const b = iconBox(), m = field.r;
-      if (e.clientX > b.x - m && e.clientX < b.x + b.s + m && e.clientY > b.y - m && e.clientY < b.y + b.s + m) kick();
-    }, { passive: true });
-    document.addEventListener('pointerleave', () => { mouse.on = false; });
-
-    // ---- Phone switch: full flow vs reduced ----
+    // ---- Phone switch: full motion vs reduced ----
     function syncToggle() { if (toggle) toggle.setAttribute('aria-checked', String(reduced())); }
     if (toggle) toggle.addEventListener('click', () => {
       userMode = reduced() ? 'full' : 'reduced';
       try { localStorage.setItem('iconMotion', userMode); } catch (e) {}
       syncToggle();
-      if (reduced() && running) { running = false; pending = null; swapStill(activeIcon()); }
     });
     syncToggle();
-
-    resize(true);
-    cur = activeIcon();
-    kick();
   })();
 </script>
 </body>
