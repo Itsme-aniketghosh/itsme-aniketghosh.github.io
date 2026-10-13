@@ -6093,24 +6093,26 @@ precision highp float;
 uniform vec2 uRes, uM; uniform float uT, uS, uMS, uLo, uHi;
 out vec4 o;
 float h21(vec2 p){ p = fract(p*vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x*p.y); }
-float n2(vec2 p){ vec2 i = floor(p), f = fract(p); vec2 u = f*f*(3.-2.*f);
-  return mix(mix(h21(i), h21(i+vec2(1,0)), u.x), mix(h21(i+vec2(0,1)), h21(i+vec2(1,1)), u.x), u.y); }
+vec2 g2(vec2 p){ float a = 6.2831853 * h21(p); return vec2(cos(a), sin(a)); }
+float n2(vec2 p){ vec2 i = floor(p), f = fract(p); vec2 u = f*f*f*(f*(f*6.-15.)+10.);
+  float a = dot(g2(i), f), b = dot(g2(i+vec2(1,0)), f-vec2(1,0)), c = dot(g2(i+vec2(0,1)), f-vec2(0,1)), d = dot(g2(i+vec2(1,1)), f-vec2(1,1));
+  return .5 + .5*mix(mix(a, b, u.x), mix(c, d, u.x), u.y); }
 float fbm(vec2 p){ float v = 0., a = .5; mat2 m = mat2(1.6, 1.2, -1.2, 1.6);
-  for (int i = 0; i < 5; i++){ v += a*n2(p); p = m*p; a *= .5; } return v; }
+  for (int i = 0; i < 3; i++){ v += a*n2(p); p = m*p; a *= .5; } return v / .875; }
 void main(){
   vec2 uv = gl_FragCoord.xy / uRes; float asp = uRes.x / uRes.y;
   vec2 p = (uv - .5) * vec2(asp, 1.);
   vec2 q = p * 1.25 + vec2(0., -uS * 1.6);
-  float h = fbm(q*1.1 + vec2(uT*.010, -uT*.007)) + .32*fbm(q*2.6 - uT*.008);
+  float h = fbm(q*.95 + vec2(uT*.008, -uT*.006));
   vec2 basin = vec2(asp*.22, -.08);
   h = mix(h, h*.35 + 1.1*dot(p - basin, p - basin) + .18, smoothstep(.15, 1., uS));
   vec2 mp = (uM - .5) * vec2(asp, 1.);
   h -= uMS * .16 * exp(-dot(p - mp, p - mp) / .014);
-  float f = h * mix(13., 24., uS);
+  float f = h * mix(11., 20., uS);
   float g = min(fract(f), 1. - fract(f)) / max(fwidth(f), 1e-4);
-  float line = 1. - smoothstep(.45, 1.4, g);
+  float line = 1. - smoothstep(.3, 1.7, g);
   float major = 1. - step(.5, mod(floor(f + .5), 5.));
-  vec3 lc = mix(vec3(.52, .60, .68), vec3(.86, .76, .60), smoothstep(.25, .95, h));
+  vec3 lc = mix(vec3(.52, .60, .68), vec3(.86, .76, .60), smoothstep(.3, .8, h));
   // Quiet across the content, fuller toward the right margin.
   float quiet = mix(uLo, uHi, smoothstep(.6, 1., uv.x));
   vec3 col = vec3(.047) + vec3(.010, .011, .013) * h + lc * line * mix(.14, .3, major) * quiet;
