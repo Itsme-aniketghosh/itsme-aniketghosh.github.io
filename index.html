@@ -3341,6 +3341,22 @@
       pointer-events: none;
       z-index: -1;
     }
+    /* Little white figures that live on the headings and the resume links. They never take pointer
+       events, so every click reaches the page underneath. While falling they are fixed to the
+       viewport; once landed they sit inside the heading's section or the links row. */
+    .mini {
+      position: fixed; left: 0; top: 0;
+      width: 50px; height: auto; aspect-ratio: 1.2 / 1.25;
+      overflow: visible; pointer-events: none; z-index: 4;
+      filter: drop-shadow(0 0 5px rgb(255 255 255 / 0.3));
+    }
+    .mini.perched { position: absolute; z-index: 2; }
+    .mini line { stroke: #fff; stroke-linecap: round; }
+    .mini circle { fill: #fff; }
+    .contact-links-row { position: relative; }
+    /* A resume link with a figure on it is lit in the landscape's warm contour colour. */
+    .contact-links-row a.lit { color: #dcc299; }
+    .contact-links-row a.lit::after { width: 100%; background: currentColor; }
   </style>
 </head>
 
@@ -6092,18 +6108,27 @@
 <canvas class="loss-bg" id="lossBg" aria-hidden="true"></canvas>
 <script>
   /* ═══════ LOSS LANDSCAPE BACKGROUND ═══════
-     Faint contour lines over a slowly drifting noise surface, drawn on a canvas under
-     the page. Scrolling descends it: a basin forms and the contours tighten toward the
-     end of the page. On desktop the cursor presses a dip into the surface. Phones,
-     reduced motion and Data Saver get a still surface that only redraws on scroll. */
+     Faint contour lines over a slowly drifting noise surface, drawn on a canvas under the page.
+     The field builds as you scroll: denser, faster and wavier toward the end. On desktop the
+     cursor presses a dip into it. Past the middle of the page a small caped figure is pressed
+     into the same height field (a raised plateau shaped like a person, so the existing contour
+     lines bend along its outline). It crosses the screen in passes through empty bands, rippling
+     the landscape, and at Reach Out lands on the paragraph and points at the resumes. Little
+     white figures settle on each section heading and on the two resume links.
+     Nothing rewinds on scroll-up. Phones get the background only; reduced motion and Data Saver
+     get a still surface, with the figures placed rather than animated. */
   ;(function initLossLandscape() {
     const canvas = document.getElementById('lossBg');
     const gl = canvas && canvas.getContext('webgl2', { antialias: false, alpha: false, powerPreference: 'low-power' });
     if (!gl) { if (canvas) canvas.remove(); return; }
 
+    const NSEG = 14, NRIP = 8;
     const FS = `#version 300 es
 precision highp float;
-uniform vec2 uRes, uM; uniform float uT, uS, uMS, uLo, uHi;
+uniform vec2 uRes, uM; uniform float uT, uS, uMS, uLo, uHi, uClock;
+uniform vec4 uSeg[${NSEG}]; uniform float uR[${NSEG}];
+uniform vec3 uHead; uniform vec4 uBox;      // box: centre xy, radius, amplitude
+uniform vec4 uRip[${NRIP}];                 // ripple: centre xy, start time, strength
 out vec4 o;
 float h21(vec2 p){ p = fract(p*vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x*p.y); }
 vec2 g2(vec2 p){ float a = 6.2831853 * h21(p); return vec2(cos(a), sin(a)); }
@@ -6112,28 +6137,60 @@ float n2(vec2 p){ vec2 i = floor(p), f = fract(p); vec2 u = f*f*f*(f*(f*6.-15.)+
   return .5 + .5*mix(mix(a, b, u.x), mix(c, d, u.x), u.y); }
 float fbm(vec2 p){ float v = 0., a = .5; mat2 m = mat2(1.6, 1.2, -1.2, 1.6);
   for (int i = 0; i < 3; i++){ v += a*n2(p); p = m*p; a *= .5; } return v / .875; }
+float sdSeg(vec2 p, vec2 a, vec2 b){ vec2 pa = p - a, ba = b - a; float t = clamp(dot(pa, ba) / dot(ba, ba), 0., 1.); return length(pa - ba*t); }
+float smin(float a, float b, float k){ float h = clamp(.5 + .5*(b - a)/k, 0., 1.); return mix(b, a, h) - k*h*(1. - h); }
 void main(){
   vec2 uv = gl_FragCoord.xy / uRes; float asp = uRes.x / uRes.y;
   vec2 p = (uv - .5) * vec2(asp, 1.);
-  vec2 q = p * 1.25 + vec2(0., -uS * 1.6);
+  float S = uS;
+  // Crescendo: the surface zooms in a little, drifts faster (uT is a scroll-sped phase) and grows swells.
+  vec2 q = p * mix(1.25, 1.55, S) + vec2(0., -S * 1.6);
   float h = fbm(q*.95 + vec2(uT*.008, -uT*.006));
-  vec2 basin = vec2(asp*.22, -.08);
-  h = mix(h, h*.35 + 1.1*dot(p - basin, p - basin) + .18, smoothstep(.15, 1., uS));
+  float swell = sin(dot(p, vec2(2.3, .9)) * mix(1., 1.7, S) - uT*.22 + 4.*h);
+  h += S*S*.075*swell;
   vec2 mp = (uM - .5) * vec2(asp, 1.);
   h -= uMS * .16 * exp(-dot(p - mp, p - mp) / .014);
-  float f = h * mix(11., 20., uS);
+
+  // Ripples: expanding rings that push the contour lines in and out as they pass.
+  float ringGlow = 0.;
+  for (int i = 0; i < ${NRIP}; i++) {
+    vec4 r = uRip[i];
+    float age = uClock - r.z;
+    if (r.w <= 0. || age < 0. || age > 7.) continue;
+    float x = length(p - r.xy) - age * .5;
+    float env = exp(-x*x / .012) * r.w * exp(-age * .55) / (1. + age * 1.5);
+    h += env * sin(x * 48.) * .05;
+    ringGlow += env;
+  }
+  float f = h * mix(11., 23., S);
+
+  // The flyer: a soft plateau in the same height field, so the lines bend along its outline.
+  float fig = 0., edge = 0.;
+  if (uBox.w > .002 && length(p - uBox.xy) < uBox.z) {
+    float d = length(p - uHead.xy) - uHead.z;
+    float k = .045 * (uBox.z - .04);
+    for (int j = 0; j < ${NSEG}; j++) d = smin(d, sdSeg(p, uSeg[j].xy, uSeg[j].zw) - uR[j], k);
+    float w = .008;
+    fig = smoothstep(w, -w, d) * uBox.w;
+    edge = (1. - smoothstep(0., .026, abs(d))) * uBox.w;
+  }
+  // Calm the inside so the silhouette reads, then lift it by ~3.4 contour steps.
+  f = mix(f, f*.3 + 3., fig*.75) + fig * 3.4;
+
   float g = min(fract(f), 1. - fract(f)) / max(fwidth(f), 1e-4);
-  float line = 1. - smoothstep(.3, 1.7, g);
+  float line = 1. - smoothstep(.3, 1.7 + edge*.6, g);
   float major = 1. - step(.5, mod(floor(f + .5), 5.));
   vec3 lc = mix(vec3(.52, .60, .68), vec3(.86, .76, .60), smoothstep(.3, .8, h));
-  // Quiet across the content, fuller toward the right margin.
-  float quiet = mix(uLo, uHi, smoothstep(.6, 1., uv.x));
-  vec3 col = vec3(.047) + vec3(.010, .011, .013) * h + lc * line * mix(.14, .3, major) * quiet;
+  lc = mix(lc, vec3(.93, .82, .64), max(edge, min(1., ringGlow * .8)));
+  float quiet = mix(uLo, uHi, smoothstep(.6, 1., uv.x)) * mix(1., 1.3, S);
+  float a = mix(.14, .3, major) * mix(quiet, 1., edge) * (1. + 2.6*edge + min(1.5, ringGlow * 1.2));
+  vec3 col = vec3(.047) + vec3(.010, .011, .013) * h + lc * line * a + vec3(.93, .82, .64) * fig * .018;
   o = vec4(col, 1.);
 }`;
     const VS = `#version 300 es
 in vec2 a; void main(){ gl_Position = vec4(a, 0., 1.); }`;
-    const mk = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); return s; };
+    const mk = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
+      if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) console.error(gl.getShaderInfoLog(s)); return s; };
     const prog = gl.createProgram();
     gl.attachShader(prog, mk(gl.VERTEX_SHADER, VS));
     gl.attachShader(prog, mk(gl.FRAGMENT_SHADER, FS));
@@ -6142,7 +6199,7 @@ in vec2 a; void main(){ gl_Position = vec4(a, 0., 1.); }`;
     if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) { canvas.remove(); return; }
     gl.useProgram(prog);
     const U = {};
-    ['uRes', 'uM', 'uT', 'uS', 'uMS', 'uLo', 'uHi'].forEach(k => U[k] = gl.getUniformLocation(prog, k));
+    ['uRes', 'uM', 'uT', 'uS', 'uMS', 'uLo', 'uHi', 'uClock', 'uSeg', 'uR', 'uHead', 'uBox', 'uRip'].forEach(k => U[k] = gl.getUniformLocation(prog, k));
     gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
     gl.enableVertexAttribArray(0);
@@ -6152,8 +6209,8 @@ in vec2 a; void main(){ gl_Position = vec4(a, 0., 1.); }`;
     const mqSmall = window.matchMedia('(max-width: 760px)');
     const saveData = !!(navigator.connection && navigator.connection.saveData);
     const still = () => mqReduce.matches || saveData || mqSmall.matches;
+    const placed = () => mqReduce.matches || saveData;   // figures appear in place instead of animating
 
-    // The buffer ignores small height changes so mobile URL bars sliding in and out don't redraw it.
     let W = 0, H = 0;
     function size(force) {
       const w = canvas.clientWidth, h = canvas.clientHeight;
@@ -6163,32 +6220,599 @@ in vec2 a; void main(){ gl_Position = vec4(a, 0., 1.); }`;
       canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
       kick();
     }
+    const asp = () => W / H;
+    const toP = (sx, sy) => [(sx / W - .5) * asp(), .5 - sy / H];
+
+    /* ── Rig ──
+       Local units: feet at (0,0), hip at (0,.52), head top near y = 1. Angle 0 points a limb
+       straight down; positive swings it toward the figure's right (screen-right when upright). */
+    const dir = a => [Math.sin(a), -Math.cos(a)];
+    const up = a => [Math.sin(a), Math.cos(a)];
+    const add = (p, v, s) => [p[0] + v[0]*s, p[1] + v[1]*s];
+    const HIP = [0, .52];
+    const KEYS = ['lean', 'head', 'aL1', 'aL2', 'aR1', 'aR2', 'gL1', 'gL2', 'gR1', 'gR2', 'cape'];
+    const REST = { lean: 0, head: 0, aL1: -.16, aL2: .12, aR1: .16, aR2: -.12, gL1: -.09, gL2: .03, gR1: .09, gR2: -.03, cape: .1 };
+
+    function rig(P, opts = {}) {
+      const hip = HIP;
+      const neck = add(hip, up(P.lean), .29);
+      const across = [Math.cos(P.lean), -Math.sin(P.lean)];
+      const shL = add(add(neck, across, -.085), up(P.lean), -.025), shR = add(add(neck, across, .085), up(P.lean), -.025);
+      const headC = add(neck, up(P.lean + P.head), opts.bigHead ? .13 : .115);
+      const elL = add(shL, dir(P.aL1), .16), hnL = add(elL, dir(P.aL1 + P.aL2), .155);
+      const elR = add(shR, dir(P.aR1), .16), hnR = add(elR, dir(P.aR1 + P.aR2), .155);
+      const hL = add(hip, across, -.04), hR = add(hip, across, .04);
+      const knL = add(hL, dir(P.gL1), .26), ftL = add(knL, dir(P.gL1 + P.gL2), .26);
+      const knR = add(hR, dir(P.gR1), .26), ftR = add(knR, dir(P.gR1 + P.gR2), .26);
+      const segs = [
+        [hip, add(neck, up(P.lean), -.04), .056],
+        [shL, shR, .032],
+        [neck, add(headC, up(P.lean + P.head), -.05), .022],
+        [shL, elL, .03], [elL, hnL, .025],
+        [shR, elR, .03], [elR, hnR, .025],
+        [hL, knL, .039], [knL, ftL, .031],
+        [hR, knR, .039], [knR, ftR, .031],
+      ];
+      if (!opts.noCape) {
+        // Cape: hangs from the shoulders toward the feet and flares by P.cape.
+        const cL = add(shL, dir(P.lean - .22 - P.cape), .36), cR = add(shR, dir(P.lean + .22 + P.cape), .36);
+        segs.push([shL, cL, .022], [shR, cR, .022], [cL, cR, .018]);
+      }
+      return { shL, shR, hnL, hnR, headC, headR: opts.bigHead ? .1 : .07, segs };
+    }
+    // local rig point -> screen p-space, pivoting on the hip
+    function toWorld(F, v) {
+      const c = Math.cos(F.rot), s = Math.sin(F.rot);
+      const x = (v[0] - HIP[0]) * F.sc, y = (v[1] - HIP[1]) * F.sc;
+      return [F.x + x*c - y*s, F.y + x*s + y*c];
+    }
+    function springTo(F, T, dt) {
+      const k = 110, c = 2 * Math.sqrt(k) * .85;
+      for (const key of KEYS) {
+        const acc = k * (T[key] - F.pose[key]) - c * F.vel[key];
+        F.vel[key] += acc * dt; F.pose[key] += F.vel[key] * dt;
+      }
+    }
+    const rnd = (a, b) => a + Math.random() * (b - a);
+
+    /* ── Ripples ── */
+    const rip = new Float32Array(NRIP * 4);
+    let ripNext = 0;
+    function ripple(p, strength, now) {
+      if (placed()) return;
+      rip.set([p[0], p[1], now / 1000, strength], ripNext * 4);
+      ripNext = (ripNext + 1) % NRIP;
+    }
+
+    /* ── Clean-space map ──
+       The viewport is split into a coarse grid and each cell is probed with elementFromPoint: a
+       cell is free only where the probe lands on bare page (a section, main, the body), never on
+       text, a card or the nav. A 3×2 free block is room for the flyer going sideways through a gap. */
+    const BARE = new Set(['HTML', 'BODY', 'MAIN', 'SECTION', 'FOOTER']);
+    const GC = 20, GR = 12;
+    const taken = new Uint8Array(GC * GR), clearMask = new Uint8Array(GC * GR);
+    let clearCells = [], lastGrid = -1e9;
+    function buildGrid(now) {
+      if (now - lastGrid < 200) return;
+      lastGrid = now;
+      taken.fill(0); clearMask.fill(0); clearCells = [];
+      const cw = W / GC, ch = H / GR;
+      for (let y = 0; y < GR; y++) for (let x = 0; x < GC; x++) {
+        for (const fy of [.3, .75]) {
+          const el = document.elementFromPoint((x + .5) * cw, (y + fy) * ch);
+          if (el && !BARE.has(el.tagName)) { taken[y * GC + x] = 1; break; }
+        }
+      }
+      for (let y = 0; y < GR - 1; y++) for (let x = 1; x < GC - 1; x++) {
+        let ok = true;
+        for (let dy = 0; dy <= 1 && ok; dy++) for (let dx = -1; dx <= 1; dx++) if (taken[(y + dy) * GC + x + dx]) { ok = false; break; }
+        if (ok) { clearMask[y * GC + x] = 1; clearCells.push(y * GC + x); }
+      }
+    }
+    const cellP = n => toP(((n % GC) + .5) * W / GC, (Math.floor(n / GC) + 1) * H / GR);
+
+    /* ── The flyer ── */
+    const F = {
+      sc: .15, amp: 0, alive: false, state: 'away', dir: 1, pass: null, nextPass: 0,
+      x: 0, y: -.8, vx: 0, vy: 0, rot: 0, wasOff: true, nextWake: 0, landedAt: 0,
+      pose: { ...REST }, vel: Object.fromEntries(KEYS.map(k => [k, 0])),
+    };
+    const S = { stage: 'crescendo', finale: false };
+    const para = document.querySelector('.contact-sub');
+    const contactHeading = document.querySelector('.contact-heading');
+    const resumeLinks = ['resume.pdf', 'resume-safety.pdf']
+      .map(href => document.querySelector(`.contact-links-row a[href="${href}"]`)).filter(Boolean);
+    if (!para || !contactHeading || resumeLinks.length < 2) { canvas.remove(); return; }
+
+    /* Flying = passes. The flyer crosses the screen edge to edge through the emptiest horizontal
+       band, disappears, waits a few seconds, then crosses back the other way. If no band is clear
+       enough (the view is crowded) it just waits off-screen. */
+    const isOff = () => Math.abs(F.x) > asp() / 2 + F.sc * .7 || Math.abs(F.y) > .5 + F.sc * .7;
+    const edgeX = () => asp() / 2 + F.sc * .9;
+    function clearBand() {
+      let best = -1, bc = 0;
+      for (let y = 1; y < GR - 2; y++) {
+        let c = 0;
+        for (let x = 1; x < GC - 1; x++) c += clearMask[y * GC + x];
+        if (c > bc) { bc = c; best = y; }
+      }
+      return bc >= (GC - 2) * .6 ? cellP(best * GC)[1] : null;
+    }
+    function startPass(now) {
+      const y = clearBand();
+      if (y === null) { F.nextPass = now + 800; return; }
+      F.dir = -(F.dir || -1);   // alternate: left-to-right, then right-to-left
+      F.pass = { y, t0: now, hoverAt: Math.random() < .7 ? rnd(.35, .65) : null, hoverT: null };
+      F.x = -F.dir * edgeX(); F.y = y; F.vx = F.dir * .5; F.vy = 0;
+    }
+    function spawn(now) {
+      F.alive = true; F.state = 'flying';
+      F.dir = Math.random() < .5 ? 1 : -1; F.pass = null; F.nextPass = now;
+      F.x = -F.dir * edgeX() * 1.2; F.y = 0;
+    }
+    // Landing spot: feet on top of the Reach Out paragraph, near its left end (the centred heading
+    // overhangs the paragraph's right end, so the left is the clear side).
+    function landingSpot() {
+      const r = para.getBoundingClientRect();
+      const feet = toP(r.left + 34, r.top - 2);
+      return [feet[0], feet[1] + HIP[1] * F.sc];
+    }
+
+    function steer(now, dt) {
+      if (F.state === 'landed') {
+        // stands on the paragraph and moves with it when the page scrolls
+        const [x, y] = landingSpot(); F.x = x; F.y = y; F.vx = F.vy = 0; F.rot = 0;
+        return;
+      }
+      let tx, ty, speed;
+      if (F.state === 'landing') {
+        [tx, ty] = landingSpot();
+        const d = Math.hypot(tx - F.x, ty - F.y);
+        speed = Math.min(.75, .1 + d * 2.2);
+        if (d < .02) {
+          F.state = 'landed'; F.landedAt = now;
+          ripple([tx, ty - HIP[1] * F.sc], 2.2, now);
+          return;
+        }
+      } else {
+        if (!F.pass) {                       // waiting off-screen between passes
+          F.vx = F.vy = 0;
+          if (now > F.nextPass) startPass(now);
+          if (!F.pass) return;
+        }
+        // A shallow glide: rises a little toward mid-screen and settles again, with a slow bob.
+        // A slow S-shaped glide across the band. On most passes he stops partway, hovers upright,
+        // waves at the visitor, then carries on.
+        const P = F.pass, el = (now - P.t0) / 1000;
+        const across = Math.min(1, Math.max(0, (F.dir * F.x + edgeX()) / (2 * edgeX())));
+        if (P.hoverAt != null && P.hoverT == null && across >= P.hoverAt) { P.hoverT = now; ripple([F.x, F.y], .8, now); }
+        if (P.hoverT != null && now - P.hoverT < 2600) {
+          F.vx *= Math.max(0, 1 - dt * 3); F.vy *= Math.max(0, 1 - dt * 3);
+          F.x += F.vx * dt; F.y += (P.y + .012 * Math.sin(el * 2) - F.y) * Math.min(1, dt * 2);
+          let diff = -F.rot; diff = Math.atan2(Math.sin(diff), Math.cos(diff));
+          F.rot += diff * Math.min(1, dt * 3);
+          return;
+        }
+        tx = F.x + F.dir * .4; ty = P.y + .04 * Math.sin(across * Math.PI * 2) + .01 * Math.sin(el * 1.6);
+        speed = .36;
+        if (F.dir * F.x > edgeX()) { F.pass = null; F.nextPass = now + rnd(1500, 3000); return; }
+      }
+      const dx = tx - F.x, dy = ty - F.y, d = Math.hypot(dx, dy) || 1;
+      const k = Math.min(1, dt * (F.state === 'landing' ? 3.5 : 1.4));
+      F.vx += (dx / d * speed - F.vx) * k; F.vy += (dy / d * speed - F.vy) * k;
+      F.x += F.vx * dt; F.y += F.vy * dt;
+
+      // Flies head-first; swings upright for the touchdown.
+      const sp = Math.hypot(F.vx, F.vy);
+      const nearLand = F.state === 'landing' && Math.hypot(tx - F.x, ty - F.y) < .12;
+      const want = nearLand || sp < .06 ? 0 : Math.atan2(-F.vx, F.vy);
+      let diff = want - F.rot; diff = Math.atan2(Math.sin(diff), Math.cos(diff));
+      F.rot += diff * Math.min(1, dt * (nearLand ? 4 : 2.5));
+
+      // Ripples: a splash on entering the frame, then a wake behind it.
+      const off = isOff();
+      if (F.wasOff && !off) ripple([F.x, F.y], 1.2, now);
+      F.wasOff = off;
+      if (!off && sp > .15 && now > F.nextWake) { ripple([F.x - F.vx * .25, F.y - F.vy * .25], .45, now); F.nextWake = now + 420; }
+    }
+
+    function linkTarget() {
+      const a = resumeLinks[0].getBoundingClientRect(), b = resumeLinks[resumeLinks.length - 1].getBoundingClientRect();
+      return toP((Math.min(a.left, b.left) + Math.max(a.right, b.right)) / 2, (a.top + b.bottom) / 2);
+    }
+    function targets(now) {
+      const T = { ...REST };
+      const t = now / 1000;
+      if (F.state === 'landed') {
+        const age = (now - F.landedAt) / 1000;
+        T.cape = .06 + .05 * Math.sin(t * 2.6);
+        T.gL1 = -.16; T.gR1 = .16; T.gL2 = .06; T.gR2 = -.06;   // wide hero stance
+        if (age < 1.6) {
+          // hands on hips, chin up
+          T.aL1 = -.62; T.aL2 = 2.0; T.aR1 = .62; T.aR2 = -2.0; T.head = .06 * Math.sin(age * 3);
+          if (age < .25) { T.gL2 = .5; T.gR2 = -.5; T.gL1 = -.35; T.gR1 = .35; }   // knees soak up the landing
+          return T;
+        }
+        // then points down at the resume links, the other hand stays on the hip
+        // with whichever arm faces the links
+        const tp = linkTarget(), r = rig(F.pose), right = tp[0] > F.x, sh = toWorld(F, right ? r.shR : r.shL);
+        const aim = Math.atan2(tp[0] - sh[0], -(tp[1] - sh[1]));
+        const tap = Math.max(0, Math.sin(((age - 1.6) % 2.4) / .6 * Math.PI)) * .2 * ((age - 1.6) % 2.4 < .6);
+        if (right) { T.aR1 = Math.min(2.8, Math.max(.15, aim)); T.aR2 = .03 + tap; T.aL1 = -.62; T.aL2 = 2.0; T.head = .14; T.lean = .04; }
+        else { T.aL1 = Math.max(-2.8, Math.min(-.15, aim)); T.aL2 = -.03 - tap; T.aR1 = .62; T.aR2 = -2.0; T.head = -.14; T.lean = -.04; }
+        return T;
+      }
+      // Mid-pass hover: upright, legs loose, waving at the visitor with the arm away from where he's headed.
+      const P = F.pass;
+      if (P && P.hoverT != null && now - P.hoverT < 2600) {
+        const h = (now - P.hoverT) / 1000;
+        T.cape = .08 + .05 * Math.sin(t * 3);
+        T.gL1 = -.06; T.gL2 = .18 + .06 * Math.sin(t * 2); T.gR1 = .06; T.gR2 = .22 + .06 * Math.sin(t * 2 + 1);
+        T.head = .1 * Math.sin(h * 1.5);
+        if (h > .5 && h < 2.2) {
+          if (F.dir > 0) { T.aL1 = -2.4; T.aL2 = -.5 - .45 * Math.sin(h * 9); }
+          else { T.aR1 = 2.4; T.aR2 = .5 + .45 * Math.sin(h * 9); }
+        }
+        return T;
+      }
+      // Superman: one fist forward, other arm along the side, legs together with a little kick.
+      const kick = .1 * Math.sin(t * 7);
+      T.aL1 = -2.95; T.aL2 = 0; T.aR1 = .3 + .05 * Math.sin(t * 2); T.aR2 = -.08;
+      T.gL1 = -.03 + kick; T.gL2 = .1; T.gR1 = .03 - kick; T.gR2 = .1;
+      T.cape = .2 + .16 * Math.sin(t * 13);
+      T.head = .05 * Math.sin(t * .8);
+      return T;
+    }
+
+
+    /* ── Little white figures ──
+       Small figures that live on the page's words. Each one drops in from above the screen the
+       first time its spot comes into view, lands, and from then on stays there (scrolling with the
+       page; nothing rewinds). Each has a habit:
+         stand  on top of the words; walks to a new spot now and then
+         sit    on the top edge, legs dangling over the letters; hops to a new spot now and then
+         hang   by its hands from the baseline, swinging; moves hand over hand
+         lean   against the end of the word, arms folded on the last letter, legs crossed
+       Two of them belong to the resume links and may also hop over to the other link; those two
+       arrive after the caped flyer lands. They never take clicks; those reach the page underneath. */
+    const MINI_W = 50, MINI_VB = [-.6, -.05, 1.2, 1.25];
+    const MINI_UNIT = MINI_W / MINI_VB[2], HIP_FRAC = (MINI_VB[3] + MINI_VB[1] - HIP[1]) / MINI_VB[3];
+    const SVGNS = 'http://www.w3.org/2000/svg';
+    const HANG = { ...REST, aL1: -2.9, aL2: 0, aR1: 2.9, aR2: 0 };
+    const MINI_OPTS = { bigHead: true, noCape: true };
+
+    // A host is a run of text a figure can live on: its box, where its letters' tops are and its baseline.
+    const linkHost = a => ({ el: a, rect: () => a.getBoundingClientRect(), top: r => r.top, base: r => r.bottom - 1 });
+    function headingHost(h) {
+      // Width comes from the letters, height from the heading's own box: the letters slide up into
+      // place when the heading reveals, so their boxes can sit lower for a moment.
+      const range = document.createRange(); range.selectNodeContents(h);
+      const rect = () => {
+        const t = range.getBoundingClientRect(), b = h.getBoundingClientRect();
+        return { left: t.left, right: t.right, width: t.width, top: b.top, bottom: b.bottom, height: b.height };
+      };
+      // a display face's line box has room above the capitals and below the baseline
+      return { el: h, rect, top: r => r.top + r.height * .17, base: r => r.bottom - r.height * .2 };
+    }
+    function makeFigure(o) {
+      return {
+        hi: 0, pos: 0, move: null, nextMove: 0, state: 'idle', t0: 0, landT: 0, hover: false, rel: [0, 0],
+        pose: { ...REST }, vel: Object.fromEntries(KEYS.map(key => [key, 0])), el: null, lines: [], head: null,
+        seed: rnd(0, 10), ...o, home: { hi: o.hi || 0, pos: o.pos || 0 },
+      };
+    }
+    const host = m => m.hosts[m.hi];
+
+    // The resume pair.
+    const linkRow = document.querySelector('.contact-links-row');
+    const resumeHosts = resumeLinks.map(linkHost);
+    const minis = resumeLinks.map((a, k) => makeFigure({
+      group: 'resume', hosts: resumeHosts, hi: k, pos: k === 0 ? 0 : 1, mode: k === 0 ? 'stand' : 'hang', container: linkRow,
+    }));
+    minis.forEach(m => resumeLinks.forEach(link => {
+      const on = v => () => { if (link === host(m).el) m.hover = v; };
+      link.addEventListener('mouseenter', on(true)); link.addEventListener('mouseleave', on(false));
+      link.addEventListener('focus', on(true)); link.addEventListener('blur', on(false));
+    }));
+    const updateLit = () => resumeLinks.forEach(a => a.classList.toggle('lit', minis.some(m => m.state === 'perched' && host(m).el === a)));
+
+    // One figure per section heading, each with its own habit.
+    const HEADING_MODES = ['sit', 'lean', 'stand', 'hang', 'sit', 'stand', 'lean'];
+    const headingFigs = Array.from(document.querySelectorAll('.section-heading')).map((h, i) => {
+      const mode = HEADING_MODES[i % HEADING_MODES.length];
+      return makeFigure({
+        group: 'heading' + i, hosts: [headingHost(h)], mode, container: h.closest('section'),
+        pos: mode === 'lean' ? 1 : rnd(.2, .8),
+      });
+    });
+    const allFigs = minis.concat(headingFigs);
+
+    function makeMini(m) {
+      const svg = document.createElementNS(SVGNS, 'svg');
+      svg.setAttribute('viewBox', MINI_VB.join(' '));
+      svg.setAttribute('class', 'mini');
+      svg.setAttribute('aria-hidden', 'true');
+      m.lines = rig(REST, MINI_OPTS).segs.map(() => { const l = document.createElementNS(SVGNS, 'line'); svg.appendChild(l); return l; });
+      m.head = document.createElementNS(SVGNS, 'circle'); svg.appendChild(m.head);
+      m.el = svg;
+    }
+    function drawMini(m) {
+      const r = rig(m.pose, MINI_OPTS), Y = y => MINI_VB[3] + 2 * MINI_VB[1] - y;
+      r.segs.forEach(([a, b, w], j) => {
+        const l = m.lines[j];
+        l.setAttribute('x1', a[0].toFixed(3)); l.setAttribute('y1', Y(a[1]).toFixed(3));
+        l.setAttribute('x2', b[0].toFixed(3)); l.setAttribute('y2', Y(b[1]).toFixed(3));
+        l.setAttribute('stroke-width', (w * 2.4).toFixed(3));
+      });
+      m.head.setAttribute('cx', r.headC[0].toFixed(3)); m.head.setAttribute('cy', Y(r.headC[1]).toFixed(3)); m.head.setAttribute('r', r.headR);
+    }
+    // A hanging figure is placed by its hands (also its swing pivot); every other one by its hip.
+    const HANG_FRAC = (MINI_VB[3] + MINI_VB[1] - rig(HANG, MINI_OPTS).hnL[1]) / MINI_VB[3];
+    function placeMini(m, x, y, deg, sy = 1) {
+      const frac = m.mode === 'hang' ? HANG_FRAC : HIP_FRAC;
+      if (m.mode === 'hang') m.el.style.transformOrigin = `50% ${frac * 100}%`;
+      m.el.style.transform = `translate(${x}px, ${y}px) translate(-50%, -${frac * 100}%) rotate(${deg}deg) scale(${1 / sy}, ${sy})`;
+    }
+    // Screen point a figure's anchor sits at, for its host and its spot (pos 0..1) along it.
+    function miniLanding(m) {
+      const H = host(m), r = H.rect(), top = H.top(r), base = H.base(r);
+      const along = pad => r.left + pad + (r.width - 2 * pad) * m.pos;
+      switch (m.mode) {
+        case 'stand': return [along(10), top - 2 - HIP[1] * MINI_UNIT];
+        case 'sit':   return [along(14), top + 3];
+        case 'lean':  return [r.right + 15, base - HIP[1] * MINI_UNIT];
+        default:      return [along(22), base];
+      }
+    }
+
+    function miniPose(m, t) {
+      const T = { ...REST };
+      if (m.state === 'falling') {
+        T.aL1 = -2.6 + .3 * Math.sin(t * 20); T.aR1 = 2.6 - .3 * Math.sin(t * 20);   // arms flailing up
+        T.gL1 = -.25; T.gR1 = .25; T.gL2 = .3; T.gR2 = -.3;
+        return T;
+      }
+      const tt = t + m.seed, waving = !m.move && tt % 8 > 6.4;   // a wave every so often
+      const wave = () => { T.aR1 = 2.45; T.aR2 = .5 + .45 * Math.sin(t * 9); };
+      const u = m.move ? (performance.now() - m.move.t0) / 1000 / m.move.dur : 0;
+
+      if (m.mode === 'hang') {
+        // both hands on the words, legs kicking; faster kicks on hover
+        const k = m.hover ? 11 : 3.2, a = m.hover ? .35 : .18;
+        Object.assign(T, HANG);
+        T.gL1 = -.06 + a * Math.sin(t * k); T.gL2 = .2 + .15 * Math.sin(t * k + 1);
+        T.gR1 = .06 - a * Math.sin(t * k); T.gR2 = -.2 - .15 * Math.sin(t * k + 1);
+        T.head = .12 * Math.sin(t * 1.3);
+        if (m.move) {
+          // Monkey bars, one swing per step: the leading hand lets go and reaches ahead at the top of
+          // the swing while the other holds on, then the trailing hand catches up. Legs swing with the body.
+          const dir = Math.sign(m.move.to[0] - m.move.from[0]) || 1;
+          const f = (u * m.move.steps) % 1, reach = Math.sin(Math.min(1, f / .6) * Math.PI);
+          const follow = Math.max(0, Math.sin((f - .55) / .45 * Math.PI)) * (f > .55);
+          if (dir > 0) { T.aR1 = 2.9 - .75 * reach; T.aR2 = -.35 * reach; T.aL1 = -2.9 + .35 * follow; T.aL2 = .3 * follow; }
+          else { T.aL1 = -2.9 + .75 * reach; T.aL2 = .35 * reach; T.aR1 = 2.9 - .35 * follow; T.aR2 = -.3 * follow; }
+          const legs = -dir * .32 * Math.sin(f * Math.PI * 2);
+          T.gL1 = -.06 + legs; T.gR1 = .06 + legs; T.gL2 = .45; T.gR2 = -.45 + .1;
+          T.head = dir * .12;
+        }
+        return T;
+      }
+      if (m.move && m.move.walk) {
+        // walking along the top of the letters
+        const ph = u * m.move.steps * Math.PI * 2, s = Math.sin(ph);
+        T.gL1 = -.05 + .32 * s; T.gL2 = .25 * Math.max(0, -s); T.gR1 = .05 - .32 * s; T.gR2 = -.25 * Math.max(0, s);
+        T.aL1 = -.15 - .3 * s; T.aR1 = .15 - .3 * s; T.aL2 = .2; T.aR2 = -.2;
+        T.head = .05 * Math.sin(ph * .5);
+        return T;
+      }
+      if (m.move) {
+        // tucked hop
+        T.aL1 = -2.4; T.aR1 = 2.4; T.gL1 = -.45; T.gL2 = 1.1; T.gR1 = .45; T.gR2 = -1.1;
+        return T;
+      }
+      if (m.hover) {
+        T.aL1 = -2.7 + .2 * Math.sin(t * 14); T.aR1 = 2.7 - .2 * Math.sin(t * 14); T.aL2 = T.aR2 = 0;
+        return T;
+      }
+      if (m.mode === 'sit') {
+        // thighs over the edge, shins swinging, hands on the ledge
+        T.gL1 = -1.4; T.gL2 = 1.4 + .3 * Math.sin(t * 3); T.gR1 = 1.4; T.gR2 = -1.4 - .3 * Math.sin(t * 3 + 1.4);
+        T.aL1 = -.55; T.aL2 = .5; T.aR1 = .55; T.aR2 = -.5;
+        T.head = .14 * Math.sin(tt * .6);
+        if (waving) wave();
+        return T;
+      }
+      if (m.mode === 'lean') {
+        // leaning back against the last letter, elbow up on it, ankles crossed
+        T.lean = -.2; T.aL1 = -2.1; T.aL2 = -1.0; T.aR1 = .5; T.aR2 = -1.7;
+        T.gL1 = .14; T.gL2 = -.05; T.gR1 = -.04; T.gR2 = .05;
+        T.head = -.1 + .1 * Math.sin(tt * .5);
+        if (waving) wave();
+        return T;
+      }
+      // stand
+      if (m.group === 'resume') {
+        if (m.pos < .5) { T.aR1 = 1.85 + .08 * Math.sin(t * 5); T.aR2 = -.05; T.aL1 = -.55; T.aL2 = 1.9; T.head = .12 + .08 * Math.sin(t * 1.6); T.lean = .05; }
+        else { T.aL1 = -1.85 - .08 * Math.sin(t * 5); T.aL2 = .05; T.aR1 = .55; T.aR2 = -1.9; T.head = -.12 - .08 * Math.sin(t * 1.6); T.lean = -.05; }
+        return T;
+      }
+      // on a heading: hands on hips, looking around
+      T.aL1 = -.55; T.aL2 = 1.9; T.aR1 = .55; T.aR2 = -1.9;
+      T.head = .18 * Math.sin(tt * .7);
+      if (waving) { wave(); T.aR2 = .5 + .45 * Math.sin(t * 9); }
+      return T;
+    }
+
+    // Wander to a new spot (resume figures sometimes cross to the other link). Leaners stay put.
+    function clearBelow(m) {
+      const [x, y] = miniLanding(m);
+      for (const dy of [22, 34, 46]) {
+        const el = document.elementFromPoint(x, y + dy);
+        if (el && el.closest('a, p, li, h1, h2, h3, button')) return false;
+      }
+      return true;
+    }
+    function wander(m, now) {
+      if (m.mode === 'lean') { m.nextMove = now + 1e9; return; }
+      const c = m.container.getBoundingClientRect(), from = m.rel.slice(), hiBefore = m.hi, posBefore = m.pos;
+      if (m.hosts.length > 1 && Math.random() < .5) { m.hi = (m.hi + 1) % m.hosts.length; m.pos = rnd(.1, .9); }
+      else { let p; do p = rnd(0, 1); while (Math.abs(p - m.pos) < .3); m.pos = p; }
+      // a hanging figure's legs must not dangle over words below (the links row can wrap)
+      if (m.mode === 'hang') {
+        for (let i = 0; i < 10 && !clearBelow(m); i++) m.pos = rnd(0, 1);
+        if (!clearBelow(m)) { m.hi = hiBefore; m.pos = posBefore; m.nextMove = now + 3000; return; }
+      }
+      m.hover = false;
+      const [x, y] = miniLanding(m), to = [x - c.left, y - c.top];
+      if (m.group === 'resume') updateLit();
+      if (placed()) { m.rel = to; m.landT = now; kick(); return; }
+      const dist = Math.abs(to[0] - from[0]);
+      const walk = m.mode === 'stand' && m.hi === hiBefore;
+      const hang = m.mode === 'hang';
+      m.move = {
+        from, to, t0: now, walk, hop: 30 + dist * .12,
+        steps: hang ? Math.max(2, Math.round(dist / 24)) : Math.max(2, Math.round(dist / 14)),
+        dur: hang ? Math.max(2, Math.round(dist / 24)) * .6 : walk ? Math.max(.7, dist / 45) : .45 + dist / 500,
+      };
+      kick();
+    }
+    function dropMini(m, now) {
+      makeMini(m);
+      document.body.appendChild(m.el);
+      m.t0 = now; m.state = 'falling';
+      Object.assign(m.pose, miniPose(m, 0));
+      drawMini(m);
+    }
+    // A landed figure lives in its container (the links row, or the heading's section), next to the
+    // words rather than inside them, so it scrolls with them and never takes their clicks.
+    function perch(m, now) {
+      const c = m.container.getBoundingClientRect(), [x, y] = miniLanding(m);
+      m.el.classList.add('perched');
+      m.container.appendChild(m.el);
+      m.state = 'perched'; m.landT = now; m.rel = [x - c.left, y - c.top];
+      m.nextMove = now + rnd(4000, 8000); m.swingKick = 16;   // the catch sets it swinging
+      if (m.group === 'resume') updateLit();
+    }
+    function arrive(m, now) {
+      if (m.mode === 'hang') for (let i = 0; i < 10 && !clearBelow(m); i++) m.pos = rnd(0, 1);
+      if (placed()) { makeMini(m); document.body.appendChild(m.el); perch(m, now); m.pose = miniPose(m, 0); drawMini(m); placeMini(m, m.rel[0], m.rel[1], 0); }
+      else dropMini(m, now);
+    }
+    function updateMini(m, now, dt) {
+      if (m.state === 'idle') return;
+      const t = (now - (m.state === 'perched' ? m.landT : m.t0)) / 1000;
+      if (m.state === 'falling') {
+        const DUR = .85, u = Math.min(1, t / DUR);
+        const to = miniLanding(m), fromY = -60;
+        const y = fromY + (to[1] - fromY) * u * u;               // gravity
+        placeMini(m, to[0] + 6 * Math.sin(t * 9) * (1 - u), y, 10 * Math.sin(t * 7) * (1 - u));
+        springTo(m, miniPose(m, t), dt); drawMini(m);
+        if (u >= 1) perch(m, now);
+        return;
+      }
+      if (still()) Object.assign(m.pose, miniPose(m, t)); else springTo(m, miniPose(m, t), dt);
+      drawMini(m);
+      if (m.move) {
+        const u = Math.min(1, (now - m.move.t0) / 1000 / m.move.dur), e = m.move.walk ? u : u * u * (3 - 2 * u);
+        const x = m.move.from[0] + (m.move.to[0] - m.move.from[0]) * e;
+        if (m.mode === 'hang') {
+          // advance in bursts, one per swing, with the body swinging forward on each
+          const n = m.move.steps, k = Math.min(n - 1, Math.floor(u * n)), f = u >= 1 ? 1 : (u * n) % 1;
+          const g = f < .6 ? 0 : (f - .6) / .4, ease = g * g * (3 - 2 * g);
+          const dir = Math.sign(m.move.to[0] - m.move.from[0]) || 1;
+          const hx = m.move.from[0] + (m.move.to[0] - m.move.from[0]) * (u >= 1 ? 1 : (k + ease) / n);
+          placeMini(m, hx, m.move.from[1], -dir * 16 * Math.sin(f * Math.PI));
+        }
+        else if (m.move.walk) placeMini(m, x, m.move.from[1] - 1.5 * Math.abs(Math.sin(u * m.move.steps * Math.PI)), 0);
+        else {
+          const dirn = Math.sign(m.move.to[0] - m.move.from[0]);
+          const lift = m.mode === 'sit' ? HIP[1] * MINI_UNIT * Math.sin(u * Math.PI) : 0;   // sitters stand up to hop
+          placeMini(m, x, m.move.from[1] - m.move.hop * 4 * u * (1 - u) - lift, dirn * 10 * Math.sin(u * Math.PI));
+        }
+        if (u >= 1) { m.rel = m.move.to; m.move = null; m.landT = now; m.swingKick = 0; m.nextMove = now + rnd(4000, 9000); }
+        return;
+      }
+      // one at a time within a group: if a partner is mid-move, wait a beat
+      if (!placed() && now > m.nextMove) {
+        if (allFigs.some(o => o !== m && o.group === m.group && o.move)) m.nextMove = now + 1200; else { wander(m, now); return; }
+      }
+      if (m.mode === 'hang') {
+        // the catch sets it swinging; it settles into a lazy sway (bigger while hovered)
+        const swing = ((m.swingKick || 0) * Math.exp(-t * 1.1) + (m.hover ? 12 : 5) * Math.min(1, t)) * Math.sin(t * 2.6);
+        placeMini(m, m.rel[0], m.rel[1], still() ? 0 : swing);
+        return;
+      }
+      const squash = t < .4 ? 1 - .3 * Math.sin(t / .4 * Math.PI) * Math.exp(-t * 3) : 1;
+      placeMini(m, m.rel[0], m.rel[1], 0, squash);
+    }
+
 
     const mouse = { x: .5, y: .5, tx: .5, ty: .5, s: 0, last: -1e9 };
-    let t0 = performance.now(), frozenT = 0, raf = 0;
+    const seg = new Float32Array(NSEG * 4), rad = new Float32Array(NSEG);
+    let raf = 0, last = performance.now(), phase = 0;
     function kick() { if (!raf) raf = requestAnimationFrame(frame); }
     function frame(now) {
       raf = 0;
       size(false);
+      const dt = Math.min(1 / 30, (now - last) / 1000); last = now;
       const calm = still();
-      const t = calm ? frozenT : (now - t0) / 1000;
-      if (!calm) frozenT = t;
       const docH = document.documentElement.scrollHeight - window.innerHeight;
       const s = docH > 0 ? Math.min(1, Math.max(0, window.scrollY / docH)) : 0;
+      if (!calm) phase += dt * (1 + 2.2 * s * s);
       mouse.x += (mouse.tx - mouse.x) * .12;
       mouse.y += (mouse.ty - mouse.y) * .12;
-      const want = !calm && now - mouse.last < 1500 ? 1 : 0;
-      mouse.s += (want - mouse.s) * .05;
+      mouse.s += ((!calm && now - mouse.last < 1500 ? 1 : 0) - mouse.s) * .05;
+      const vh = window.innerHeight;
+      const show = !mqSmall.matches;
+      buildGrid(now);
+
+      // Stage machine: forward only.
+      if (show && S.stage === 'crescendo' && s > .42) { S.stage = 'flying'; spawn(now); }
+      if (show && !S.finale && (contactHeading.getBoundingClientRect().top < vh * .4 || s > .97)) {
+        S.finale = true;
+        if (!F.alive) spawn(now);
+        F.state = 'landing'; F.pass = null; S.stage = 'flying';
+        if (placed()) { const [x, y] = landingSpot(); F.x = x; F.y = y; F.state = 'landed'; F.landedAt = now - 1600; }
+      }
+
+      if (F.alive) {
+        F.amp = calm ? 1 : Math.min(1, F.amp + dt / 1.2);
+        steer(now, dt);
+        const T = targets(now);
+        if (calm) Object.assign(F.pose, T); else springTo(F, T, dt);
+      }
+      // The resume pair drops once the flyer starts pointing.
+      if (show && F.state === 'landed') {
+        const age = (now - F.landedAt) / 1000;
+        minis.forEach((m, k) => { if (m.state === 'idle' && age >= 2.1 + k * .45) arrive(m, now); });
+      }
+      // Each heading's figure drops in the first time its heading has revealed and is well in view.
+      if (show) headingFigs.forEach(m => {
+        if (m.state !== 'idle') return;
+        const h = host(m).el, head = h.closest('.section-head');
+        if (head && !head.classList.contains('in-view')) return;
+        const r = h.getBoundingClientRect();
+        if (r.top < vh * .72 && r.bottom > 0) arrive(m, now);
+      });
+      allFigs.forEach(m => updateMini(m, now, dt));
+
+      const r = rig(F.pose), G = F;
+      r.segs.forEach(([a, b, w], j) => { const A = toWorld(G, a), B = toWorld(G, b); seg.set([A[0], A[1], B[0], B[1]], j * 4); rad[j] = w * F.sc * 1.35; });
+      const hc = toWorld(G, r.headC);
 
       gl.viewport(0, 0, canvas.width, canvas.height);
       gl.uniform2f(U.uRes, canvas.width, canvas.height);
-      gl.uniform2f(U.uM, mouse.x, mouse.y);
-      gl.uniform1f(U.uT, t); gl.uniform1f(U.uS, s); gl.uniform1f(U.uMS, mouse.s);
+      gl.uniform1f(U.uT, phase); gl.uniform1f(U.uS, s); gl.uniform1f(U.uClock, now / 1000);
+      gl.uniform2f(U.uM, mouse.x, mouse.y); gl.uniform1f(U.uMS, mouse.s);
       if (mqSmall.matches) { gl.uniform1f(U.uLo, .45); gl.uniform1f(U.uHi, .45); }
       else { gl.uniform1f(U.uLo, .5); gl.uniform1f(U.uHi, 1); }
+      gl.uniform4fv(U.uSeg, seg); gl.uniform1fv(U.uR, rad);
+      gl.uniform3f(U.uHead, hc[0], hc[1], r.headR * F.sc);
+      gl.uniform4f(U.uBox, F.x, F.y, F.sc * .85 + .04, show && F.alive ? F.amp : 0);
+      gl.uniform4fv(U.uRip, rip);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
 
-      // Keep drifting only when motion is allowed; otherwise wait for the next scroll.
+      // Keep animating only when motion is allowed; otherwise wait for the next scroll.
       if (!calm || mouse.s > .01) kick();
     }
 
@@ -6197,7 +6821,6 @@ in vec2 a; void main(){ gl_Position = vec4(a, 0., 1.); }`;
     if ('ResizeObserver' in window) new ResizeObserver(() => size(false)).observe(canvas);
     else window.addEventListener('resize', () => size(false));
     if (mqSmall.addEventListener) mqSmall.addEventListener('change', () => size(true));
-    if (mqReduce.addEventListener) mqReduce.addEventListener('change', () => { t0 = performance.now() - frozenT * 1000; kick(); });
     window.addEventListener('pointermove', e => {
       if (e.pointerType !== 'mouse' || still()) return;
       mouse.tx = e.clientX / window.innerWidth;
