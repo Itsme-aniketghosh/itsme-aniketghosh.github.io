@@ -3353,6 +3353,17 @@
     .mini.perched { position: absolute; z-index: 2; }
     .mini line { stroke: #fff; stroke-linecap: round; }
     .mini circle { fill: #fff; }
+    /* The door a heading's figure walks out of: a black leaf in a faint frame that swings open
+       onto a white doorway, then shuts and fades. Script drives the swing, glow and fade. */
+    .mini-door {
+      position: absolute; left: 0; top: 0;
+      width: 34px; height: 62px;
+      background: #fff;
+      border: 1.5px solid rgb(255 255 255 / 0.55); border-bottom: 0;
+      perspective: 140px;
+      pointer-events: none; z-index: 1; opacity: 0;
+    }
+    .mini-door i { position: absolute; inset: 0; background: #050505; transform-origin: left center; }
     .contact-links-row { position: relative; }
     /* A resume link with a figure on it is lit in the landscape's warm contour colour. */
     .contact-links-row a.lit { color: #dcc299; }
@@ -6128,6 +6139,7 @@ precision highp float;
 uniform vec2 uRes, uM; uniform float uT, uS, uMS, uLo, uHi, uClock;
 uniform vec4 uSeg[${NSEG}]; uniform float uR[${NSEG}];
 uniform vec3 uHead; uniform vec4 uBox;      // box: centre xy, radius, amplitude
+uniform float uGlow;                        // brightens his outline while he waves
 uniform vec4 uRip[${NRIP}];                 // ripple: centre xy, start time, strength
 out vec4 o;
 float h21(vec2 p){ p = fract(p*vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x*p.y); }
@@ -6183,7 +6195,7 @@ void main(){
   vec3 lc = mix(vec3(.52, .60, .68), vec3(.86, .76, .60), smoothstep(.3, .8, h));
   lc = mix(lc, vec3(.93, .82, .64), max(edge, min(1., ringGlow * .8)));
   float quiet = mix(uLo, uHi, smoothstep(.6, 1., uv.x)) * mix(1., 1.3, S);
-  float a = mix(.14, .3, major) * mix(quiet, 1., edge) * (1. + 2.6*edge + min(1.5, ringGlow * 1.2));
+  float a = mix(.14, .3, major) * mix(quiet, 1., edge) * (1. + (2.6 + 2.4*uGlow)*edge + min(1.5, ringGlow * 1.2));
   vec3 col = vec3(.047) + vec3(.010, .011, .013) * h + lc * line * a + vec3(.93, .82, .64) * fig * .018;
   o = vec4(col, 1.);
 }`;
@@ -6199,7 +6211,7 @@ in vec2 a; void main(){ gl_Position = vec4(a, 0., 1.); }`;
     if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) { canvas.remove(); return; }
     gl.useProgram(prog);
     const U = {};
-    ['uRes', 'uM', 'uT', 'uS', 'uMS', 'uLo', 'uHi', 'uClock', 'uSeg', 'uR', 'uHead', 'uBox', 'uRip'].forEach(k => U[k] = gl.getUniformLocation(prog, k));
+    ['uRes', 'uM', 'uT', 'uS', 'uMS', 'uLo', 'uHi', 'uClock', 'uSeg', 'uR', 'uHead', 'uBox', 'uGlow', 'uRip'].forEach(k => U[k] = gl.getUniformLocation(prog, k));
     gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
     gl.enableVertexAttribArray(0);
@@ -6345,6 +6357,9 @@ in vec2 a; void main(){ gl_Position = vec4(a, 0., 1.); }`;
       F.pass = { y, t0: now, hoverAt: Math.random() < .7 ? rnd(.35, .65) : null, hoverT: null };
       F.x = -F.dir * edgeX(); F.y = y; F.vx = F.dir * .5; F.vy = 0;
     }
+    // The mid-pass hover lasts HOVER_S; while it does he swells to (1 + SWELL)× size and glows.
+    const HOVER_S = 3.2, SWELL = .6, BASE_SC = F.sc;
+    const hovering = now => !!(F.pass && F.pass.hoverT != null && now - F.pass.hoverT < HOVER_S * 1000);
     function spawn(now) {
       F.alive = true; F.state = 'flying';
       F.dir = Math.random() < .5 ? 1 : -1; F.pass = null; F.nextPass = now;
@@ -6380,17 +6395,17 @@ in vec2 a; void main(){ gl_Position = vec4(a, 0., 1.); }`;
           if (now > F.nextPass) startPass(now);
           if (!F.pass) return;
         }
-        // A shallow glide: rises a little toward mid-screen and settles again, with a slow bob.
-        // A slow S-shaped glide across the band. On most passes he stops partway, hovers upright,
-        // waves at the visitor, then carries on.
+        // A slow S-shaped glide across the band. On most passes he stops partway, hovers upright
+        // and waves at the visitor, growing and glowing while he does, with ripples pulsing out.
         const P = F.pass, el = (now - P.t0) / 1000;
         const across = Math.min(1, Math.max(0, (F.dir * F.x + edgeX()) / (2 * edgeX())));
-        if (P.hoverAt != null && P.hoverT == null && across >= P.hoverAt) { P.hoverT = now; ripple([F.x, F.y], .8, now); }
-        if (P.hoverT != null && now - P.hoverT < 2600) {
+        if (P.hoverAt != null && P.hoverT == null && across >= P.hoverAt) { P.hoverT = now; ripple([F.x, F.y], 1.2, now); }
+        if (hovering(now)) {
           F.vx *= Math.max(0, 1 - dt * 3); F.vy *= Math.max(0, 1 - dt * 3);
           F.x += F.vx * dt; F.y += (P.y + .012 * Math.sin(el * 2) - F.y) * Math.min(1, dt * 2);
           let diff = -F.rot; diff = Math.atan2(Math.sin(diff), Math.cos(diff));
           F.rot += diff * Math.min(1, dt * 3);
+          if (now > F.nextWake) { ripple([F.x, F.y], .7, now); F.nextWake = now + 700; }
           return;
         }
         tx = F.x + F.dir * .4; ty = P.y + .04 * Math.sin(across * Math.PI * 2) + .01 * Math.sin(el * 1.6);
@@ -6444,12 +6459,12 @@ in vec2 a; void main(){ gl_Position = vec4(a, 0., 1.); }`;
       }
       // Mid-pass hover: upright, legs loose, waving at the visitor with the arm away from where he's headed.
       const P = F.pass;
-      if (P && P.hoverT != null && now - P.hoverT < 2600) {
+      if (hovering(now)) {
         const h = (now - P.hoverT) / 1000;
         T.cape = .08 + .05 * Math.sin(t * 3);
         T.gL1 = -.06; T.gL2 = .18 + .06 * Math.sin(t * 2); T.gR1 = .06; T.gR2 = .22 + .06 * Math.sin(t * 2 + 1);
         T.head = .1 * Math.sin(h * 1.5);
-        if (h > .5 && h < 2.2) {
+        if (h > .5 && h < HOVER_S - .4) {
           if (F.dir > 0) { T.aL1 = -2.4; T.aL2 = -.5 - .45 * Math.sin(h * 9); }
           else { T.aR1 = 2.4; T.aR2 = .5 + .45 * Math.sin(h * 9); }
         }
@@ -6466,9 +6481,9 @@ in vec2 a; void main(){ gl_Position = vec4(a, 0., 1.); }`;
 
 
     /* ── Little white figures ──
-       Small figures that live on the page's words. Each one drops in from above the screen the
-       first time its spot comes into view, lands, and from then on stays there (scrolling with the
-       page; nothing rewinds). Each has a habit:
+       Small figures that live on the page's words. Each steps out of a door the first time its spot
+       comes into view, walks to it, and from then on stays there (scrolling with the page; nothing
+       rewinds). Each has a habit:
          stand  on top of the words; walks to a new spot now and then
          sit    on the top edge, legs dangling over the letters; hops to a new spot now and then
          hang   by its hands from the baseline, swinging; moves hand over hand
@@ -6567,11 +6582,6 @@ in vec2 a; void main(){ gl_Position = vec4(a, 0., 1.); }`;
 
     function miniPose(m, t) {
       const T = { ...REST };
-      if (m.state === 'falling') {
-        T.aL1 = -2.6 + .3 * Math.sin(t * 20); T.aR1 = 2.6 - .3 * Math.sin(t * 20);   // arms flailing up
-        T.gL1 = -.25; T.gR1 = .25; T.gL2 = .3; T.gR2 = -.3;
-        return T;
-      }
       const tt = t + m.seed, waving = !m.move && tt % 8 > 6.4;   // a wave every so often
       const wave = () => { T.aR1 = 2.45; T.aR2 = .5 + .45 * Math.sin(t * 9); };
       const u = m.move ? (performance.now() - m.move.t0) / 1000 / m.move.dur : 0;
@@ -6583,7 +6593,7 @@ in vec2 a; void main(){ gl_Position = vec4(a, 0., 1.); }`;
         T.gL1 = -.06 + a * Math.sin(t * k); T.gL2 = .2 + .15 * Math.sin(t * k + 1);
         T.gR1 = .06 - a * Math.sin(t * k); T.gR2 = -.2 - .15 * Math.sin(t * k + 1);
         T.head = .12 * Math.sin(t * 1.3);
-        if (m.move) {
+        if (m.move && !m.move.settle) {
           // Monkey bars, one swing per step: the leading hand lets go and reaches ahead at the top of
           // the swing while the other holds on, then the trailing hand catches up. Legs swing with the body.
           const dir = Math.sign(m.move.to[0] - m.move.from[0]) || 1;
@@ -6605,7 +6615,7 @@ in vec2 a; void main(){ gl_Position = vec4(a, 0., 1.); }`;
         T.head = .05 * Math.sin(ph * .5);
         return T;
       }
-      if (m.move) {
+      if (m.move && !m.move.settle) {
         // tucked hop
         T.aL1 = -2.4; T.aR1 = 2.4; T.gL1 = -.45; T.gL2 = 1.1; T.gR1 = .45; T.gR2 = -1.1;
         return T;
@@ -6676,13 +6686,6 @@ in vec2 a; void main(){ gl_Position = vec4(a, 0., 1.); }`;
       };
       kick();
     }
-    function dropMini(m, now) {
-      makeMini(m);
-      document.body.appendChild(m.el);
-      m.t0 = now; m.state = 'falling';
-      Object.assign(m.pose, miniPose(m, 0));
-      drawMini(m);
-    }
     // A landed figure lives in its container (the links row, or the heading's section), next to the
     // words rather than inside them, so it scrolls with them and never takes their clicks.
     function perch(m, now) {
@@ -6696,26 +6699,133 @@ in vec2 a; void main(){ gl_Position = vec4(a, 0., 1.); }`;
     function arrive(m, now) {
       if (m.mode === 'hang') for (let i = 0; i < 10 && !clearBelow(m); i++) m.pos = rnd(0, 1);
       if (placed()) { makeMini(m); document.body.appendChild(m.el); perch(m, now); m.pose = miniPose(m, 0); drawMini(m); placeMini(m, m.rel[0], m.rel[1], 0); }
-      else dropMini(m, now);
+      else walkIn(m, now);
+    }
+
+    // Start a move of the current mode's anchor to screen point `to`.
+    function moveTo(m, now, to, o = {}) {
+      const c = m.container.getBoundingClientRect(), from = m.rel.slice(), dest = [to[0] - c.left, to[1] - c.top];
+      const dist = Math.abs(dest[0] - from[0]), hang = m.mode === 'hang' && !o.settle;
+      m.move = {
+        from, to: dest, t0: now, walk: !!o.walk, settle: !!o.settle, hop: o.hop != null ? o.hop : 30 + dist * .12,
+        steps: hang ? Math.max(2, Math.round(dist / 24)) : Math.max(2, Math.round(dist / (o.stride || 14))),
+        dur: o.dur || (o.settle ? .45 : hang ? Math.max(2, Math.round(dist / 24)) * .6
+          : o.walk ? Math.max(.7, dist / (o.speed || 45)) : .45 + dist / 500),
+      };
+    }
+    const wait = (m, now, dur) => { m.move = { from: m.rel.slice(), to: m.rel.slice(), t0: now, settle: true, dur }; };
+
+    /* Every figure enters through a door: a black door appears, swings open onto a white doorway,
+       and the figure steps out; the door closes and fades behind it.
+       Heading figures: the door stands on the baseline a little past the end of the word. The
+       figure walks to the end of the word and takes up its habit: a leaner stops there; a stander or
+       sitter hops up onto the letters and walks to its spot (a sitter then sits down); a hanger drops
+       to hang from the end of the baseline and goes hand over hand to its spot.
+       Resume figures: once the flyer points at the links, a door opens just past each end of the
+       links row. Each figure walks along the tops of the link words to its resume link, where one
+       stays standing and pointing, and the other drops to hang from it. */
+    const HAND_Y = rig(HANG, MINI_OPTS).hnL[1];
+    const DOOR_W = 34, DOOR_H = 62;
+    function makeDoor(m, x, base, now) {
+      const c = m.container.getBoundingClientRect(), el = document.createElement('div');
+      el.className = 'mini-door'; el.setAttribute('aria-hidden', 'true');
+      el.appendChild(document.createElement('i'));
+      el.style.transform = `translate(${x - DOOR_W / 2 - c.left}px, ${base - DOOR_H - c.top}px)`;
+      m.container.appendChild(el);
+      m.door = { el, leaf: el.firstChild, t0: now, closeAt: Infinity };
+    }
+    // Door timeline: fade in, swing open (the white doorway lights up), then, once the figure is
+    // out, swing shut, fade and go.
+    function updateDoor(m, now) {
+      const D = m.door, a = (now - D.t0) / 1000, ease = v => v * v * (3 - 2 * v);
+      const shut = Math.min(1, Math.max(0, (now - D.closeAt) / 350));
+      const open = ease(Math.min(1, Math.max(0, (a - .45) / .5))) * (1 - ease(shut));
+      const gone = Math.min(1, Math.max(0, (now - D.closeAt - 350) / 350));
+      D.el.style.opacity = (Math.min(1, a / .35) * (1 - gone)).toFixed(3);
+      D.leaf.style.transform = `rotateY(${(-78 * open).toFixed(1)}deg)`;
+      D.el.style.boxShadow = `0 0 ${(22 * open).toFixed(1)}px rgb(255 255 255 / ${(.45 * open).toFixed(3)})`;
+      if (gone >= 1) { D.el.remove(); m.door = null; }
+    }
+    function walkIn(m, now) {
+      makeMini(m);
+      m.el.classList.add('perched');
+      m.container.appendChild(m.el);
+      const habit = m.mode, U = MINI_UNIT, c = m.container.getBoundingClientRect();
+      const H = host(m), r = H.rect(), base = H.base(r), resume = m.group === 'resume';
+      m.mode = 'stand';
+      const onTop = later => {   // stand-mode spot on the letters at pos p
+        const p = m.pos; m.pos = later; const xy = miniLanding(m); m.pos = p; return xy;
+      };
+      let doorX, doorBase, floor, firstStop;
+      if (resume) {
+        // the ends of the line of links this resume link sits on (the row can wrap)
+        const line = Array.from(linkRow.querySelectorAll('a')).map(a => a.getBoundingClientRect())
+          .filter(b => Math.abs(b.top - r.top) < 4);
+        doorX = m.home.hi === 0 ? Math.min(...line.map(b => b.left)) - 32 : Math.max(...line.map(b => b.right)) + 32;
+        doorBase = H.top(r) - 2; floor = doorBase - HIP[1] * U;
+        firstStop = [onTop(m.pos)[0], floor];
+      } else {
+        doorX = Math.min(r.right + 100, c.right - DOOR_W);
+        doorBase = base; floor = base - HIP[1] * U;
+        firstStop = [r.right + 15, floor];
+      }
+      makeDoor(m, doorX, doorBase, now);
+      m.state = 'entering'; m.t0 = now;
+      m.rel = [doorX - c.left, floor - c.top];
+      m.el.style.opacity = '0';
+      Object.assign(m.pose, REST);
+      m.queue = [
+        t => wait(m, t, .95),                        // until the door is open
+        t => {                                       // step out, and let the door close behind
+          m.el.style.opacity = '';
+          m.door.closeAt = t + 750;
+          moveTo(m, t, firstStop, { walk: true, speed: resume ? 75 : 60, stride: 16 });
+        },
+      ];
+      if (resume) {
+        if (habit === 'hang') m.queue.push(t => {
+          m.mode = 'hang'; m.rel[1] -= (HAND_Y - HIP[1]) * U;
+          moveTo(m, t, miniLanding(m), { settle: true });
+        });
+      } else if (habit === 'hang') {
+        m.queue.push(t => {
+          // grab the baseline: switch to hanging by the hands (raised above the hip) and drop onto it
+          m.mode = 'hang'; m.rel[1] -= (HAND_Y - HIP[1]) * U;
+          const p = m.pos; m.pos = 1; const grip = miniLanding(m); m.pos = p;
+          moveTo(m, t, grip, { settle: true });
+        });
+        m.queue.push(t => moveTo(m, t, miniLanding(m)));
+      } else {
+        if (habit === 'lean') m.queue.push(() => { m.mode = 'lean'; });
+        else {
+          m.queue.push(t => moveTo(m, t, onTop(1), { hop: 22 }));
+          m.queue.push(t => moveTo(m, t, onTop(m.pos), { walk: true }));
+          if (habit === 'sit') m.queue.push(t => { m.mode = 'sit'; moveTo(m, t, miniLanding(m), { settle: true }); });
+        }
+      }
+      nextStep(m, now);
+    }
+    // Run queued entrance steps until one starts a move; with none left, the figure has arrived.
+    function nextStep(m, now) {
+      while (!m.move && m.queue && m.queue.length) m.queue.shift()(now);
+      if (!m.move && m.state === 'entering') {
+        m.state = 'perched'; m.landT = now; m.nextMove = now + rnd(4000, 8000);
+        if (m.mode === 'hang') m.swingKick = 12;
+        if (m.group === 'resume') updateLit();
+      }
     }
     function updateMini(m, now, dt) {
       if (m.state === 'idle') return;
+      if (m.door) updateDoor(m, now);
       const t = (now - (m.state === 'perched' ? m.landT : m.t0)) / 1000;
-      if (m.state === 'falling') {
-        const DUR = .85, u = Math.min(1, t / DUR);
-        const to = miniLanding(m), fromY = -60;
-        const y = fromY + (to[1] - fromY) * u * u;               // gravity
-        placeMini(m, to[0] + 6 * Math.sin(t * 9) * (1 - u), y, 10 * Math.sin(t * 7) * (1 - u));
-        springTo(m, miniPose(m, t), dt); drawMini(m);
-        if (u >= 1) perch(m, now);
-        return;
-      }
       if (still()) Object.assign(m.pose, miniPose(m, t)); else springTo(m, miniPose(m, t), dt);
       drawMini(m);
       if (m.move) {
         const u = Math.min(1, (now - m.move.t0) / 1000 / m.move.dur), e = m.move.walk ? u : u * u * (3 - 2 * u);
         const x = m.move.from[0] + (m.move.to[0] - m.move.from[0]) * e;
-        if (m.mode === 'hang') {
+        const y = m.move.from[1] + (m.move.to[1] - m.move.from[1]) * e;
+        if (m.move.settle) placeMini(m, x, y, 0);
+        else if (m.mode === 'hang') {
           // advance in bursts, one per swing, with the body swinging forward on each
           const n = m.move.steps, k = Math.min(n - 1, Math.floor(u * n)), f = u >= 1 ? 1 : (u * n) % 1;
           const g = f < .6 ? 0 : (f - .6) / .4, ease = g * g * (3 - 2 * g);
@@ -6727,11 +6837,15 @@ in vec2 a; void main(){ gl_Position = vec4(a, 0., 1.); }`;
         else {
           const dirn = Math.sign(m.move.to[0] - m.move.from[0]);
           const lift = m.mode === 'sit' ? HIP[1] * MINI_UNIT * Math.sin(u * Math.PI) : 0;   // sitters stand up to hop
-          placeMini(m, x, m.move.from[1] - m.move.hop * 4 * u * (1 - u) - lift, dirn * 10 * Math.sin(u * Math.PI));
+          placeMini(m, x, y - m.move.hop * 4 * u * (1 - u) - lift, dirn * 10 * Math.sin(u * Math.PI));
         }
-        if (u >= 1) { m.rel = m.move.to; m.move = null; m.landT = now; m.swingKick = 0; m.nextMove = now + rnd(4000, 9000); }
+        if (u >= 1) {
+          m.rel = m.move.to; m.move = null; m.landT = now; m.swingKick = 0; m.nextMove = now + rnd(4000, 9000);
+          if (m.state === 'entering') nextStep(m, now);
+        }
         return;
       }
+      if (m.state !== 'perched') return;
       // one at a time within a group: if a partner is mid-move, wait a beat
       if (!placed() && now > m.nextMove) {
         if (allFigs.some(o => o !== m && o.group === m.group && o.move)) m.nextMove = now + 1200; else { wander(m, now); return; }
@@ -6777,6 +6891,8 @@ in vec2 a; void main(){ gl_Position = vec4(a, 0., 1.); }`;
 
       if (F.alive) {
         F.amp = calm ? 1 : Math.min(1, F.amp + dt / 1.2);
+        F.boost = (F.boost || 0) + ((hovering(now) ? 1 : 0) - (F.boost || 0)) * Math.min(1, dt * 2.5);
+        F.sc = BASE_SC * (1 + SWELL * F.boost);
         steer(now, dt);
         const T = targets(now);
         if (calm) Object.assign(F.pose, T); else springTo(F, T, dt);
@@ -6809,6 +6925,7 @@ in vec2 a; void main(){ gl_Position = vec4(a, 0., 1.); }`;
       gl.uniform4fv(U.uSeg, seg); gl.uniform1fv(U.uR, rad);
       gl.uniform3f(U.uHead, hc[0], hc[1], r.headR * F.sc);
       gl.uniform4f(U.uBox, F.x, F.y, F.sc * .85 + .04, show && F.alive ? F.amp : 0);
+      gl.uniform1f(U.uGlow, F.boost || 0);
       gl.uniform4fv(U.uRip, rip);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
 
