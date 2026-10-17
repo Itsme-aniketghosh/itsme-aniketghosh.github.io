@@ -6350,6 +6350,14 @@ in vec2 a; void main(){ gl_Position = vec4(a, 0., 1.); }`;
       }
       return bc >= (GC - 2) * .6 ? cellP(best * GC)[1] : null;
     }
+    // Is the band at height y still mostly bare page? (Lower bar than starting one, so it doesn't flicker.)
+    function bandOpen(y) {
+      const row = Math.round((.5 - y) * GR - 1);
+      if (row < 0 || row >= GR) return false;
+      let c = 0;
+      for (let x = 1; x < GC - 1; x++) c += clearMask[row * GC + x];
+      return c >= (GC - 2) * .45;
+    }
     function startPass(now) {
       const y = clearBand();
       if (y === null) { F.nextPass = now + 800; return; }
@@ -6399,17 +6407,24 @@ in vec2 a; void main(){ gl_Position = vec4(a, 0., 1.); }`;
         // and waves at the visitor, growing and glowing while he does, with ripples pulsing out.
         const P = F.pass, el = (now - P.t0) / 1000;
         const across = Math.min(1, Math.max(0, (F.dir * F.x + edgeX()) / (2 * edgeX())));
-        if (P.hoverAt != null && P.hoverT == null && across >= P.hoverAt) { P.hoverT = now; ripple([F.x, F.y], 1.2, now); }
-        if (hovering(now)) {
-          F.vx *= Math.max(0, 1 - dt * 3); F.vy *= Math.max(0, 1 - dt * 3);
-          F.x += F.vx * dt; F.y += (P.y + .012 * Math.sin(el * 2) - F.y) * Math.min(1, dt * 2);
-          let diff = -F.rot; diff = Math.atan2(Math.sin(diff), Math.cos(diff));
-          F.rot += diff * Math.min(1, dt * 3);
-          if (now > F.nextWake) { ripple([F.x, F.y], .7, now); F.nextWake = now + 700; }
-          return;
+        // If scrolling slides content (like the full-width project cards) over his band, he'd be
+        // hidden behind it: cut the pass short and leave quickly; he comes back on a clear band.
+        if (!P.leaving && !bandOpen(P.y)) { P.leaving = true; if (hovering(now)) P.hoverT = now - HOVER_S * 1000; }
+        if (P.leaving) {
+          tx = F.x + F.dir * .4; ty = F.y; speed = 1.1;
+        } else {
+          if (P.hoverAt != null && P.hoverT == null && across >= P.hoverAt) { P.hoverT = now; ripple([F.x, F.y], 1.2, now); }
+          if (hovering(now)) {
+            F.vx *= Math.max(0, 1 - dt * 3); F.vy *= Math.max(0, 1 - dt * 3);
+            F.x += F.vx * dt; F.y += (P.y + .012 * Math.sin(el * 2) - F.y) * Math.min(1, dt * 2);
+            let diff = -F.rot; diff = Math.atan2(Math.sin(diff), Math.cos(diff));
+            F.rot += diff * Math.min(1, dt * 3);
+            if (now > F.nextWake) { ripple([F.x, F.y], .7, now); F.nextWake = now + 700; }
+            return;
+          }
+          tx = F.x + F.dir * .4; ty = P.y + .04 * Math.sin(across * Math.PI * 2) + .01 * Math.sin(el * 1.6);
+          speed = .36;
         }
-        tx = F.x + F.dir * .4; ty = P.y + .04 * Math.sin(across * Math.PI * 2) + .01 * Math.sin(el * 1.6);
-        speed = .36;
         if (F.dir * F.x > edgeX()) { F.pass = null; F.nextPass = now + rnd(1500, 3000); return; }
       }
       const dx = tx - F.x, dy = ty - F.y, d = Math.hypot(dx, dy) || 1;
@@ -6707,7 +6722,7 @@ in vec2 a; void main(){ gl_Position = vec4(a, 0., 1.); }`;
       const c = m.container.getBoundingClientRect(), from = m.rel.slice(), dest = [to[0] - c.left, to[1] - c.top];
       const dist = Math.abs(dest[0] - from[0]), hang = m.mode === 'hang' && !o.settle;
       m.move = {
-        from, to: dest, t0: now, walk: !!o.walk, settle: !!o.settle, hop: o.hop != null ? o.hop : 30 + dist * .12,
+        from, to: dest, t0: now, walk: !!o.walk, settle: !!o.settle, jump: !!o.jump, hop: o.hop != null ? o.hop : 30 + dist * .12,
         steps: hang ? Math.max(2, Math.round(dist / 24)) : Math.max(2, Math.round(dist / (o.stride || 14))),
         dur: o.dur || (o.settle ? .45 : hang ? Math.max(2, Math.round(dist / 24)) * .6
           : o.walk ? Math.max(.7, dist / (o.speed || 45)) : .45 + dist / 500),
@@ -6719,11 +6734,11 @@ in vec2 a; void main(){ gl_Position = vec4(a, 0., 1.); }`;
        and the figure steps out; the door closes and fades behind it.
        Heading figures: the door stands on the baseline a little past the end of the word. The
        figure walks to the end of the word and takes up its habit: a leaner stops there; a stander or
-       sitter hops up onto the letters and walks to its spot (a sitter then sits down); a hanger drops
-       to hang from the end of the baseline and goes hand over hand to its spot.
-       Resume figures: once the flyer points at the links, a door opens just past each end of the
-       links row. Each figure walks along the tops of the link words to its resume link, where one
-       stays standing and pointing, and the other drops to hang from it. */
+       sitter hops up onto the letters and walks to its spot (a sitter then sits down).
+       Resume stander: once the flyer points at the links, a door opens just past the end of the
+       links row, and the figure walks along the tops of the link words to its resume link.
+       Hangers (heading or resume) always come from below: their door stands on a lower floor under
+       the words, they walk underneath to their spot and jump up to catch the baseline. */
     const HAND_Y = rig(HANG, MINI_OPTS).hnL[1];
     const DOOR_W = 34, DOOR_H = 62;
     function makeDoor(m, x, base, now) {
@@ -6750,28 +6765,26 @@ in vec2 a; void main(){ gl_Position = vec4(a, 0., 1.); }`;
       makeMini(m);
       m.el.classList.add('perched');
       m.container.appendChild(m.el);
-      const habit = m.mode, U = MINI_UNIT, c = m.container.getBoundingClientRect();
-      const H = host(m), r = H.rect(), base = H.base(r), resume = m.group === 'resume';
-      m.mode = 'stand';
-      const onTop = later => {   // stand-mode spot on the letters at pos p
-        const p = m.pos; m.pos = later; const xy = miniLanding(m); m.pos = p; return xy;
+      const habit = m.mode, U = MINI_UNIT, resume = m.group === 'resume';
+      // Geometry is read fresh at every step: the page may scroll while the figure is on its way.
+      const geo = () => { const H = host(m), r = H.rect(); return { r, top: H.top(r), base: H.base(r) }; };
+      const spotAs = (mode, pos) => {   // where the anchor would be in `mode` at `pos` along the words
+        const md = m.mode, p = m.pos; m.mode = mode; m.pos = pos; const xy = miniLanding(m); m.mode = md; m.pos = p; return xy;
       };
-      let doorX, doorBase, floor, firstStop;
+      // The floor the figure walks on (its feet): below the words for a hanger, along the tops of the
+      // link words for the resume stander, the baseline for the others.
+      const floor = g => habit === 'hang' ? g.base + HAND_Y * U + 18 : resume ? g.top - 2 : g.base;
+      const g0 = geo(), c = m.container.getBoundingClientRect();
+      let doorX;
       if (resume) {
-        // the ends of the line of links this resume link sits on (the row can wrap)
+        // just past the end of the line of links this resume link sits on (the row can wrap)
         const line = Array.from(linkRow.querySelectorAll('a')).map(a => a.getBoundingClientRect())
-          .filter(b => Math.abs(b.top - r.top) < 4);
+          .filter(b => Math.abs(b.top - g0.r.top) < 4);
         doorX = m.home.hi === 0 ? Math.min(...line.map(b => b.left)) - 32 : Math.max(...line.map(b => b.right)) + 32;
-        doorBase = H.top(r) - 2; floor = doorBase - HIP[1] * U;
-        firstStop = [onTop(m.pos)[0], floor];
-      } else {
-        doorX = Math.min(r.right + 100, c.right - DOOR_W);
-        doorBase = base; floor = base - HIP[1] * U;
-        firstStop = [r.right + 15, floor];
-      }
-      makeDoor(m, doorX, doorBase, now);
-      m.state = 'entering'; m.t0 = now;
-      m.rel = [doorX - c.left, floor - c.top];
+      } else doorX = Math.min(g0.r.right + 100, c.right - DOOR_W);
+      makeDoor(m, doorX, floor(g0), now);
+      m.mode = 'stand'; m.state = 'entering'; m.t0 = now;
+      m.rel = [doorX - c.left, floor(g0) - HIP[1] * U - c.top];
       m.el.style.opacity = '0';
       Object.assign(m.pose, REST);
       m.queue = [
@@ -6779,27 +6792,22 @@ in vec2 a; void main(){ gl_Position = vec4(a, 0., 1.); }`;
         t => {                                       // step out, and let the door close behind
           m.el.style.opacity = '';
           m.door.closeAt = t + 750;
-          moveTo(m, t, firstStop, { walk: true, speed: resume ? 75 : 60, stride: 16 });
+          const g = geo();
+          const x = habit === 'hang' ? spotAs('hang', m.pos)[0] : resume ? spotAs('stand', m.pos)[0] : g.r.right + 15;
+          moveTo(m, t, [x, floor(g) - HIP[1] * U], { walk: true, speed: resume ? 75 : 60, stride: 16 });
         },
       ];
-      if (resume) {
-        if (habit === 'hang') m.queue.push(t => {
-          m.mode = 'hang'; m.rel[1] -= (HAND_Y - HIP[1]) * U;
-          moveTo(m, t, miniLanding(m), { settle: true });
-        });
-      } else if (habit === 'hang') {
+      if (habit === 'hang') {
         m.queue.push(t => {
-          // grab the baseline: switch to hanging by the hands (raised above the hip) and drop onto it
+          // jump up and catch the baseline: hang by the hands (raised above the hip)
           m.mode = 'hang'; m.rel[1] -= (HAND_Y - HIP[1]) * U;
-          const p = m.pos; m.pos = 1; const grip = miniLanding(m); m.pos = p;
-          moveTo(m, t, grip, { settle: true });
+          moveTo(m, t, miniLanding(m), { settle: true, jump: true, dur: .5 });
         });
-        m.queue.push(t => moveTo(m, t, miniLanding(m)));
-      } else {
+      } else if (!resume) {
         if (habit === 'lean') m.queue.push(() => { m.mode = 'lean'; });
         else {
-          m.queue.push(t => moveTo(m, t, onTop(1), { hop: 22 }));
-          m.queue.push(t => moveTo(m, t, onTop(m.pos), { walk: true }));
+          m.queue.push(t => moveTo(m, t, spotAs('stand', 1), { hop: 22 }));
+          m.queue.push(t => moveTo(m, t, spotAs('stand', m.pos), { walk: true }));
           if (habit === 'sit') m.queue.push(t => { m.mode = 'sit'; moveTo(m, t, miniLanding(m), { settle: true }); });
         }
       }
@@ -6821,7 +6829,9 @@ in vec2 a; void main(){ gl_Position = vec4(a, 0., 1.); }`;
       if (still()) Object.assign(m.pose, miniPose(m, t)); else springTo(m, miniPose(m, t), dt);
       drawMini(m);
       if (m.move) {
-        const u = Math.min(1, (now - m.move.t0) / 1000 / m.move.dur), e = m.move.walk ? u : u * u * (3 - 2 * u);
+        const u = Math.min(1, (now - m.move.t0) / 1000 / m.move.dur);
+        // walks go at an even pace; a jump overshoots a touch and settles onto the catch
+        const e = m.move.walk ? u : m.move.jump ? 1 + 2.2 * Math.pow(u - 1, 3) + 1.2 * Math.pow(u - 1, 2) : u * u * (3 - 2 * u);
         const x = m.move.from[0] + (m.move.to[0] - m.move.from[0]) * e;
         const y = m.move.from[1] + (m.move.to[1] - m.move.from[1]) * e;
         if (m.move.settle) placeMini(m, x, y, 0);
