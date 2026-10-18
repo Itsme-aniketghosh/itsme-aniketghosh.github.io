@@ -3351,6 +3351,9 @@
       filter: drop-shadow(0 0 5px rgb(255 255 255 / 0.3));
     }
     .mini.perched { position: absolute; z-index: 2; }
+    /* Script positions figures and doors every frame, so no CSS transition may ease them; the links
+       row is a .reveal-stagger, whose children otherwise inherit a delayed 0.55s transform transition. */
+    .mini, .mini-door { transition: none !important; }
     .mini line { stroke: #fff; stroke-linecap: round; }
     .mini circle { fill: #fff; }
     /* The door a heading's figure walks out of: a black leaf in a faint frame that swings open
@@ -6622,6 +6625,26 @@ in vec2 a; void main(){ gl_Position = vec4(a, 0., 1.); }`;
         }
         return T;
       }
+      if (m.move && m.move.crawl) {
+        // Belly crawl: body flat along the words toward where it's going, head up, arms reaching
+        // ahead and pulling in turn, legs trailing. The hip drops (see CRAWL_DROP) to stay low.
+        const dir = Math.sign(m.move.to[0] - m.move.from[0]) || 1;
+        const ph = u * m.move.steps * Math.PI * 2, s = Math.sin(ph);
+        T.lean = dir * 1.5; T.head = -dir * .6;
+        T.aL1 = dir * (1.15 + .35 * s); T.aL2 = dir * (.5 - .4 * s);
+        T.aR1 = dir * (1.15 - .35 * s); T.aR2 = dir * (.5 + .4 * s);
+        T.gL1 = -dir * (1.45 - .12 * s); T.gL2 = 0; T.gR1 = -dir * (1.45 + .12 * s); T.gR2 = 0;
+        return T;
+      }
+      if (m.lowRest && !m.move && m.mode === 'stand') {
+        // Lying on the link where there's no headroom: on its belly facing the label, chin propped
+        // on its hands, feet kicking up behind. Kept low by the same CRAWL_DROP.
+        const dir = m.pos < .5 ? 1 : -1, k = Math.sin(t * 2.6);
+        T.lean = dir * 1.5; T.head = -dir * .75;
+        T.aL1 = dir * 2.3; T.aL2 = dir * .9; T.aR1 = dir * 2.4; T.aR2 = dir * .8;
+        T.gL1 = -dir * 1.5; T.gL2 = dir * (1.1 + .35 * k); T.gR1 = -dir * 1.45; T.gR2 = dir * (1.1 - .35 * k);
+        return T;
+      }
       if (m.move && m.move.walk) {
         // walking along the top of the letters
         const ph = u * m.move.steps * Math.PI * 2, s = Math.sin(ph);
@@ -6677,6 +6700,27 @@ in vec2 a; void main(){ gl_Position = vec4(a, 0., 1.); }`;
       }
       return true;
     }
+    // The links row has a note close above it, so the resume stander only stands up where nothing is
+    // over its head; elsewhere it lies down on the link instead (see the 'lie' rest in miniPose).
+    function clearAbove(m) {
+      const H = host(m), r = H.rect(), x = miniLanding(m)[0], top = H.top(r);
+      const dir = m.pos < .5 ? 1 : -1;   // it points along the label, so the arm reaches that way
+      for (const dx of [-16, 0, 16, 36 * dir]) for (const dy of [8, 22, 38]) {
+        const el = document.elementFromPoint(x + dx, top - dy);
+        if (el && !linkRow.contains(el) && el.closest('a, p, li, h1, h2, h3, button, span')) return false;
+      }
+      return true;
+    }
+    // Try spots on its own link, then the other, for one with headroom; returns whether it found one.
+    function findHeadroom(m) {
+      const order = [m.hi, ...m.hosts.map((_, i) => i).filter(i => i !== m.hi)];
+      for (const hi of order) {
+        m.hi = hi;
+        for (let i = 0; i < 8; i++) { m.pos = i === 0 ? m.pos : rnd(0, 1); if (clearAbove(m)) return true; }
+      }
+      m.hi = order[0];
+      return false;
+    }
     function wander(m, now) {
       if (m.mode === 'lean') { m.nextMove = now + 1e9; return; }
       const c = m.container.getBoundingClientRect(), from = m.rel.slice(), hiBefore = m.hi, posBefore = m.pos;
@@ -6687,15 +6731,18 @@ in vec2 a; void main(){ gl_Position = vec4(a, 0., 1.); }`;
         for (let i = 0; i < 10 && !clearBelow(m); i++) m.pos = rnd(0, 1);
         if (!clearBelow(m)) { m.hi = hiBefore; m.pos = posBefore; m.nextMove = now + 3000; return; }
       }
+      const lowAlong = m.group === 'resume' && m.mode === 'stand';
+      if (lowAlong) m.lowRest = !findHeadroom(m);
       m.hover = false;
       const [x, y] = miniLanding(m), to = [x - c.left, y - c.top];
       if (m.group === 'resume') updateLit();
       if (placed()) { m.rel = to; m.landT = now; kick(); return; }
       const dist = Math.abs(to[0] - from[0]);
-      const walk = m.mode === 'stand' && m.hi === hiBefore;
+      const walk = m.mode === 'stand' && (m.hi === hiBefore || lowAlong);
       const hang = m.mode === 'hang';
       m.move = {
         from, to, t0: now, walk, hop: 30 + dist * .12,
+        crawl: lowAlong,   // flat enough to pass under the text above the links, even between links
         steps: hang ? Math.max(2, Math.round(dist / 24)) : Math.max(2, Math.round(dist / 14)),
         dur: hang ? Math.max(2, Math.round(dist / 24)) * .6 : walk ? Math.max(.7, dist / 45) : .45 + dist / 500,
       };
@@ -6713,6 +6760,7 @@ in vec2 a; void main(){ gl_Position = vec4(a, 0., 1.); }`;
     }
     function arrive(m, now) {
       if (m.mode === 'hang') for (let i = 0; i < 10 && !clearBelow(m); i++) m.pos = rnd(0, 1);
+      if (m.group === 'resume' && m.mode === 'stand') m.lowRest = !findHeadroom(m);
       if (placed()) { makeMini(m); document.body.appendChild(m.el); perch(m, now); m.pose = miniPose(m, 0); drawMini(m); placeMini(m, m.rel[0], m.rel[1], 0); }
       else walkIn(m, now);
     }
@@ -6722,7 +6770,7 @@ in vec2 a; void main(){ gl_Position = vec4(a, 0., 1.); }`;
       const c = m.container.getBoundingClientRect(), from = m.rel.slice(), dest = [to[0] - c.left, to[1] - c.top];
       const dist = Math.abs(dest[0] - from[0]), hang = m.mode === 'hang' && !o.settle;
       m.move = {
-        from, to: dest, t0: now, walk: !!o.walk, settle: !!o.settle, jump: !!o.jump, hop: o.hop != null ? o.hop : 30 + dist * .12,
+        from, to: dest, t0: now, walk: !!o.walk, crawl: !!o.crawl, settle: !!o.settle, jump: !!o.jump, hop: o.hop != null ? o.hop : 30 + dist * .12,
         steps: hang ? Math.max(2, Math.round(dist / 24)) : Math.max(2, Math.round(dist / (o.stride || 14))),
         dur: o.dur || (o.settle ? .45 : hang ? Math.max(2, Math.round(dist / 24)) * .6
           : o.walk ? Math.max(.7, dist / (o.speed || 45)) : .45 + dist / 500),
@@ -6794,7 +6842,9 @@ in vec2 a; void main(){ gl_Position = vec4(a, 0., 1.); }`;
           m.door.closeAt = t + 750;
           const g = geo();
           const x = habit === 'hang' ? spotAs('hang', m.pos)[0] : resume ? spotAs('stand', m.pos)[0] : g.r.right + 15;
-          moveTo(m, t, [x, floor(g) - HIP[1] * U], { walk: true, speed: resume ? 75 : 60, stride: 16 });
+          // the resume stander crawls along the tops of the link words so it doesn't cover the text above
+          const crawl = resume && habit !== 'hang';
+          moveTo(m, t, [x, floor(g) - HIP[1] * U], { walk: true, crawl, speed: crawl ? 55 : resume ? 75 : 60, stride: 16 });
         },
       ];
       if (habit === 'hang') {
@@ -6822,12 +6872,17 @@ in vec2 a; void main(){ gl_Position = vec4(a, 0., 1.); }`;
         if (m.group === 'resume') updateLit();
       }
     }
+    const CRAWL_DROP = (HIP[1] - .14) * MINI_UNIT;   // hip height drops from standing to lying flat
     function updateMini(m, now, dt) {
       if (m.state === 'idle') return;
       if (m.door) updateDoor(m, now);
       const t = (now - (m.state === 'perched' ? m.landT : m.t0)) / 1000;
       if (still()) Object.assign(m.pose, miniPose(m, t)); else springTo(m, miniPose(m, t), dt);
       drawMini(m);
+      // Crawling or lying lowers the hip to the words; ease it down and back up so standing is smooth.
+      const flat = m.move ? m.move.crawl : m.lowRest && m.mode === 'stand';
+      m.crawl = (m.crawl || 0) + ((flat ? 1 : 0) - (m.crawl || 0)) * Math.min(1, dt * 6);
+      const low = m.crawl * CRAWL_DROP;
       if (m.move) {
         const u = Math.min(1, (now - m.move.t0) / 1000 / m.move.dur);
         // walks go at an even pace; a jump overshoots a touch and settles onto the catch
@@ -6843,7 +6898,7 @@ in vec2 a; void main(){ gl_Position = vec4(a, 0., 1.); }`;
           const hx = m.move.from[0] + (m.move.to[0] - m.move.from[0]) * (u >= 1 ? 1 : (k + ease) / n);
           placeMini(m, hx, m.move.from[1], -dir * 16 * Math.sin(f * Math.PI));
         }
-        else if (m.move.walk) placeMini(m, x, m.move.from[1] - 1.5 * Math.abs(Math.sin(u * m.move.steps * Math.PI)), 0);
+        else if (m.move.walk) placeMini(m, x, m.move.from[1] + low - 1.5 * Math.abs(Math.sin(u * m.move.steps * Math.PI)), 0);
         else {
           const dirn = Math.sign(m.move.to[0] - m.move.from[0]);
           const lift = m.mode === 'sit' ? HIP[1] * MINI_UNIT * Math.sin(u * Math.PI) : 0;   // sitters stand up to hop
@@ -6867,7 +6922,7 @@ in vec2 a; void main(){ gl_Position = vec4(a, 0., 1.); }`;
         return;
       }
       const squash = t < .4 ? 1 - .3 * Math.sin(t / .4 * Math.PI) * Math.exp(-t * 3) : 1;
-      placeMini(m, m.rel[0], m.rel[1], 0, squash);
+      placeMini(m, m.rel[0], m.rel[1] + low, 0, squash);
     }
 
 
