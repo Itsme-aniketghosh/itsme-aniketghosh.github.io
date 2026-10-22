@@ -1111,7 +1111,7 @@
       animation: content-enter 220ms cubic-bezier(0.23, 1, 0.32, 1) both;
     }
     @keyframes content-enter {
-      from { opacity: 0; transform: translateY(6px); }
+      from { opacity: 0; transform: translateY(6px); filter: blur(3px); }
       to   { opacity: 1; transform: translateY(0); }
     }
     .about-swap-btn {
@@ -1343,12 +1343,6 @@
     /* ════════════════════════════════════
        7. ABOUT
     ════════════════════════════════════ */
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6rem;
-      align-items: start;
-    }
     .about-text p {
       color: var(--muted);
       line-height: 1.9;
@@ -1366,26 +1360,215 @@
     }
     .about-text a:hover { text-decoration-color: var(--text); }
 
-    .about-stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2.5rem 3rem;
-      padding-top: 0.5rem;
-    }
-    .stat-block { border-top: 1px solid transparent; transition: transform 200ms ease, border-top-color 200ms ease; }
-    .about-stats.reveal-stagger > * {
-      transform: translateY(30px) scale(0.94);
-    }
-    .about-stats.reveal-stagger.in-view > * { transform: none; }
-    .stat-val {
-      display: block;
+    /* ── About: idea → production ── */
+    .about-text .about-lead {
       font-family: var(--display);
-      font-size: clamp(3rem, 5vw, 4.5rem);
-      font-weight: 800;
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      font-weight: 700;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
       color: var(--text);
-      line-height: 1;
-      margin-bottom: 0.4rem;
+      margin-bottom: 2rem;
     }
+    .about-lead em { font-weight: 400; color: rgb(var(--text-rgb) / 0.6); }
+    .about-lead > * {
+      display: block;
+      text-wrap: balance;
+      opacity: 0;
+      filter: blur(6px);
+      transform: translateY(0.35em);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                  filter 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .about-lead em { transition-delay: 0.38s; }
+    .reveal.in-view .about-lead > * { opacity: 1; filter: none; transform: none; }
+
+    .about-intro {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 4rem;
+      align-items: end;
+    }
+    .about-intro p, .about-long p { max-width: 70ch; }
+    .about-text .about-intro p { margin-bottom: 0; }
+    .about-text .about-next {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      line-height: 1.9;
+    }
+    .about-next b {
+      color: var(--text);
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-right: 0.6rem;
+    }
+
+    /* "My story": pull quote beside four chapters */
+    .story {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.3fr);
+      gap: 4.5rem;
+      align-items: start;
+    }
+    .story-quote { position: sticky; top: 6rem; }
+    .about-text .story-quote p {
+      font-family: var(--display);
+      font-size: clamp(1.6rem, 2.6vw, 2.3rem);
+      font-weight: 700;
+      line-height: 1.18;
+      letter-spacing: -0.015em;
+      color: rgb(var(--text-rgb) / 0.55);
+      text-wrap: balance;
+      margin-bottom: 1.1rem;
+    }
+    .story-quote em { display: block; font-style: italic; color: var(--text); }
+    .story-quote figcaption {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      line-height: 1.8;
+      color: var(--muted);
+    }
+    .story-chapters { list-style: none; }
+    .story-ch {
+      display: grid;
+      grid-template-columns: 9.5rem 1fr;
+      gap: 1.5rem;
+      padding: 1.3rem 0;
+      border-top: 1px solid rgb(var(--text-rgb) / 0.1);
+    }
+    .story-ch:first-child { border-top: 0; padding-top: 0; }
+    .story-when {
+      font-family: var(--mono);
+      font-size: 0.66rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding-top: 0.4rem;
+    }
+    .story-when small { display: block; margin-top: 0.3rem; font-size: inherit; color: rgb(var(--text-rgb) / 0.4); }
+    .story-ch:last-child .story-when { color: var(--text); }
+    .story-ch:last-child .story-when::before {
+      content: '';
+      display: inline-block;
+      width: 6px; height: 6px;
+      margin-right: 0.5rem;
+      border-radius: 50%;
+      background: var(--live);
+      vertical-align: 0.1em;
+    }
+    .about-text .story-ch p { margin: 0; font-size: 0.92rem; line-height: 1.75; }
+    /* Chapters cascade in each time the story opens (aria-expanded flips as it appears) */
+    .about-text:has(.about-swap-btn[aria-expanded="true"]) .story-quote,
+    .about-text:has(.about-swap-btn[aria-expanded="true"]) .story-ch {
+      animation: content-enter 460ms cubic-bezier(0.23, 1, 0.32, 1) both;
+    }
+    .about-text:has(.about-swap-btn[aria-expanded="true"]) .story-ch:nth-child(1) { animation-delay: 90ms; }
+    .about-text:has(.about-swap-btn[aria-expanded="true"]) .story-ch:nth-child(2) { animation-delay: 150ms; }
+    .about-text:has(.about-swap-btn[aria-expanded="true"]) .story-ch:nth-child(3) { animation-delay: 210ms; }
+    .about-text:has(.about-swap-btn[aria-expanded="true"]) .story-ch:nth-child(4) { animation-delay: 270ms; }
+    @media (max-width: 1024px) {
+      .story { grid-template-columns: 1fr; gap: 2.5rem; }
+      .story-quote { position: static; }
+    }
+    @media (max-width: 600px) {
+      .story-ch { grid-template-columns: 1fr; gap: 0.4rem; }
+      .story-when { padding-top: 0; }
+    }
+
+    /* Flow diagram: the rail draws left to right; each node lights as the line reaches it */
+    .about-flow {
+      list-style: none;
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2.5rem;
+      margin: 3rem 0 2rem;
+      padding-top: 1.5rem;
+    }
+    .about-flow::before {
+      content: '';
+      position: absolute;
+      left: 0; right: 0; top: 3px;
+      height: 1px;
+      background: linear-gradient(90deg, rgb(var(--text-rgb) / 0.5), var(--live));
+      transform-origin: left;
+      transform: scaleX(0);
+      transition: transform 1.3s cubic-bezier(0.65, 0, 0.35, 1) 0.1s;
+    }
+    .about-flow.in-view::before { transform: none; }
+    .flow-step { position: relative; }
+    .flow-step::before,
+    .flow-step::after {
+      content: '';
+      position: absolute;
+      left: 0; top: -1.5rem;
+      width: 7px; height: 7px;
+      border-radius: 50%;
+    }
+    .flow-step::before {
+      background: var(--surface);
+      border: 1px solid var(--text);
+      transform: scale(0.4);
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1) var(--node-delay, 0s);
+    }
+    .about-flow.in-view .flow-step::before { transform: none; }
+    .about-flow.in-view > .flow-step:nth-child(1) { transition-delay: 0s;    --node-delay: 0.1s; }
+    .about-flow.in-view > .flow-step:nth-child(2) { transition-delay: 0.28s; --node-delay: 0.45s; }
+    .about-flow.in-view > .flow-step:nth-child(3) { transition-delay: 0.56s; --node-delay: 0.8s; }
+    .about-flow.in-view > .flow-step:nth-child(4) { transition-delay: 0.84s; --node-delay: 1.15s; }
+    .flow-step:last-child::before { background: var(--live); border-color: var(--live); }
+    /* Production is the one live stage, so only it breathes */
+    .about-flow.in-view .flow-step:last-child::after {
+      border: 1px solid var(--live);
+      animation: flow-live 2.4s cubic-bezier(0.16, 1, 0.3, 1) 1.5s infinite;
+      opacity: 0;
+    }
+    @keyframes flow-live {
+      from { opacity: 0.8; transform: scale(1); }
+      to   { opacity: 0;   transform: scale(3.2); }
+    }
+    .flow-tag {
+      display: block;
+      font-family: var(--mono);
+      font-size: 0.66rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+      transition: color 200ms ease;
+    }
+    .about-text .flow-claim {
+      color: var(--text);
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.35;
+      margin-bottom: 0.45rem;
+      text-wrap: balance;
+    }
+    .about-text .flow-proof { font-size: 0.88rem; line-height: 1.65; margin-bottom: 0; }
+    .flow-num { font-family: var(--mono); font-size: 0.9em; color: var(--text); white-space: nowrap; }
+    @media (hover: hover) and (pointer: fine) {
+      .flow-step:hover .flow-tag { color: var(--text); }
+      .about-flow.in-view .flow-step:hover::before { transform: scale(1.5); transition-delay: 0s; transition-duration: 0.2s; }
+    }
+    /* Narrow screens: same flow, as a vertical rail */
+    @media (max-width: 1024px) {
+      .about-intro { grid-template-columns: 1fr; gap: 1.5rem; }
+      .about-flow { display: block; padding: 0 0 0 1.75rem; margin: 2.25rem 0 1.75rem; }
+      .about-flow::before {
+        left: 3px; right: auto; top: 0.4rem; bottom: 0.6rem;
+        width: 1px; height: auto;
+        background: linear-gradient(rgb(var(--text-rgb) / 0.5), var(--live));
+        transform-origin: top;
+        transform: scaleY(0);
+      }
+      .flow-step { padding-bottom: 1.5rem; }
+      .flow-step:last-child { padding-bottom: 0; }
+      .flow-step::before, .flow-step::after { left: -1.75rem; top: 0.25rem; }
+    }
+
     .stat-pill {
       display: inline-flex;
       align-items: center;
@@ -1408,20 +1591,6 @@
       flex-shrink: 0;
       animation: dot-pulse 1.5s ease-in-out infinite;
     }
-    .stat-label {
-      font-family: var(--mono);
-      font-size: 0.68rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-    /* Text-valued stats read at a smaller size so they decode instantly */
-    .stat-val--sm {
-      font-size: clamp(1.7rem, 2.8vw, 2.5rem);
-      line-height: 1.15;
-      padding: 0.3em 0 0.15em;
-    }
-
     /* ════════════════════════════════════
        8. SKILLS MARQUEE
     ════════════════════════════════════ */
@@ -2829,14 +2998,11 @@
       .bento-grid { grid-template-columns: repeat(2, 1fr); }
       .bento-cell.span-2 { grid-column: span 2; }
       .bento-cell.span-3 { grid-column: span 2; }
-      .about-grid { gap: 4rem; }
     }
 
     @media (max-width: 1024px) {
       .nav-links { gap: 1rem; }
       .nav-links a { font-size: 0.8rem; }
-      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
-      .about-stats { grid-template-columns: repeat(3, 1fr); }
       .research-grid { grid-template-columns: 1fr; }
       .research-grid .research-card:last-child:nth-child(odd) { grid-column: auto; }
     }
@@ -2874,7 +3040,6 @@
       .section { padding: 5rem 1.5rem; }
       .section-num { font-size: 100px; }
 
-      .about-stats { grid-template-columns: repeat(2, 1fr); gap: 2rem; }
 
       .bento-grid { grid-template-columns: 1fr; }
       .bento-cell.span-2, .bento-cell.span-3 { grid-column: span 1; }
@@ -2917,7 +3082,6 @@
     @media (max-width: 480px) {
       .hero-ctas { flex-direction: column; align-items: flex-start; }
       .hero-ctas .btn { width: 100%; justify-content: center; }
-      .about-stats { grid-template-columns: repeat(2, 1fr); }
       .contact-links-row { gap: 1.25rem; }
     }
     /* smallest phones: the 300px card leaves only ~10px gutters at 320px.
@@ -3274,10 +3438,6 @@
         background: var(--text);
       }
       .skill-category.in-view .skill-pills .skill-pill:hover { transition-delay: 0ms; }
-      .about-stats.in-view .stat-block:hover {
-        transform: translateY(-4px);
-        border-top-color: var(--text);
-      }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -3303,6 +3463,9 @@
       .live-badge                  { animation: none; opacity: 1; border-color: var(--text); }
       /* Content swap */
       .about-brief, .about-long    { transition-duration: 0ms; }
+      .about-lead > *, .about-flow::before, .flow-step::before { transition: none !important; filter: none; }
+      .story-quote, .story-ch      { animation: none !important; }
+      .flow-step::after            { animation: none !important; }
       /* Scroll reveals — still reveal, just instantly */
       .reveal                      { transition-duration: 0ms !important; }
       .reveal-stagger > *          { transition-duration: 0ms !important; }
@@ -3656,98 +3819,113 @@
       </div>
       <div class="about-grid">
         <div class="about-text reveal">
+          <p class="about-lead"><span>Research idea to production system.</span> <em>Same person, the whole way.</em></p>
           <div class="about-brief">
-            <p>
-              I build ML systems for problems where being wrong has consequences. Right now that means
-              interpretability research at <strong>SPAR</strong>, on a diagnostic panel of ground-truth probes for
-              language models &mdash; probes restricted to targets with exact, computable answers, scored on
-              calibration rather than noisy human labels.
-            </p>
-            <p>
-              Last summer I was the only person on the ML stack at
-              <a href="https://varosync.com/" target="_blank" rel="noopener noreferrer"><strong>Varosync</strong></a>, a computational
-              drug-development startup, and built it from scratch: a knowledge graph over millions of molecules,
-              7&ndash;8B molecular embedding models trained on an 800M-molecule corpus, and everything downstream
-              through to the live query path, on production infrastructure across AWS, Nebius, and Mithril.
-              I also caught the retrieval benchmark training on future outcomes in 123 of 133 cases and rebuilt
-              the split to fix it.
-            </p>
-            <p>
-              Before that: medical imaging research at CMATER Lab (Jadavpur), a Springer paper on
-              traffic sign detection, an IEEE paper with a patent filed on lightweight intrusion detection, and
-              a PhD-level mechanistic interpretability seminar at Khoury. 4.0 GPA across both my BS and MS.
-              I taught the ML lab for Northeastern's AIDE program, a Sloan-funded residency
-              bringing philosophy PhDs into hands-on ML, fairness, and interpretability.
-            </p>
-            <p>
-              I haven't found the problem yet that made me want to slow down.
-            </p>
+            <div class="about-intro">
+              <p>
+                I run the experiments, train the models at scale, and ship the pipeline people rely on, so nothing
+                gets lost in a handoff. The goal: AI systems that are safer because we understand what goes on inside them.
+              </p>
+              <p class="about-next">
+                <b>Now</b> Interpretability research at
+                <a href="https://sparai.org/projects/f26/recX1zoRhxvqP5RD3/" target="_blank" rel="noopener noreferrer">SPAR</a>,
+                mentored by researchers from Mila, McGill, and LawZero. Paper headed to arXiv.<br>
+                <b>Next</b> Looking for a research engineer role at an AI safety org, starting May 2027. Open to
+                part-time collaborations until then.
+              </p>
+            </div>
+            <ol class="about-flow reveal-stagger">
+              <li class="flow-step">
+                <span class="flow-tag">01 &middot; Idea</span>
+                <p class="flow-claim">Find what's broken inside a model. Then fix it.</p>
+                <p class="flow-proof">
+                  Took a model trained to give harmful medical advice from <span class="flow-num">3/36</span> safe
+                  answers to <span class="flow-num"><span data-count="27">27</span>/36</span> by transplanting a small
+                  part of a healthy one.
+                  <a href="https://www.lesswrong.com/posts/6iPEuEnguEtmtaqyJ/function-vectors-as-a-model-diffing-tool-17-heads-repair-a" target="_blank" rel="noopener noreferrer">Write-up</a>.
+                </p>
+              </li>
+              <li class="flow-step">
+                <span class="flow-tag">02 &middot; Evidence</span>
+                <p class="flow-claim">Check that the result is real.</p>
+                <p class="flow-proof">
+                  Caught a benchmark peeking at future data in <span class="flow-num">123/133</span> cases and rebuilt
+                  it to zero. Showed a standard probing method can mislead, then used it to find name bias in AI hiring.
+                </p>
+              </li>
+              <li class="flow-step">
+                <span class="flow-tag">03 &middot; Scale</span>
+                <p class="flow-claim">Run it on real hardware.</p>
+                <p class="flow-proof">
+                  Trained <span class="flow-num">7&ndash;8B</span>-parameter models across multi-GPU clusters. The
+                  infrastructure side of research doesn't slow me down.
+                </p>
+              </li>
+              <li class="flow-step">
+                <span class="flow-tag">04 &middot; Production</span>
+                <p class="flow-claim">Ship it to people who depend on it.</p>
+                <p class="flow-proof">
+                  Sole ML engineer at
+                  <a href="https://varosync.com/" target="_blank" rel="noopener noreferrer">Varosync</a>: raw lab data
+                  to the pipeline pharma customers query. One of my safety projects runs inside it.
+                </p>
+              </li>
+            </ol>
           </div>
           <div class="about-long" style="display:none;">
-            <p>
-              My path into AI started with contrasts. I grew up traveling with my father, an SAP consultant at IBM,
-              through cities like Chicago, Bonn, and Zurich, while spending seven years teaching mathematics and
-              computer science to underprivileged students through
-              <a href="https://www.hope-foundation.in/" target="_blank" rel="noopener noreferrer">The Hope Foundation</a> in Kolkata.
-              The gap between what technology could do and who it actually reached became the question I have kept
-              returning to. Over time, that question became more specific. If AI is going to keep deciding who gets
-              hired, who gets treated, and on what evidence, who is checking its reasoning, and on whose behalf?
-            </p>
-            <p>
-              My undergraduate years at IEM Kolkata went mostly into research. I worked on medical imaging at CMATER
-              Lab, helped build an Indian Sign Language dataset at NEHU, and published in computer vision (Springer
-              AISC, first author) and network intrusion detection (IEEE, with a patent filed by SRM). Each project
-              was in a domain where being wrong has real consequences. At Northeastern's Khoury College, where I am
-              completing my MS in AI, I took a PhD-level seminar on mechanistic interpretability alongside doctoral
-              researchers. Over the summer of 2026 I taught the CS lab for the
-              <a href="https://cssh.northeastern.edu/ethics/aide-summer/" target="_blank" rel="noopener noreferrer">AIDE program</a> at
-              Northeastern's Ethics Institute, bringing Python, ML, and interpretability to a residential cohort of
-              PhD philosophers and AI ethicists &mdash; sparse autoencoders, the logit lens, and linear probing,
-              hands-on with nnsight and NDIF. In parallel I worked as an AI/ML Engineer at <a href="https://varosync.com/" target="_blank" rel="noopener noreferrer"><strong>Varosync, Inc.</strong></a>,
-              a San Francisco startup simulating a drug's 24-hour pharmacological performance to predict safety and efficacy
-              in clinical trials. I'm now an interpretability research mentee at
-              <a href="https://sparai.org/projects/f26/recX1zoRhxvqP5RD3/" target="_blank" rel="noopener noreferrer">SPAR</a>,
-              working with <a href="https://mamerzouk.github.io/" target="_blank" rel="noopener noreferrer">Mohamed Amine Merzouk</a> (Mila &amp; McGill)
-              and <a href="https://www.adamoberman.net/" target="_blank" rel="noopener noreferrer">Adam Oberman</a> (McGill, LawZero)
-              on ground-truth probes for language models, and TA for CS 5800 Algorithms at Khoury.
-            </p>
-            <p>
-              I want to spend my career on problems where technical difficulty and real-world stakes are both high.
-              For me, that means medical AI built to be interpretable by design: drug-development pipelines and
-              clinical decision tools where the model's reasoning is inspectable to a clinician, a regulator, and the
-              patient. I haven't found the problem yet that made me want to slow down.
-            </p>
+            <div class="story">
+              <figure class="story-quote">
+                <blockquote>
+                  <p>If AI is deciding who gets hired and who gets treated, <em>who is checking its reasoning?</em></p>
+                </blockquote>
+                <figcaption>The question I keep coming back to. Interpretability is how I work on it.</figcaption>
+              </figure>
+              <ol class="story-chapters">
+                <li class="story-ch">
+                  <span class="story-when">Kolkata</span>
+                  <p>
+                    For seven years I taught math and computer science to underprivileged kids through
+                    <a href="https://www.hope-foundation.in/" target="_blank" rel="noopener noreferrer">The Hope Foundation</a>.
+                    I also grew up moving between Chicago, Bonn, and Zurich with my father, an SAP consultant at IBM.
+                    Between those two worlds I kept seeing the gap between what technology can do and who it actually helps.
+                  </p>
+                </li>
+                <li class="story-ch">
+                  <span class="story-when">IEM Kolkata<small>2020&ndash;24</small></span>
+                  <p>
+                    Undergrad went mostly into research: two years of medical imaging at CMATER Lab, an Indian Sign Language dataset
+                    at NEHU, a first-author Springer paper, and an IEEE paper with a patent filed. Every one was a domain
+                    where being wrong costs something.
+                  </p>
+                </li>
+                <li class="story-ch">
+                  <span class="story-when">Northeastern<small>2025&ndash;27</small></span>
+                  <p>
+                    A PhD seminar on mechanistic interpretability, then a summer doing two jobs at once: teaching the
+                    <a href="https://cssh.northeastern.edu/ethics/aide-summer/" target="_blank" rel="noopener noreferrer">AIDE</a>
+                    lab (sparse autoencoders, the logit lens, and linear probes on nnsight and NDIF) to philosophers and
+                    AI ethicists, while building <a href="https://varosync.com/" target="_blank" rel="noopener noreferrer">Varosync</a>'s
+                    ML stack.
+                  </p>
+                </li>
+                <li class="story-ch">
+                  <span class="story-when">Now</span>
+                  <p>
+                    Ground-truth probes for language models at
+                    <a href="https://sparai.org/projects/f26/recX1zoRhxvqP5RD3/" target="_blank" rel="noopener noreferrer">SPAR</a>
+                    with <a href="https://mamerzouk.github.io/" target="_blank" rel="noopener noreferrer">Mohamed Amine Merzouk</a> (Mila &amp; McGill)
+                    and <a href="https://www.adamoberman.net/" target="_blank" rel="noopener noreferrer">Adam Oberman</a> (McGill, LawZero),
+                    and TA-ing CS 5800 Algorithms. Looking for a research engineer role from May 2027. If that's your team,
+                    <a href="mailto:ghosh.anik@northeastern.edu">write to me</a>.
+                  </p>
+                </li>
+              </ol>
+            </div>
           </div>
           <button class="about-swap-btn" aria-expanded="false">
-            <span class="about-swap-label">Full story</span>
+            <span class="about-swap-label">My story</span>
             <span class="about-swap-arrow">→</span>
           </button>
-        </div>
-        <div class="about-stats reveal-stagger">
-          <div class="stat-block">
-            <span class="stat-val" data-count="4.0" data-suffix="">4.0</span>
-            <span class="stat-label">MS GPA · Northeastern Khoury</span>
-          </div>
-          <div class="stat-block">
-            <span class="stat-val stat-val--sm">2nd of 180+</span>
-            <span class="stat-label">Undergrad Rank · Director's Award</span>
-          </div>
-          <div class="stat-block">
-            <span class="stat-val stat-val--sm">2 papers · 1 patent</span>
-            <span class="stat-label">Springer First Author · IEEE</span>
-          </div>
-          <div class="stat-block">
-            <span class="stat-val">AIDE '26</span>
-            <span class="stat-label">CS Lab Instructor · Ethics Institute × Khoury</span>
-          </div>
-          <div class="stat-block">
-            <span class="stat-val" data-count="40" data-suffix="+">40+</span>
-            <span class="stat-label">Students Taught · Graduate NLP TA</span>
-          </div>
-          <div class="stat-block">
-            <span class="stat-val" data-count="7" data-suffix="+">7+</span>
-            <span class="stat-label">Years Teaching · Hope Foundation</span>
-          </div>
         </div>
       </div>
     </section>
@@ -3802,8 +3980,11 @@
             <p class="edu-school"><a href="https://iem.edu.in/" target="_blank" rel="noopener noreferrer">Institute of Engineering &amp; Management</a> · Kolkata, India</p>
             <ul class="edu-points">
               <li>Ranked <strong>2nd of 180+</strong> · Director's Award</li>
-              <li><strong>First-author Springer paper</strong> · <strong><a href="https://ieeexplore.ieee.org/document/11518522/" target="_blank" rel="noopener noreferrer">IEEE paper</a></strong> + patent filed</li>
-              <li><strong>2 research roles</strong> · <strong><a href="https://www.cmaterju.in/" target="_blank" rel="noopener noreferrer">CMATER Lab</a></strong> medical imaging (~2 yrs) · <strong><a href="https://www.nehu.ac.in/" target="_blank" rel="noopener noreferrer">NEHU</a></strong> sign-language dataset</li>
+              <li><strong>First-author Springer paper</strong> · YOLOv8 + CNN filter that cuts false positives in Indian traffic-sign detection</li>
+              <li><strong><a href="https://ieeexplore.ieee.org/document/11518522/" target="_blank" rel="noopener noreferrer">IEEE paper</a> + patent filed</strong> · 80K-parameter intrusion detector, 99.64% on CIC-IDS-2017 with 1,250x fewer parameters than Transformer baselines</li>
+              <li><strong>2 years of medical imaging</strong> at <a href="https://www.cmaterju.in/" target="_blank" rel="noopener noreferrer">CMATER Lab</a>, Jadavpur University · cell-segmentation pipelines for histopathology, and mentoring junior researchers</li>
+              <li><strong>Sign-language research</strong> at <a href="https://www.nehu.ac.in/" target="_blank" rel="noopener noreferrer">NEHU</a> · set the annotation standards for an Indian Sign Language dataset</li>
+              <li><strong>Industrial training</strong> · helped migrate <a href="https://www.novotelkolkata.com/" target="_blank" rel="noopener noreferrer">Novotel Kolkata</a>'s IT systems onto Oracle Cloud for a 1,000+ room property</li>
               <li><strong>7 years</strong> teaching at <strong><a href="https://www.hope-foundation.in/" target="_blank" rel="noopener noreferrer">Hope Foundation</a></strong></li>
             </ul>
             <div class="edu-card-foot">
@@ -5081,7 +5262,7 @@
           outgoing.style.display = 'none';
           incoming.style.display = 'block';
           btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-          label.textContent = expanded ? 'Full story' : 'Brief';
+          label.textContent = expanded ? 'My story' : 'Brief';
           return;
         }
 
@@ -5099,7 +5280,7 @@
             incoming.removeEventListener('animationend', onEnd);
           });
           btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-          label.textContent = expanded ? 'Full story' : 'Brief';
+          label.textContent = expanded ? 'My story' : 'Brief';
         }, 220);
       });
     })();
