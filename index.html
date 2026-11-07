@@ -4625,9 +4625,32 @@
       <span class="section-num" aria-hidden="true">06</span>
       <div class="section-head reveal-stagger">
         <h2 class="section-heading split-text">Research</h2>
-        <p class="section-sub">Interpretability write-ups go up on <a href="https://www.lesswrong.com/users/aniket-ghosh" target="_blank" rel="noopener noreferrer">LessWrong</a>.</p>
+        <p class="section-sub">Safety and interpretability write-ups go up on <a href="https://www.lesswrong.com/users/aniket-ghosh" target="_blank" rel="noopener noreferrer">LessWrong</a>.</p>
       </div>
       <div class="research-grid">
+
+        <div class="research-card reveal">
+          <span class="research-status published">Published · LessWrong</span>
+          <h3 class="research-title">Better Honeypots, Fewer Tries: Training an Optimizer to Make PPO Cheat</h3>
+          <p class="research-desc">
+            Turned hand-built reward-hacking honeypots into a black-box search: 169 numbers define a
+            gridworld level and PPO's hyperparameters, and a level scores by how often freshly trained
+            PPO takes the cheating shortcut instead of the honest key, door, goal route. A small RL
+            optimizer trained with evolution strategies on cheap synthetic functions, then applied with
+            no further training, found levels where PPO cheated 79% of the time at the same PPO budget,
+            against 70% for CMA-ES and 49% for GP Bayesian optimization. It reached its first strong
+            level in a median of 6 PPO runs (CMA-ES 17, GP-BO 46).
+          </p>
+          <div class="tags">
+            <span class="tag">Reward Hacking</span>
+            <span class="tag">Learned Optimizers</span>
+            <span class="tag">Reinforcement Learning</span>
+            <span class="tag">AI Safety</span>
+          </div>
+          <a class="research-link" href="https://www.lesswrong.com/posts/QDh99yfGc2WvyotcR/better-honeypots-fewer-tries-training-an-optimizer-to-make-2" target="_blank" rel="noopener noreferrer">
+            <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg> Read on LessWrong
+          </a>
+        </div>
 
         <div class="research-card reveal">
           <span class="research-status published">Published · LessWrong</span>
